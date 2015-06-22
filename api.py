@@ -1,8 +1,10 @@
 import math
 import json
+import logging
 
 import requests
 
+logger = logging.getLogger(__name__)
 
 class Billomapy(object):
     """
@@ -67,7 +69,8 @@ class Billomapy(object):
         if response.status_code == requests.codes.ok:
             return response.json()[resource]
         else:
-            print 'Error: ', response.content
+            logger.error('Error: ', response.content)
+            response.raise_for_status()
 
     def _create_post_request(self, resource, send_data):
         """
@@ -82,7 +85,47 @@ class Billomapy(object):
         if response.status_code == requests.codes.created:
             return response.json()
         else:
-            print 'Error: ', response.content
+            logger.error('Error: ', response.content)
+            response.raise_for_status()
+
+    def _create_put_request(self, resource, billomat_id, send_data):
+        """
+        Creates a post request and return the response data
+        """
+        assert (isinstance(resource, basestring))
+
+        if isinstance(billomat_id, int):
+            billomat_id = str(billomat_id)
+
+        response = self.session.post(
+            url=self.api_url + resource + '/' + billomat_id,
+            data=json.dumps(send_data),
+        )
+
+        if response.status_code == requests.codes.ok:
+            return response.json()
+        else:
+            logger.error('Error: ', response.content)
+            response.raise_for_status()
+
+    def _create_delete_request(self, resource, billomat_id):
+        """
+        Creates a post request and return the response data
+        """
+        assert (isinstance(resource, basestring))
+
+        if isinstance(billomat_id, int):
+            billomat_id = str(billomat_id)
+
+        response = self.session.delete(
+            url=self.api_url + resource + '/' + billomat_id,
+        )
+
+        if response.status_code == requests.codes.ok:
+            return response
+        else:
+            logger.error('Error: ', response.content)
+            response.raise_for_status()
 
     @staticmethod
     def _iterate_through_pages(get_function, data_key, params=None):
@@ -93,7 +136,6 @@ class Billomapy(object):
             params = {}
 
         assert(isinstance(data_key, basestring))
-
         request_data = True
         data = {data_key: []}
         page = 1
@@ -128,7 +170,7 @@ class Billomapy(object):
 
     """
     -------------------------------- Billomat Clients
-    -------- GETS
+    ---------------- GET
 
     If you want to filter your clients there a few search parameters you can use:
     You have to specify them in the "params" parameter in get_clients_per_page and get_all_clients.
@@ -173,7 +215,7 @@ class Billomapy(object):
 
     """
     -------------------------------- Billomat Clients
-    -------- CREATES
+    ---------------- CREATE // UPDATE
     If you create a billomat client you have a lot of fields that you can set
     element	                    Description	                                Type	    Default value	    Mandatory
     archived	                State of archival storage.
@@ -275,3 +317,63 @@ class Billomapy(object):
         :return: response dict of billomat
         """
         return self._create_post_request('clients', client_dict)
+
+    def update_client(self, client_id, client_dict):
+        """
+        Updates a client with the given keys and values in the dict
+        :param client_id: the client which you want to update
+        :param client_dict: the key, value pairs (see doc)
+        :return: response dict of billomat
+        """
+        return self._create_put_request('clients', client_id, client_dict)
+
+    """
+    -------------------------------- Billomat Clients
+    ---------------- DELETE
+    Info:
+    This is only possible if no documents exist for this client.
+    """
+
+    def delete_client(self, client_id):
+        """
+        Deletes a client
+        :param client_id: the client billomat id
+        :return: the response object
+        """
+        return self._create_delete_request('clients', client_id)
+
+    """
+    -------------------------------- Billomat Client Properties
+    ---------------- GET
+    """
+
+    def get_client_properties_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(
+            resource='client-property-values',
+            per_page=per_page,
+            page=page,
+            params=params
+        )
+
+    def get_all_client_properties(self, params=None):
+        return self._iterate_through_pages(self.get_client_properties_per_page, 'client-property-value', params=params)
+
+    def get_client_property(self, client_propery_id):
+        return self._create_get_request(resource='client-property-values', billomat_id=client_propery_id)
+
+    """
+    -------------------------------- Billomat Client Properties
+    ---------------- CREATE // UPDATE
+    element	            Description	            Type	    Default value	Mandatory
+    client_id	        ID of the client	    INT		                    yes
+    client_property_id	ID of the property	    INT		                    yes
+    value	            Property value	        ALNUM		                yes
+    """
+
+    def create_client_property(self, client_property_dict):
+        """
+        Sets a client property
+        :param client_property_dict: the client property
+        :return:
+        """
+        return self._create_post_request(client_property_dict)
