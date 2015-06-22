@@ -169,12 +169,13 @@ class Billomapy(object):
         return self._create_get_request(resource=resource, params=params)
 
     """
-    -------------------------------- Billomat Clients
-    ---------------- GET
+    --------
+    Billomat Clients
+    --------
 
-    If you want to filter your clients there a few search parameters you can use:
-    You have to specify them in the "params" parameter in get_clients_per_page and get_all_clients.
-    Here are the parameter you can use:
+    --------
+    Searching
+    --------
     Parameter       Description
     name            the name of the company or client you are searching for
     client_number   the client number
@@ -185,38 +186,11 @@ class Billomapy(object):
     note            the note of the client
     invoice_id      the invoice id you created for the customer (comma separated if there are many)
     tags            the tags (comma separated if there are many)
-    """
 
-    def get_clients_per_page(self, per_page=1000, page=1, params=None):
-        """
-        Get clients per page
-        :param per_page: How many clients per page. Default: 1000
-        :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
-        """
-        return self._get_resource_per_page(resource='clients', per_page=per_page, page=page, params=params)
-
-    def get_all_clients(self, params=None):
-        """
-        Get all clients
-        :param params: Search parameters. Default: {
-        :return: dict
-        """
-        return self._iterate_through_pages(self.get_clients_per_page, 'client', params=params)
-
-    def get_client(self, client_id):
-        """
-        Get a specific client by the billomat client id
-        :param client_id: The specific client id
-        :return: dict
-        """
-        return self._create_get_request(resource='clients', billomat_id=client_id)
-
-    """
-    -------------------------------- Billomat Clients
-    ---------------- CREATE // UPDATE
-    If you create a billomat client you have a lot of fields that you can set
+    --------
+    Creating
+    --------
+    If you will create or update a client, here are the fields you can edit.
     element	                    Description	                                Type	    Default value	    Mandatory
     archived	                State of archival storage.
                                 1=archived, 0=active	                    BOOL	    0
@@ -303,7 +277,38 @@ class Billomapy(object):
     price_group             	Articles can have several prices.
                                 The pricegroup defines which
                                 price applies to the client.	            INT
+
+    --------
+    Deleting
+    --------
+    Deleting is only possible if no documents exist for this client.
     """
+
+    def get_clients_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get clients per page
+        :param per_page: How many clients per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
+        return self._get_resource_per_page(resource='clients', per_page=per_page, page=page, params=params)
+
+    def get_all_clients(self, params=None):
+        """
+        Get all clients
+        :param params: Search parameters. Default: {
+        :return: dict
+        """
+        return self._iterate_through_pages(self.get_clients_per_page, 'client', params=params)
+
+    def get_client(self, client_id):
+        """
+        Get a specific client by the billomat client id
+        :param client_id: The specific client id
+        :return: dict
+        """
+        return self._create_get_request(resource='clients', billomat_id=client_id)
 
     def create_client(self, client_dict):
         """
@@ -327,13 +332,6 @@ class Billomapy(object):
         """
         return self._create_put_request('clients', client_id, client_dict)
 
-    """
-    -------------------------------- Billomat Clients
-    ---------------- DELETE
-    Info:
-    This is only possible if no documents exist for this client.
-    """
-
     def delete_client(self, client_id):
         """
         Deletes a client
@@ -343,11 +341,35 @@ class Billomapy(object):
         return self._create_delete_request('clients', client_id)
 
     """
-    -------------------------------- Billomat Client Properties
-    ---------------- GET
+    --------
+    Billomat Client Properties
+    --------
+
+    --------
+    Searching
+    --------
+    Parameter	        Description
+    client_id	        ID of a client
+    client_property_id	ID of an attribute
+    value	            Value of an attribute
+
+    --------
+    Creating
+    --------
+    element	            Description	            Type	    Default value	Mandatory
+    client_id	        ID of the client	    INT		                    yes
+    client_property_id	ID of the property	    INT		                    yes
+    value	            Property value	        ALNUM		                yes
     """
 
     def get_client_properties_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get client properties by a given page and per page number
+        :param per_page: how many elements per page
+        :param page: which page
+        :param params: search params
+        :return: dict
+        """
         return self._get_resource_per_page(
             resource='client-property-values',
             per_page=per_page,
@@ -356,19 +378,20 @@ class Billomapy(object):
         )
 
     def get_all_client_properties(self, params=None):
+        """
+        Get all client properties
+        :param params: Search params
+        :return: dict
+        """
         return self._iterate_through_pages(self.get_client_properties_per_page, 'client-property-value', params=params)
 
-    def get_client_property(self, client_propery_id):
-        return self._create_get_request(resource='client-property-values', billomat_id=client_propery_id)
-
-    """
-    -------------------------------- Billomat Client Properties
-    ---------------- CREATE // UPDATE
-    element	            Description	            Type	    Default value	Mandatory
-    client_id	        ID of the client	    INT		                    yes
-    client_property_id	ID of the property	    INT		                    yes
-    value	            Property value	        ALNUM		                yes
-    """
+    def get_client_property(self, client_property_id):
+        """
+        Get a client property by the billomat id of a client property
+        :param client_propery_id: the billomat id
+        :return: the found client property dict
+        """
+        return self._create_get_request(resource='client-property-values', billomat_id=client_property_id)
 
     def create_client_property(self, client_property_dict):
         """
@@ -376,4 +399,72 @@ class Billomapy(object):
         :param client_property_dict: the client property
         :return:
         """
-        return self._create_post_request(client_property_dict)
+        return self._create_post_request(resource='client-property-values', send_data=client_property_dict)
+
+    """
+    --------
+    Billomat Client Tags
+    --------
+
+    --------
+    Searching
+    --------
+    Parameter	        Description
+    client_id           ID of a client
+
+    --------
+    Creating
+    --------
+    element	    Description	        Type	Default value	Mandatory
+    client_id	ID of the client	INT		                yes
+    name	    Tag	                ALNUM		            yes
+    """
+
+    def get_client_tags_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get clients by a page paginated by a given number
+        If you search tags, you can only search by client_id
+        :param per_page: how many items per page
+        :param page: which page
+        :param params: search params.
+        :return: the client tags
+        """
+        return self._get_resource_per_page(
+            resource='client-tags',
+            per_page=per_page,
+            page=page,
+            params=params
+        )
+
+    def get_all_client_tags(self, params=None):
+        """
+        Get all clients
+        If you search tags, you can only search by client_id
+        :param params: search params
+        :return:
+        """
+        return self._iterate_through_pages(self.get_client_tags_per_page, 'client-tags', params=params)
+
+    def get_client_tag(self, client_tag_id):
+        """
+        Get a specific client tag by the billomat id
+        :param client_tag_id: billomat id of the client tag
+        :return: the specific client tag
+        """
+        return self._create_get_request(resource='client-tags', billomat_id=client_tag_id)
+
+    def create_client_tag(self, client_tag_dict):
+        """
+        Creates a client atg
+        :param client_tag_dict:
+        :return:
+        """
+        return self._create_post_request(resource='client-tags', send_data=client_tag_dict)
+
+    def delete_client_tag(self, client_tag_id):
+        """
+        Delete a specific client tag by the client tag id
+        :param client_tag_id: the billomat id
+        :return: Response Object
+        """
+        return self._create_delete_request(resource='client-tags', billomat_id=client_tag_id)
