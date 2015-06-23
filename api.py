@@ -1477,7 +1477,7 @@ class Billomapy(object):
     def create_confirmation_comment(self, confirmation_comment_dict):
         return self._create_post_request(resource=CONFIRMATION_COMMENTS, send_data=confirmation_comment_dict)
 
-    def update_cconfirmation_comment(self, confirmation_comment_id, confirmation_comment_dict):
+    def update_confirmation_comment(self, confirmation_comment_id, confirmation_comment_dict):
         return self._create_put_request(
             resource=CONFIRMATION_COMMENTS,
             billomat_id=confirmation_comment_id,
@@ -1519,3 +1519,390 @@ class Billomapy(object):
 
     def delete_confirmation_tag(self, confirmation_tag_id):
         return self._create_delete_request(resource=CONFIRMATION_TAGS, billomat_id=confirmation_tag_id)
+
+    """
+    --------
+    Billomat Reminder
+    --------
+    http://www.billomat.com/en/api/reminders
+    """
+
+    def get_reminders_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=REMINDERS, per_page=per_page, page=page, params=params)
+
+    def get_all_reminders(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_reminders_per_page, data_key=REMINDER, params=params)
+
+    def get_reminder(self, reminder_id):
+        return self._create_get_request(resource=REMINDERS, billomat_id=reminder_id)
+
+    def create_reminder(self, reminder_dict):
+        return self._create_post_request(resource=REMINDERS, send_data=reminder_dict)
+
+    def update_reminder(self, reminder_id, reminder_dict):
+        return self._create_put_request(
+            resource=REMINDERS,
+            billomat_id=reminder_id,
+            send_data=reminder_dict
+        )
+
+    def delete_reminder(self, reminder_id):
+        return self._create_delete_request(resource=REMINDERS, billomat_id=reminder_id)
+
+    """
+    --------
+    Billomat Reminder Item
+    --------
+    http://www.billomat.com/en/api/reminders/items
+    """
+
+    def get_items_of_reminder_per_page(self, reminder_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'reminder_id': reminder_id}
+
+        return self._get_resource_per_page(
+            resource=REMINDER_ITEMS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_items_of_reminder(self, reminder_id):
+        return self._iterate_through_pages(
+            get_function=self.get_items_of_reminder_per_page,
+            data_key=REMINDER_ITEM,
+            **{'reminder_id': reminder_id}
+        )
+
+    def get_reminder_item(self, reminder_item_id):
+        return self._create_get_request(REMINDER_ITEMS, reminder_item_id)
+
+    def create_reminder_item(self, reminder_item_dict):
+        return self._create_post_request(resource=REMINDER_ITEMS, send_data=reminder_item_dict)
+
+    def update_reminder_item(self, reminder_item_id, reminder_item_dict):
+        return self._create_put_request(
+            resource=REMINDER_ITEMS,
+            billomat_id=reminder_item_id,
+            send_data=reminder_item_dict
+        )
+
+    def delete_reminder_item(self, reminder_item_id):
+        return self._create_delete_request(resource=REMINDER_ITEMS, billomat_id=reminder_item_id)
+
+    """
+    --------
+    Billomat Reminder Tags
+    --------
+    http://www.billomat.com/en/api/reminders/tags
+    """
+    def get_tags_of_reminder_per_page(self, reminder_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'reminder_id': reminder_id}
+
+        return self._get_resource_per_page(
+            resource=REMINDER_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_reminder(self, reminder_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_reminder_per_page,
+            data_key=REMINDER_TAG,
+            **{'reminder_id': reminder_id}
+        )
+
+    def get_reminder_tag(self, reminder_tag_id):
+        return self._create_get_request(resource=REMINDER_TAGS, billomat_id=reminder_tag_id)
+
+    def create_reminder_tag(self, reminder_tag_dict):
+        return self._create_post_request(resource=REMINDER_TAGS, send_data=reminder_tag_dict)
+
+    def delete_reminder_tag(self, reminder_tag_id):
+        return self._create_delete_request(resource=REMINDER_TAGS, billomat_id=reminder_tag_id)
+
+    """
+    --------
+    Billomat Delivery Notes
+    --------
+    http://www.billomat.com/en/api/delivery-notes
+    """
+
+    def get_delivery_notes_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=DELIVERY_NOTES, per_page=per_page, page=page, params=params)
+
+    def get_all_delivery_notes(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_delivery_notes_per_page, data_key=DELIVERY_NOTE, params=params)
+
+    def get_delivery_note(self, delivery_note_id):
+        return self._create_get_request(resource=DELIVERY_NOTES, billomat_id=delivery_note_id)
+
+    def create_delivery_note(self, delivery_note_dict):
+        return self._create_post_request(resource=DELIVERY_NOTES, send_data=delivery_note_dict)
+
+    def update_delivery_note(self, delivery_note_id, delivery_note_dict):
+        return self._create_put_request(
+            resource=DELIVERY_NOTES,
+            billomat_id=delivery_note_id,
+            send_data=delivery_note_dict
+        )
+
+    def delete_delivery_note(self, delivery_note_id):
+        return self._create_delete_request(resource=DELIVERY_NOTES, billomat_id=delivery_note_id)
+
+    """
+    --------
+    Billomat Delivery Note Item
+    --------
+    http://www.billomat.com/en/api/delivery-notes/items
+    """
+
+    def get_items_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'delivery_note_id': delivery_note_id}
+
+        return self._get_resource_per_page(
+            resource=DELIVERY_NOTE_ITEMS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_items_of_delivery_note(self, delivery_note_id):
+        return self._iterate_through_pages(
+            get_function=self.get_items_of_delivery_note_per_page,
+            data_key=DELIVERY_NOTE_ITEM,
+            **{'delivery_note_id': delivery_note_id}
+        )
+
+    def get_delivery_note_item(self, delivery_note_item_id):
+        return self._create_get_request(REMINDER_ITEMS, delivery_note_item_id)
+
+    def create_delivery_note_item(self, delivery_note_item_dict):
+        return self._create_post_request(resource=DELIVERY_NOTE_ITEMS, send_data=delivery_note_item_dict)
+
+    def update_delivery_note_item(self, delivery_note_item_id, delivery_note_item_dict):
+        return self._create_put_request(
+            resource=DELIVERY_NOTE_ITEMS,
+            billomat_id=delivery_note_item_id,
+            send_data=delivery_note_item_dict
+        )
+
+    def delete_delivery_note_item(self, delivery_note_item_id):
+        return self._create_delete_request(resource=DELIVERY_NOTE_ITEMS, billomat_id=delivery_note_item_id)
+
+    """
+    --------
+    Billomat Delivery Note Comments
+    --------
+    http://www.billomat.com/en/api/delivery-notes/comments
+    """
+
+    def get_comments_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'delivery_note_id': delivery_note_id}
+
+        return self._get_resource_per_page(
+            resource=DELIVERY_NOTE_COMMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_comments_of_delivery_note(self, delivery_note_id):
+        return self._iterate_through_pages(
+            get_function=self.get_comments_of_confirmation_per_page,
+            data_key=DELIVERY_NOTE_COMMENT,
+            **{'delivery_note_id': delivery_note_id}
+        )
+
+    def get_delivery_note_comment(self, confirmation_id):
+        return self._create_get_request(DELIVERY_NOTE_COMMENTS, confirmation_id)
+
+    def create_delivery_note_comment(self, delivery_note_comment_dict):
+        return self._create_post_request(resource=DELIVERY_NOTE_COMMENTS, send_data=delivery_note_comment_dict)
+
+    def update_delivery_note_comment(self, delivery_note_comment_id, delivery_note_comment_dict):
+        return self._create_put_request(
+            resource=DELIVERY_NOTE_COMMENTS,
+            billomat_id=delivery_note_comment_id,
+            send_data=delivery_note_comment_dict
+        )
+
+    def delete_delivery_note_comment(self, delivery_note_comment_id):
+        return self._create_delete_request(resource=DELIVERY_NOTE_COMMENTS, billomat_id=delivery_note_comment_id)
+
+    """
+    --------
+    Billomat Delivery Note Tags
+    --------
+    http://www.billomat.com/en/api/delivery-notes/tags
+    """
+    def get_tags_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'delivery_note_id': delivery_note_id}
+
+        return self._get_resource_per_page(
+            resource=DELIVERY_NOTE_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_delivery_note(self, delivery_note_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_delivery_note_per_page,
+            data_key=DELIVERY_NOTE_TAG,
+            **{'delivery_note_id': delivery_note_id}
+        )
+
+    def get_delivery_note_tag(self, delivery_note_tag_id):
+        return self._create_get_request(resource=DELIVERY_NOTE_TAGS, billomat_id=delivery_note_tag_id)
+
+    def create_delivery_note_tag(self, delivery_note_tag_dict):
+        return self._create_post_request(resource=DELIVERY_NOTE_TAGS, send_data=delivery_note_tag_dict)
+
+    def delete_delivery_note_tag(self, delivery_note_tag_id):
+        return self._create_delete_request(resource=DELIVERY_NOTE_TAGS, billomat_id=delivery_note_tag_id)
+
+    """
+    --------
+    Billomat Letters
+    --------
+    http://www.billomat.com/en/api/letters
+    """
+
+    def get_letters_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=LETTERS, per_page=per_page, page=page, params=params)
+
+    def get_all_letters(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_letters_per_page, data_key=LETTER, params=params)
+
+    def get_letter(self, letter_id):
+        return self._create_get_request(resource=LETTERS, billomat_id=letter_id)
+
+    def create_letter(self, letter_dict):
+        return self._create_post_request(resource=LETTERS, send_data=letter_dict)
+
+    def update_letter(self, letter_id, letter_dict):
+        return self._create_put_request(
+            resource=LETTERS,
+            billomat_id=letter_id,
+            send_data=letter_dict
+        )
+
+    def delete_letter(self, letter_id):
+        return self._create_delete_request(resource=LETTERS, billomat_id=letter_id)
+
+    """
+    --------
+    Billomat Letter Comments
+    --------
+    http://www.billomat.com/en/api/letters/comments
+    """
+
+    def get_comments_of_letter_per_page(self, letter_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'letter_id': letter_id}
+
+        return self._get_resource_per_page(
+            resource=LETTER_COMMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_comments_of_letter(self, letter_id):
+        return self._iterate_through_pages(
+            get_function=self.get_comments_of_letter_per_page,
+            data_key=LETTER_COMMENT,
+            **{'letter_id': letter_id}
+        )
+
+    def get_confirmation_letter(self, letter_comment_id):
+        return self._create_get_request(LETTER_COMMENTS, letter_comment_id)
+
+    def create_confirmation_letter(self, letter_comment_dict):
+        return self._create_post_request(resource=LETTER_COMMENTS, send_data=letter_comment_dict)
+
+    def update_confirmation_letter(self, letter_comment_id, letter_comment_dict):
+        return self._create_put_request(
+            resource=LETTER_COMMENTS,
+            billomat_id=letter_comment_id,
+            send_data=letter_comment_dict
+        )
+
+    def delete_confirmation_letter(self, letter_comment_id):
+        return self._create_delete_request(resource=LETTER_COMMENTS, billomat_id=letter_comment_id)
+
+    """
+    --------
+    Billomat Letter Tags
+    --------
+    http://www.billomat.com/en/api/letters/tags
+    """
+    def get_tags_of_letter_per_page(self, letter_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'letter_id': letter_id}
+
+        return self._get_resource_per_page(
+            resource=LETTER_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_letter(self, letter_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_letter_per_page,
+            data_key=REMINDER_TAG,
+            **{'letter_id': letter_id}
+        )
+
+    def get_letter_tag(self, letter_tag_id):
+        return self._create_get_request(resource=LETTER_TAGS, billomat_id=letter_tag_id)
+
+    def create_letter_tag(self, letter_tag_dict):
+        return self._create_post_request(resource=LETTER_TAGS, send_data=letter_tag_dict)
+
+    def delete_letter_tag(self, letter_tag_id):
+        return self._create_delete_request(resource=LETTER_TAGS, billomat_id=letter_tag_id)
+
+    """
+    --------
+    Billomat Template
+    --------
+    http://www.billomat.com/en/api/templates
+    """
+
+    def get_templates_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=TEMPLATES, per_page=per_page, page=page, params=params)
+
+    def get_all_templates(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_templates_per_page, data_key=TEMPLATE, params=params)
+
+    def get_template(self, template_id):
+        return self._create_get_request(resource=TEMPLATES, billomat_id=template_id)
+
+    def create_template(self, template_dict):
+        return self._create_post_request(resource=TEMPLATES, send_data=template_dict)
+
+    def update_template(self, template_id, template_dict):
+        return self._create_put_request(
+            resource=TEMPLATES,
+            billomat_id=template_id,
+            send_data=template_dict
+        )
+
+    def delete_template(self, template_id):
+        return self._create_delete_request(resource=TEMPLATES, billomat_id=template_id)
