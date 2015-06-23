@@ -1373,3 +1373,149 @@ class Billomapy(object):
 
     def delete_credit_note_tag(self, credit_note_tag_id):
         return self._create_delete_request(resource=CREDIT_NOTE_TAGS, billomat_id=credit_note_tag_id)
+
+    """
+    --------
+    Billomat Confirmation
+    --------
+    http://www.billomat.com/en/api/credit-notes
+    """
+
+    def get_confirmations_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=CONFIRMATIONS, per_page=per_page, page=page, params=params)
+
+    def get_all_confirmations(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_confirmations_per_page, data_key=CONFIRMATION, params=params)
+
+    def get_confirmation(self, confirmation_id):
+        return self._create_get_request(resource=CONFIRMATIONS, billomat_id=confirmation_id)
+
+    def create_confirmation(self, confirmation_dict):
+        return self._create_post_request(resource=CONFIRMATIONS, send_data=confirmation_dict)
+
+    def update_confirmation(self, confirmation_id, confirmation_dict):
+        return self._create_put_request(
+            resource=CONFIRMATIONS,
+            billomat_id=confirmation_id,
+            send_data=confirmation_dict
+        )
+
+    def delete_confirmation(self, confirmation_id):
+        return self._create_delete_request(resource=CONFIRMATIONS, billomat_id=confirmation_id)
+
+    """
+    --------
+    Billomat Confirmation Item
+    --------
+    http://www.billomat.com/en/api/confirmations/items
+    """
+
+    def get_items_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'confirmation_id': confirmation_id}
+
+        return self._get_resource_per_page(
+            resource=CONFIRMATION_ITEMS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_items_of_confirmation(self, confirmation_id):
+        return self._iterate_through_pages(
+            get_function=self.get_items_of_credit_note_per_page,
+            data_key=CONFIRMATION_ITEM,
+            **{'confirmation_id': confirmation_id}
+        )
+
+    def get_confirmation_item(self, confirmation_item_id):
+        return self._create_get_request(CONFIRMATION_ITEMS, confirmation_item_id)
+
+    def create_confirmation_item(self, confirmation_item_dict):
+        return self._create_post_request(resource=CONFIRMATION_ITEMS, send_data=confirmation_item_dict)
+
+    def update_confirmation_item(self, confirmation_item_id, confirmation_item_dict):
+        return self._create_put_request(
+            resource=CONFIRMATION_ITEMS,
+            billomat_id=confirmation_item_id,
+            send_data=confirmation_item_dict
+        )
+
+    def delete_confirmation_item(self, confirmation_item_id):
+        return self._create_delete_request(resource=CONFIRMATION_ITEMS, billomat_id=confirmation_item_id)
+
+    """
+    --------
+    Billomat Confirmation Comments
+    --------
+    http://www.billomat.com/en/api/confirmation/comments
+    """
+
+    def get_comments_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'confirmation_id': confirmation_id}
+
+        return self._get_resource_per_page(
+            resource=CONFIRMATION_COMMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_comments_of_confirmation(self, confirmation_id):
+        return self._iterate_through_pages(
+            get_function=self.get_comments_of_confirmation_per_page,
+            data_key=CONFIRMATION_COMMENT,
+            **{'confirmation_id': confirmation_id}
+        )
+
+    def get_confirmation_comment(self, confirmation_comment_id):
+        return self._create_get_request(CONFIRMATION_COMMENTS, confirmation_comment_id)
+
+    def create_confirmation_comment(self, confirmation_comment_dict):
+        return self._create_post_request(resource=CONFIRMATION_COMMENTS, send_data=confirmation_comment_dict)
+
+    def update_cconfirmation_comment(self, confirmation_comment_id, confirmation_comment_dict):
+        return self._create_put_request(
+            resource=CONFIRMATION_COMMENTS,
+            billomat_id=confirmation_comment_id,
+            send_data=confirmation_comment_dict
+        )
+
+    def delete_confirmation_comment(self, confirmation_comment_id):
+        return self._create_delete_request(resource=CONFIRMATION_COMMENTS, billomat_id=confirmation_comment_id)
+
+    """
+    --------
+    Billomat Confirmation Tags
+    --------
+    http://www.billomat.com/en/api/confirmations/tags
+    """
+    def get_tags_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'confirmation_id': confirmation_id}
+
+        return self._get_resource_per_page(
+            resource=CONFIRMATION_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_confirmation(self, confirmation_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_confirmation_per_page,
+            data_key=CONFIRMATION_TAG,
+            **{'confirmation_id': confirmation_id}
+        )
+
+    def get_confirmation_tag(self, confirmation_tag_id):
+        return self._create_get_request(resource=CONFIRMATION_TAGS, billomat_id=confirmation_tag_id)
+
+    def create_confirmation_tag(self, confirmation_tag_dict):
+        return self._create_post_request(resource=CONFIRMATION_TAGS, send_data=confirmation_tag_dict)
+
+    def delete_confirmation_tag(self, confirmation_tag_id):
+        return self._create_delete_request(resource=CONFIRMATION_TAGS, billomat_id=confirmation_tag_id)
