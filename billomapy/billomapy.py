@@ -403,7 +403,7 @@ class Billomapy(object):
 
     """
     --------
-    Billomat article Properties
+    Billomat Supplier Properties
     --------
     http://www.billomat.com/en/api/suppliers/properties
     """

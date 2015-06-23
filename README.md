@@ -89,3 +89,78 @@ Functions:
     > create_contact_of_client(contact_dict)
     > update_contact_of_client(contact_dict)
     > delete_contact_of_client(client_id)
+    
+**Suppliers**
+
+	> get_suppliers_per_page(per_page=1000, page=1, params=None)
+	> get_all_suppliers(params=None)
+	> get_supplier(supplier_id)
+	> create_supplier(supplier_dict)
+	> update_supplier(supplier_id, supplier_dict)
+	> delete_supplier(supplier_id)
+	
+**Supplier Properties**
+
+	> get_supplier_properties_per_page(per_page=1000, page=1, params=None)
+	> get_all_supplier_properties(params=None)
+	> get_supplier_property(supplier_property_id)
+	> set_supplier_property(supplier_property_dict)
+
+**Supplier Tags**
+
+	> get_tags_of_supplier_per_page(supplier_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_supplier(supplier_id)
+	> get_supplier_tag(supplier_tag_id)
+	> create_supplier_tag(supplier_tag_dict)
+	> delete_supplier_tag(supplier_tag_id)
+
+**Articles**
+	
+	> get_articles_per_page(per_page=1000, page=1, params=None)
+	> get_all_articles(params=None)
+	> get_article(article_id)
+	> create_article(article_dict)
+	> update_article(article_id, article_dict)
+	> delete_article(article_id)
+
+**Article Properties**
+
+	> get_article_properties_per_page(per_page=1000, page=1, params=None)
+	> get_all_article_properties(params=None)
+	> get_article_property(article_property_id)
+	> set_article_property(article_property_dict)
+
+**Article Tags**
+
+	> get_tags_of_article_per_page(article_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_article(article_id)
+	> get_article_tag(article_tag_id)
+	> create_article_tag(article_tag_dict)
+	> delete_article_tag(article_tag_id)
+
+**Unit**
+	
+	> get_units_per_page(per_page=1000, page=1, params=None)
+	> get_all_units(params=None)
+	> get_unit(unit_id)
+	> create_unit(unit_dict)
+	> update_unit(unit_id, unit_dict)
+	> delete_unit(unit_id)
+
+**Invoice**
+	
+	> get_invoices_per_page(per_page=1000, page=1, params=None)
+	> get_all_invoices(params=None)
+	> get_invoice(invoice_id)
+	> create_invoice(invoice_dict)
+	> update_invoice(invoice_id, invoice_dict)
+	> delete_invoice(invoice_id)
+	
+**Invoice Item**
+	
+	> get_items_of_invoice_per_page(invoice_id, per_page=1000, page=1, params=None)
+	> get_all_items_of_invoice(invoice_id)
+	> get_invoice_item(invoice_item_id)
+	> create_invoice_item(invoice_item_id)
+	> update_invoice_item(invoice_item_id, invoice_item_dict)
+	> delete_invoice_item(invoice_item_id)
