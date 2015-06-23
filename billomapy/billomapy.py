@@ -4,7 +4,7 @@ import logging
 
 import requests
 
-from resources import *
+from .resources import *
 
 logger = logging.getLogger(__name__)
 
