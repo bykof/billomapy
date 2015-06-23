@@ -1197,3 +1197,179 @@ class Billomapy(object):
 
     def delete_offer_tag(self, offer_tag_id):
         return self._create_delete_request(resource=OFFER_TAGS, billomat_id=offer_tag_id)
+
+    """
+    --------
+    Billomat Credit Note
+    --------
+    http://www.billomat.com/en/api/credit-notes
+    """
+
+    def get_credit_notes_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=CREDIT_NOTES, per_page=per_page, page=page, params=params)
+
+    def get_all_credit_notes(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_credit_notes_per_page, data_key=CREDIT_NOTE, params=params)
+
+    def get_credit_note(self, credit_note_id):
+        return self._create_get_request(resource=CREDIT_NOTES, billomat_id=credit_note_id)
+
+    def create_credit_note(self, credit_note_dict):
+        return self._create_post_request(resource=CREDIT_NOTES, send_data=credit_note_dict)
+
+    def update_credit_note(self, credit_note_id, credit_note_dict):
+        return self._create_put_request(resource=CREDIT_NOTES, billomat_id=credit_note_id, send_data=credit_note_dict)
+
+    def delete_credit_note(self, credit_note_id):
+        return self._create_delete_request(resource=CREDIT_NOTES, billomat_id=credit_note_id)
+
+    """
+    --------
+    Billomat Credit Note Item
+    --------
+    http://www.billomat.com/en/api/credit-notes/items
+    """
+
+    def get_items_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'credit_note_id': credit_note_id}
+
+        return self._get_resource_per_page(
+            resource=CREDIT_NOTE_ITEMS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_items_of_credit_note(self, credit_note_id):
+        return self._iterate_through_pages(
+            get_function=self.get_items_of_credit_note_per_page,
+            data_key=CREDIT_NOTE_ITEM,
+            **{'credit_note_id': credit_note_id}
+        )
+
+    def get_credit_note_item(self, credit_note_item_id):
+        return self._create_get_request(CREDIT_NOTE_ITEMS, credit_note_item_id)
+
+    def create_credit_note_item(self, credit_note_item_dict):
+        return self._create_post_request(resource=CREDIT_NOTE_ITEMS, send_data=credit_note_item_dict)
+
+    def update_credit_note_item(self, credit_note_item_id, credit_note_item_dict):
+        return self._create_put_request(
+            resource=CREDIT_NOTE_ITEMS,
+            billomat_id=credit_note_item_id,
+            send_data=credit_note_item_dict
+        )
+
+    def delete_credit_note_item(self, credit_note_item_id):
+        return self._create_delete_request(resource=CREDIT_NOTE_ITEMS, billomat_id=credit_note_item_id)
+
+    """
+    --------
+    Billomat Credit Note Comments
+    --------
+    http://www.billomat.com/en/api/credit-notes/comments
+    """
+
+    def get_comments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'credit_note_id': credit_note_id}
+
+        return self._get_resource_per_page(
+            resource=CREDIT_NOTE_COMMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_comments_of_credit_note(self, credit_note_id):
+        return self._iterate_through_pages(
+            get_function=self.get_comments_of_offer_per_page,
+            data_key=CREDIT_NOTE_COMMENT,
+            **{'credit_note_id': credit_note_id}
+        )
+
+    def get_credit_note_comment(self, credit_note_comment_id):
+        return self._create_get_request(CREDIT_NOTE_COMMENTS, credit_note_comment_id)
+
+    def create_credit_note_comment(self, credit_note_comment_dict):
+        return self._create_post_request(resource=CREDIT_NOTE_COMMENTS, send_data=credit_note_comment_dict)
+
+    def update_credit_note_comment(self, credit_note_comment_id, credit_note_comment_dict):
+        return self._create_put_request(
+            resource=CREDIT_NOTE_COMMENTS,
+            billomat_id=credit_note_comment_id,
+            send_data=credit_note_comment_dict
+        )
+
+    def delete_credit_note_comment(self, credit_note_comment_id):
+        return self._create_delete_request(resource=CREDIT_NOTE_COMMENTS, billomat_id=credit_note_comment_id)
+
+    """
+    --------
+    Billomat Credit Note Payment
+    --------
+    http://www.billomat.com/en/api/credit-notes/payments
+    """
+
+    def get_payments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'credit_note_id': credit_note_id}
+
+        return self._get_resource_per_page(
+            resource=CREDIT_NOTE_PAYMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_payments_of_credit_note(self, credit_note_id):
+        return self._iterate_through_pages(
+            get_function=self.get_payments_of_credit_note_per_page,
+            data_key=CREDIT_NOTE_PAYMENT,
+            **{'credit_note_id': credit_note_id}
+        )
+
+    def get_credit_note_payment(self, credit_note_payment_id):
+        return self._create_get_request(CREDIT_NOTE_PAYMENTS, credit_note_payment_id)
+
+    def create_credit_note_payment(self, credit_note_payment_dict):
+        return self._create_post_request(resource=CREDIT_NOTE_PAYMENTS, send_data=credit_note_payment_dict)
+
+    def delete_credit_note_payment(self, credit_note_payment_id):
+        return self._create_delete_request(resource=CREDIT_NOTE_PAYMENTS, billomat_id=credit_note_payment_id)
+
+    """
+    --------
+    Billomat Credit Note Tags
+    --------
+    http://www.billomat.com/en/api/credit-notes/tags
+    """
+    def get_tags_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'credit_note_id': credit_note_id}
+
+        return self._get_resource_per_page(
+            resource=CREDIT_NOTE_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_credit_note(self, credit_note_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_credit_note_per_page,
+            data_key=CREDIT_NOTE_TAG,
+            **{'credit_note_id': credit_note_id}
+        )
+
+    def get_credit_note_tag(self, credit_note_tag_id):
+        return self._create_get_request(resource=CREDIT_NOTE_TAGS, billomat_id=credit_note_tag_id)
+
+    def create_credit_note_tag(self, credit_note_tag_dict):
+        return self._create_post_request(resource=CREDIT_NOTE_TAGS, send_data=credit_note_tag_dict)
+
+    def delete_credit_note_tag(self, credit_note_tag_id):
+        return self._create_delete_request(resource=CREDIT_NOTE_TAGS, billomat_id=credit_note_tag_id)
