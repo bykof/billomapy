@@ -176,116 +176,7 @@ class Billomapy(object):
     --------
     Billomat Clients
     --------
-
-    --------
-    Searching
-    --------
-    Parameter       Description
-    name            the name of the company or client you are searching for
-    client_number   the client number
-    email           the email address
-    first_name      the first name of the contact person
-    last_name       the last name of the contact person
-    country_code    the country code by ISO 3166 Alpha-2
-    note            the note of the client
-    invoice_id      the invoice id you created for the customer (comma separated if there are many)
-    tags            the tags (comma separated if there are many)
-
-    --------
-    Creating
-    --------
-    If you will create or update a client, here are the fields you can edit.
-    element	                    Description	                                Type	    Default value	    Mandatory
-    archived	                State of archival storage.
-                                1=archived, 0=active	                    BOOL	    0
-    number_pre	                Prefix	                                    ALNUM	    Value from settings
-    number	                    sequential number	                        INT	        next free number
-    number_length	            Minimum length of the customer number
-                                (to be filled with leading zeros)	        INT	        Value from settings
-    name	                    Company name	                            ALNUM
-    street	                    Street	                                    ALNUM
-    zip	                        Zip code	                                ALNUM
-    city	                    City	                                    ALNUM
-    state	                    State, county, district, region         	ALNUM
-    country_code	            Country	Country code as                     ISO 3166
-                                                                            Alpha-2	    Value from settings
-    first_name	                First name	                                ALNUM
-    last_name	                Last name	                                ALNUM
-    salutation	                Salutation	                                ALNUM
-    phone	                    Phone	                                    ALNUM
-    fax	                        Fax	                                        ALNUM
-    mobile	                    mobile number	                            ALNUM
-    email	                    Email	                                    EMAIL
-    www	                        Website	                                    URL
-                                                                            (w/o http)
-    tax_number	                Tax number	                                ALNUM
-    vat_number	                VAT number	                                VAT number
-    bank_account_number	        Bank account number	                        ALNUM
-    bank_account_owner	        Bank account owner	                        ALNUM
-    bank_number	                Bank identifier code	                    ALNUM
-    bank_name	                Bank name	                                ALNUM
-    bank_swift	                SWIFT/BIC	                                ALNUM
-    bank_iban	                IBAN	valid IBAN
-    sepa_mandate	            Mandate reference of a
-                                SEPA Direct Debit mandate	                ALNUM
-    sepa_mandate_date	        Date of issue of the
-                                SEPA Direct Debit mandate	                DATE
-    locale	                    Locale of the client.
-                                If no value is passed, the locale of the
-                                account will be applied to the client.  	ALNUM
-    tax_rule	                Tax Rule	                                TAX,
-                                                                            NO_TAX,
-                                                                            COUNTRY	    COUNTRY
-    default_payment_types	    Payment Type
-                                (eg. CASH, BANK_TRANSFER, PAYPAL, ...).
-                                More than one payment type could be given
-                                as a comma separated list.
-                                Theses payment types will be logically
-                                OR-connected. You can find a overview of
-                                all payment types at API documentation of
-                                payments. If no value is passed,
-                                the customer will be offered the payment
-                                types specified at the account settings.    ALNUM
-    net_gross	                Price basis
-                                (net, gross, according to account settings)	NET,
-                                                                            GROSS,
-                                                                            SETTINGS    SETTINGS
-    note	                    Note            	                        ALNUM
-    discount_rate_type	        Type of the default value for
-                                discount rate	                            SETTINGS,
-                                                                            ABSOLUTE,
-                                                                            RELATIVE    SETTINGS
-    discount_rate	            Discount rate	                            FLOAT
-    discount_days_type	        Type of the default value for
-                                discount interval	                        SETTINGS,
-                                                                            ABSOLUTE,
-                                                                            RELATIVE	SETTINGS
-    discount_days	            Discount period in days	                    FLOAT
-    due_days_type	            Type of the default value for maturity	    SETTINGS,
-                                                                            ABSOLUTE,
-                                                                            RELATIVE	SETTINGS
-    due_days	                Maturity in days from invoice date	        INT
-    reminder_due_days_type	    Type of the default value for
-                                reminder maturity	                        SETTINGS,
-                                                                            ABSOLUTE,
-                                                                            RELATIVE    SETTINGS
-    reminder_due_days	        Reminder maturity	                        INT
-    offer_validity_days_type	Type of the default value for
-                                validity of estimates	                    SETTINGS,
-                                                                            ABSOLUTE,
-                                                                            RELATIVE	SETTINGS
-    offer_validity_days         Validity of estimates	                    INT
-    currency_code	            The currency for this client.
-                                If this field is empty,
-                                the account currency is used.	            ISO currency code
-    price_group             	Articles can have several prices.
-                                The pricegroup defines which
-                                price applies to the client.	            INT
-
-    --------
-    Deleting
-    --------
-    Deleting is only possible if no documents exist for this client.
+    http://www.billomat.com/en/api/clients
     """
 
     def get_clients_per_page(self, per_page=1000, page=1, params=None):
@@ -348,22 +239,7 @@ class Billomapy(object):
     --------
     Billomat Client Properties
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	        Description
-    client_id	        ID of a client
-    client_property_id	ID of an attribute
-    value	            Value of an attribute
-
-    --------
-    Creating
-    --------
-    element	            Description	            Type	    Default value	Mandatory
-    client_id	        ID of the client	    INT		                    yes
-    client_property_id	ID of the property	    INT		                    yes
-    value	            Property value	        ALNUM		                yes
+    http://www.billomat.com/en/api/clients/properties
     """
 
     def get_client_properties_per_page(self, per_page=1000, page=1, params=None):
@@ -409,19 +285,7 @@ class Billomapy(object):
     --------
     Billomat Client Tags
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	        Description
-    client_id           ID of a client
-
-    --------
-    Creating
-    --------
-    element	    Description	        Type	Default value	Mandatory
-    client_id	ID of the client	INT		                yes
-    name	    Tag	                ALNUM		            yes
+    http://www.billomat.com/en/api/clients/tags
     """
 
     def get_client_tags_per_page(self, per_page=1000, page=1, params=None):
@@ -477,33 +341,7 @@ class Billomapy(object):
     --------
     Billomat Client Contacts
     --------
-
-    --------
-    Retrieving
-    --------
-    You can only get contacts of a client therefore the client_id has to be given in the request
-
-    --------
-    Creating
-    --------
-    element	        Description	                                Type	Default value	Mandatory
-    client_id	    ID of the client	                        INT		                yes
-    label	        Label	                                    ALNUM
-    name	        Company name	                            ALNUM
-    street	        Street	                                    ALNUM
-    zip	            Zip code	                                ALNUM
-    city	        City	                                    ALNUM
-    state	        State, county, district, region             ALNUM
-    country_code	Country	Country code as ISO 3166            Alpha-2
-    first_name	    First name	                                ALNUM
-    last_name	    Last name	                                ALNUM
-    salutation	    Salutation	                                ALNUM
-    phone	        Phone	                                    ALNUM
-    fax	            Fax	                                        ALNUM
-    mobile	        Mobile Number	                            ALNUM
-    email	        Email	                                    EMAIL
-    www	            Website	                                    URL
-                                                                (w/o http)
+    http://www.billomat.com/en/api/clients/contacts
     """
 
     def get_contacts_of_client_per_page(self, client_id, per_page=1000, page=1, params=None):
@@ -540,56 +378,7 @@ class Billomapy(object):
     --------
     Billomat Supplier
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	        Description
-    name	            Company name
-    email	            e-mail address
-    first_name	        First name of the contact person
-    last_name	        Last name of the contact person
-    country_code	    Country code as ISO 3166 Alpha-2
-    creditor_identifier	SEPA creditor identifier
-    note	            Note
-    client_number	    Client number you may have at this supplier.
-    incoming_id	        ID of an incoming of this supplier, multiple values seperated with commas
-    tags	            Comma seperated list of tags
-
-    --------
-    Creating
-    --------
-    element	            Description	                                Type	    Default value	        Mandatory
-    name	            Company name	                            ALNUM
-    street	            Street	                                    ALNUM
-    zip	                Zip code	                                ALNUM
-    city	            City	                                    ALNUM
-    state	            State, county, district, region	            ALNUM
-    country_code	    Land	Country code as ISO 3166            Alpha-2	    Value from settings
-    first_name	        First name	                                ALNUM
-    last_name	        Last name	                                ALNUM
-    salutation	        Salutation	                                ALNUM
-    phone	            Phone	                                    ALNUM
-    fax	                Fax	                                        ALNUM
-    mobile	            mobile number	                            ALNUM
-    email	            Email	                                    EMAIL
-    www	                Website	                                    URL
-                                                                    (w/o http)
-    tax_number	        Tax number	                                ALNUM
-    vat_number	        VAT number	valid                           VAT number
-    creditor_identifier	SEPA creditor identifier	                valid creditor
-                                                                    identifier
-    bank_account_number	Kontonummer	                                ALNUM
-    bank_account_owner	Bank account number	                        ALNUM
-    bank_number     	Bank identifier code	                    ALNUM
-    bank_name	        Bank name	                                ALNUM
-    bank_swift	        SWIFT/BIC	                                ALNUM
-    bank_iban	        IBAN	                                    valid IBAN
-    note	            Note	                                    ALNUM
-    client_number	    Client number you may have at this supplier ALNUM
-    currency_code	    The currency for this client.
-                        If this field is empty,
-                        the account currency is used.	            ISO currency code
+    http://www.billomat.com/en/api/suppliers
     """
 
     def get_suppliers_per_page(self, per_page=1000, page=1, params=None):
@@ -616,22 +405,7 @@ class Billomapy(object):
     --------
     Billomat article Properties
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	            Description
-    supplier_id	            ID of a supplier
-    supplier_property_id	ID of an attribute
-    value	                Value of an attribute
-
-    --------
-    Creating
-    --------
-    element	                Description	                                Type	    Default value	        Mandatory
-    supplier_id	            ID of the supplier	                        INT		                            yes
-    supplier_property_id	ID of the property	                        INT		                            yes
-    value	                Property value	                            ALNUM		                        yes
+    http://www.billomat.com/en/api/suppliers/properties
     """
 
     def get_supplier_properties_per_page(self, per_page=1000, page=1, params=None):
@@ -656,18 +430,7 @@ class Billomapy(object):
     --------
     Billomat Supplier Tags
     --------
-
-    --------
-    Retrieving
-    --------
-    You can only retrieve tags of a supplier therefore you have to give the supplier_id every request
-
-    --------
-    Creating
-    --------
-    element	                Description	                                Type	    Default value	        Mandatory
-    supplier_id	            ID of the supplier	                        INT		                            yes
-    name	                Tag	                                        ALNUM		                        yes
+    http://www.billomat.com/en/api/suppliers/tags
     """
     def get_tags_of_supplier_per_page(self, supplier_id, per_page=1000, page=1, params=None):
         if not params:
@@ -700,52 +463,7 @@ class Billomapy(object):
     --------
     Billomat Articles
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	    Description
-    article_number	Article number
-    title	        Title
-    description	    Description
-    currency_code	ISO code of the currency
-    unit_id	        ID of the chosen unit
-    tags	        Comma seperated list of tags
-    supplier_id	    ID of the chosen supplier
-
-    --------
-    Creating
-    --------
-    element	                Description	                                Type	    Default value	        Mandatory
-    number_pre	            Prefix	                                    ALNUM	    Value from settings
-    number	                Sequential number	                        INT	        next free number
-    number_length	        Minimum length of the customer number
-                            (to be filled with leading zeros)	        INT	        Value from settings
-    title	                Title	                                    ALN         Empty string
-    description	            Description	                                ALNUM	    Empty string
-    sales_price	            Price	                                    FLOAT	    0.0
-    sales_price2	        Price for clients which are members
-                            of pricegroup 2. The normal price
-                            is used if no price is defined.	            FLOAT
-    sales_price3	        Price for clients which are members
-                            of pricegroup 3. The normal price
-                            is used if no price is defined.	            FLOAT
-    sales_price4	        Price for clients which are members
-                            of pricegroup 4. The normal price
-                            is used if no price is defined.	            FLOAT
-    sales_price5	        Price for clients which are members
-                            of pricegroup 5. The normal price
-                            is used if no price is defined.	            FLOAT
-    currency_code	        Currency	                                ISO
-                                                                        currency codeDefault currency from settings
-    unit_id	                ID of the chosen unit	                    INT	        null
-    tax_id	                ID of the chosen tax rate	                INT	        null
-    purchase_price	        Purchase price	                            FLOAT	    null
-    purchase_price_net_grossPrice basis of purchase price
-                            (gross or net prices)	                    ALNUM
-                                                                        ("NET",
-                                                                        "GROSS")	NET
-    supplier_id	            ID of the chosen supplier	                INT	        null
+    http://www.billomat.com/en/api/articles
     """
     def get_articles_per_page(self, per_page=1000, page=1, params=None):
         return self._get_resource_per_page(resource=ARTICLES, per_page=per_page, page=page, params=params)
@@ -771,21 +489,7 @@ class Billomapy(object):
     --------
     Billomat Article Properties
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	            Description
-    article_id	            ID of an article
-    article_property_id	    ID of an attribute
-    value	                Value of an attribute
-    --------
-    Creating
-    --------
-    element	                Description	                                Type	    Default value	        Mandatory
-    article_id	            ID of the article	                        INT		                            yes
-    article_property_id	    ID of the property	                        INT		                            yes
-    value	                Value of the property	                    ALNUM		                        yes
+    http://www.billomat.com/en/api/articles/properties
     """
 
     def get_article_properties_per_page(self, per_page=1000, page=1, params=None):
@@ -810,18 +514,7 @@ class Billomapy(object):
     --------
     Billomat Article Tags
     --------
-
-    --------
-    Retrieving
-    --------
-    You can only retrieve tags of an article therefore you have to give the article_id every request
-
-    --------
-    Creating
-    --------
-    element	                Description	                                Type	    Default value	        Mandatory
-    article_id 	            ID of the article	                        INT		                            yes
-    name	                Tag	                                        ALNUM		                        yes
+    http://www.billomat.com/en/api/articles/tags
     """
     def get_tags_of_article_per_page(self, article_id, per_page=1000, page=1, params=None):
         if not params:
@@ -854,18 +547,7 @@ class Billomapy(object):
     --------
     Billomat Unit
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	        Description
-    name	            Name of the unit
-
-    --------
-    Creating
-    --------
-    element	            Description	                                Type	    Default value	        Mandatory
-    name	            Name of the unit	                        ALNUM		                        yes
+    http://www.billomat.com/en/api/units
     """
 
     def get_units_per_page(self, per_page=1000, page=1, params=None):
@@ -892,71 +574,7 @@ class Billomapy(object):
     --------
     Billomat Invoice
     --------
-
-    --------
-    Searching
-    --------
-    Parameter	        Description
-    client_id	        ID of the client
-    contact_id	        ID of the contact
-    invoice_number	    invoice number
-    status	            Status (DRAFT, OPEN, PAID, OVERDUE, CANCELED).
-                        More than one statuses could be given as a comma separated list.
-                        Theses statuses will be logically OR-connected.
-    payment_type	    Payment Type (eg. CASH, BANK_TRANSFER, PAYPAL, ...).
-                        More than one payment type could be given as a comma separated list.
-                        Theses payment types will be logically OR-connected.
-                        You can find a overview of all payment types at API documentation of payments.
-    from	            Only show invoices since this date (format YYYY-MM-DD)
-    to	                Only show invoices up to this date (format YYYY-MM-DD)
-    label	            Free text search in label text
-    intro	            Free text search in introductory text
-    note	            Free text search in explanatory notes
-    tags	            Comma seperated list of tags
-    article_id	        ID of an article
-
-    --------
-    Creating
-    --------
-    element	            Description	                                Type	    Default value	        Mandatory
-    client_id	        ID of the client	                        INT		                            yes
-    contact_id	        ID of the contact	                        INT
-    address	            the address	                                ALNUM	client's address
-    number_pre	        invoice number prefix	                    ALNUM	Value taken from the settings
-    number	            serial number	                            INT	next free number
-    number_length	    Minimum length of the invoice number
-                        (to be filled with leading zeros)	        INT	Value taken from the settings
-    date	            Invoice date	                            DATE	today
-    supply_date	        supply/delivery date	                    MIXED (DATE/ALNUM)
-    supply_date_type	type of supply/delivery date	            ALNUM
-                                                                    ("SUPPLY_DATE",
-                                                                    "DELIVERY_DATE",
-                                                                    "SUPPLY_TEXT",
-                                                                    "DELIVERY_TEXT")
-    due_date	        due date	                                DATE	date + due days taken from the settings
-    discount_rate	    Cash discount	                            INT	Value from the settings
-    discount_date	    Cash discount date	                        DATE	date + cash discount days taken from the settings
-    title	            Title of the document	                    ALNUM
-    label	            Label text to describe the project	        ALNUM
-    intro	            Introductory text	                        ALNUM	Default value taken from the settings
-    note	            Explanatory notes	                        ALNUM	default value taken from the settings
-    reduction	        Reduction (absolute or percent: 10/10%)	    ALNUM
-    currency_code	    Currency	ISO currency code	            Default currency
-    net_gross	        Price basis (gross or net prices)	        ALNUM
-                                                                    ("NET",
-                                                                    "GROSS")    Default value taken from the settings
-    quote	            Currency quote
-                        (for conversion into standard currency)	    FLOAT	1.0000
-    payment_types	    List (separated by comma)
-                        of all accepted payment types.	            FLOAT	Default value taken from the settings
-    invoice_id	        The ID of the corrected invoice,
-                        if it is an invoice correction.	            INT
-    offer_id	        The ID of the estimate,
-                        if the invoice was created from an estimate.INT
-    confirmation_id	    The ID of the confirmation,
-                        if the invoice was created from a confirmation.INT
-    recurring_id	    The ID of the recurring,
-                        if the invoice was created from a recurring.    INT
+    http://www.billomat.com/en/api/invoices
     """
 
     def get_invoices_per_page(self, per_page=1000, page=1, params=None):
@@ -983,27 +601,7 @@ class Billomapy(object):
     --------
     Billomat Invoice Item
     --------
-
-    --------
-    Retrieving
-    --------
-    You can only get items of an invoice therefore the invoice_id has to be given in the request
-
-    --------
-    Creating
-    --------
-    element	        Description	                                Type	Default value	Mandatory
-    invoice_id	    ID of the invoice	                        INT		yes (except for creation of an invoice)
-    article_id	    ID of the article, sets additionally
-                    the values from the article on creation	    INT
-    unit	        Unit	                                    ALNUM
-    quantity	    Quantity	                                FLOAT	0.0
-    unit_price	    Price per unit	                            FLOAT	0.0
-    tax_name	    Name of the tax	                            ALNUM	Default tax rate
-    tax_rate	    rate of taxation	                        FLOAT	Default tax rate
-    title	        Title	                                    ALNUM
-    description	    Description                             	ALNUM
-    reduction	    Reduction (absolute or percent: 10/10%)	    ALNUM
+    http://www.billomat.com/en/api/invoices/items
     """
 
     def get_items_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
@@ -1040,18 +638,7 @@ class Billomapy(object):
     --------
     Billomat Invoice Comment
     --------
-
-    --------
-    Retrieving
-    --------
-    You can only get comments of an invoice therefore the invoice_id has to be given in the request
-
-    --------
-    Creating
-    --------
-    element	        Description	                                Type	Default value	Mandatory
-    invoice_id	    ID of the invoice	                        INT		                yes
-    comment	        Comment text	                            ALNUM		            yes
+    http://www.billomat.com/en/api/invoices/comments
     """
 
     def get_comments_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
@@ -1092,34 +679,7 @@ class Billomapy(object):
     --------
     Billomat Invoice Payment
     --------
-
-    --------
-    Searching
-    --------
-    Parameter       Description
-    invoice_id	    ID of the invoice
-    from	        Only payments since this date (format YYYY-MM-DD)
-    to	            Only payments up to this date (format YYYY-MM-DD)
-    type	        Payment type (eg. CASH, BANK_TRANSFER, PAYPAL, ...).
-                    More than one payment type could be given as a comma separated list.
-                    Theses payment types will be logically OR-connected.
-    user_id	        ID of the user
-
-    --------
-    Creating
-    --------
-    element	                Description	                                Type	Default value	Mandatory
-    invoice_id	            ID of the invoice	                        INT		                yes
-    date	                Date of payment	                            DATE	today
-    amount	                Payed ammount	                            FLOAT	                yes
-    comment	                Comment text	                            ALNUM
-    type	                Payment type	                            ALNUM
-                            ("CREDIT_NOTE", "BANK_CARD", "BANK_TRANSFER",
-                            "DEBIT", "CASH", "CHECK", "PAYPAL",
-                            "CREDIT_CARD", "COUPON", "MISC")
-    mark_invoice_as_paid	Indicates whether the associated invoice
-                            should be marked as paid
-                            (set status to PAID).	                    BOOL	0 (false)
+    http://www.billomat.com/en/api/invoices/payments
     """
 
     def get_invoice_payments_per_page(self, per_page=1000, page=1, params=None):
@@ -1152,18 +712,7 @@ class Billomapy(object):
     --------
     Billomat Invoice Tags
     --------
-
-    --------
-    Retrieving
-    --------
-    You can only retrieve tags of an invoice therefore you have to give the invoice_id every request
-
-    --------
-    Creating
-    --------
-    element	                Description	                                Type	    Default value	        Mandatory
-    invoice_id 	            ID of the invoice	                        INT		                            yes
-    name	                Tag	                                        ALNUM		                        yes
+    http://www.billomat.com/en/api/invoices/tags
     """
     def get_tags_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
         if not params:
@@ -1191,3 +740,141 @@ class Billomapy(object):
 
     def delete_invoice_tag(self, invoice_tag_id):
         return self._create_delete_request(resource=INVOICE_TAGS, billomat_id=invoice_tag_id)
+
+    """
+    --------
+    Billomat Offer
+    --------
+    http://www.billomat.com/en/api/estimates
+    """
+
+    def get_offers_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=OFFERS, per_page=per_page, page=page, params=params)
+
+    def get_all_offers(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_offers_per_page, data_key=OFFER, params=params)
+
+    def get_offer(self, offer_id):
+        return self._create_get_request(resource=OFFERS, billomat_id=offer_id)
+
+    def create_offer(self, offer_dict):
+        return self._create_post_request(resource=OFFERS, send_data=offer_dict)
+
+    def update_offer(self, offer_id, offer_dict):
+        return self._create_put_request(resource=OFFERS, billomat_id=offer_id, send_data=offer_dict)
+
+    def delete_offer(self, offer_id):
+        return self._create_delete_request(resource=OFFERS, billomat_id=offer_id)
+
+    """
+    --------
+    Billomat Offer Item
+    --------
+    http://www.billomat.com/en/api/estimates/items
+    """
+
+    def get_items_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'offer_id': offer_id}
+
+        return self._get_resource_per_page(
+            resource=OFFER_ITEMS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_items_of_offer(self, offer_id):
+        return self._iterate_through_pages(
+            get_function=self.get_items_of_offer_per_page,
+            data_key=OFFER_ITEM,
+            **{'offer_id': offer_id}
+        )
+
+    def get_offer_item(self, offer_item_id):
+        return self._create_get_request(OFFER_ITEMS, offer_item_id)
+
+    def create_offer_item(self, offer_item_dict):
+        return self._create_post_request(resource=OFFER_ITEMS, send_data=offer_item_dict)
+
+    def update_offer_item(self, offer_item_id, offer_item_dict):
+        return self._create_put_request(resource=OFFER_ITEMS, billomat_id=offer_item_id, send_data=offer_item_dict)
+
+    def delete_offer_item(self, offer_item_id):
+        return self._create_delete_request(resource=OFFER_ITEMS, billomat_id=offer_item_id)
+
+    """
+    --------
+    Billomat Offer Comments
+    --------
+    http://www.billomat.com/en/api/estimates/comments
+    """
+
+    def get_comments_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'offer_id': offer_id}
+
+        return self._get_resource_per_page(
+            resource=OFFER_COMMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_comments_of_offer(self, offer_id):
+        return self._iterate_through_pages(
+            get_function=self.get_comments_of_offer_per_page,
+            data_key=OFFER_COMMENT,
+            **{'offer_id': offer_id}
+        )
+
+    def get_offer_comment(self, offer_comment_id):
+        return self._create_get_request(OFFER_COMMENTS, offer_comment_id)
+
+    def create_offer_comment(self, offer_comment_dict):
+        return self._create_post_request(resource=OFFER_COMMENTS, send_data=offer_comment_dict)
+
+    def update_offer_comment(self, offer_comment_id, offer_comment_dict):
+        return self._create_put_request(
+            resource=OFFER_COMMENTS,
+            billomat_id=offer_comment_id,
+            send_data=offer_comment_dict
+        )
+
+    def delete_offer_comment(self, offer_comment_id):
+        return self._create_delete_request(resource=OFFER_COMMENTS, billomat_id=offer_comment_id)
+
+    """
+    --------
+    Billomat Offer Tags
+    --------
+    http://www.billomat.com/en/api/estimates/tags
+    """
+    def get_tags_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'offer_id': offer_id}
+
+        return self._get_resource_per_page(
+            resource=OFFER_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_offer(self, offer_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_offer_per_page,
+            data_key=OFFER_TAG,
+            **{'offer_id': offer_id}
+        )
+
+    def get_offer_tag(self, offer_tag_id):
+        return self._create_get_request(resource=OFFER_TAGS, billomat_id=offer_tag_id)
+
+    def create_offer_tag(self, offer_tag_dict):
+        return self._create_post_request(resource=OFFER_TAGS, send_data=offer_tag_dict)
+
+    def delete_offer_tag(self, offer_tag_id):
+        return self._create_delete_request(resource=OFFER_TAGS, billomat_id=offer_tag_id)
