@@ -4,7 +4,8 @@ billomapy
 A full featured Python library for http://www.billomat.com/
 ----------
 
-If you have problems or don't understanding something you can email me: 
+If you have problems or don't understanding something you can email me:
+
 mbykovski@seibert-media.net
 
 
@@ -12,7 +13,6 @@ API Doc
 -------
 
 
-----------
 
 Install:
 -------
@@ -24,7 +24,12 @@ Initialize:
 
     from billomapy import Billomapy
     
-    
+    """
+	:param billomat_id: Mostly the name of your company for example https://YOUR_COMPANY.billomat.net/api/
+	:param api_key: The api key that you requested from billomat
+	:param app_id: The app_id that you requested by billomat
+	:param app_secret: The app_secret that you requested by billomat
+	"""
     billomapy = Billomapy(
 		billomat_id, api_key, app_id, app_secret
 	)
