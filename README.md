@@ -11,7 +11,8 @@ mbykovski@seibert-media.net
 
 API Doc
 -------
-
+All inputs and output from and to the api have to be like in the api docs from billomat (http://www.billomat.com/en/api)
+So please have a look in the API docs if you have a question. Otherwise email me.
 
 
 Install:
@@ -53,14 +54,16 @@ Use it:
 	# Creates references on http://www.billomat.com/en/api/clients
 	new_client = billomapy.create_client(
 		{
-			'name': 'test'
-			'first_name': 'Peter',
-			'last_name': 'Griffin',
+			'client': {
+				'name': 'test'
+				'first_name': 'Peter',
+				'last_name': 'Griffin',
+			}	
 		}
 	)
 	
 	# Update references on http://www.billomat.com/en/api/clients
-	updated_client = billomapy.update_client(new_client['id'], {'first_name': 'Meg'})
+	updated_client = billomapy.update_client(new_client['id'], {'client': {'first_name': 'Meg'}})
 	
 	deleted_response_object = billomapy.delete_client(updated_clied['id'])
 
@@ -177,3 +180,189 @@ Functions:
 	> create_invoice_item(invoice_item_id)
 	> update_invoice_item(invoice_item_id, invoice_item_dict)
 	> delete_invoice_item(invoice_item_id)
+	
+**Invoice Comment**
+	
+	> get_comments_of_invoice_per_page(invoice_id, per_page=1000, page=1, params=None)
+	> get_all_comments_of_invoice(invoice_id)
+	> get_invoice_comment(invoice_comment_id)
+	> create_invoice_comment(invoice_comment_dict)
+	> update_invoice_comment(invoice_comment_id, invoice_comment_dict)
+	> delete_invoice_comment(invoice_comment_id)
+	
+**Invoice Payment**
+	
+	> get_invoice_payments_per_page(per_page=1000, page=1, params=None)
+	> get_all_invoice_payments()
+	> get_invoice_payment(invoice_payment_id)
+	> create_invoice_payment(invoice_payment_dict)
+	> delete_invoice_payment(invoice_payment_id)
+
+**Invoice Tags**
+	
+	> get_tags_of_invoice_per_page(invoice_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_invoice(invoice_id)
+	> get_invoice_tag(invoice_tag_id)
+	> create_invoice_tag(invoice_tagt_dict)
+	> delete_invoice_tag(invoice_tag_id)
+
+**Recurrings**
+	
+	> get_recurrings_per_page(self, per_page=1000, page=1, params=None)
+    	> get_all_recurrings(params=None)
+    	> get_recurring(recurring_id)
+    	> create_recurring(recurring_dict)
+    	> update_recurring(recurring_id, recurring_dict)
+	> delete_recurring(recurring_id)
+	
+**Recurring Items**
+
+	> get_items_of_recurring_per_page(recurring_id, per_page=1000, page=1, params=None)
+	> get_all_items_of_recurring(recurring_id)
+	> get_recurring_item(recurring_item_id)
+     	> create_recurring_item(recurring_item_dict)
+	> update_recurring_item(recurring_item_id, recurring_item_dict)
+	> delete_recurring_item(recurring_item_id)
+
+**Recurring Tags**
+
+	> get_tags_of_recurring_per_page(recurring_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_recurring(recurring_id)
+	> get_recurring_tag(recurring_tag_id)
+	> create_recurring_tag(recurring_tag_dict)
+	> delete_recurring_tag(recurring_tag_id)
+
+**Recurring Email Receivers**
+
+	> get_email_receivers_of_recurring_per_page(recurring_id, per_page=1000, page=1, params=None)
+	> get_all_email_receivers_of_recurring(recurring_id)
+	> get_recurring_email_receiver(recurring_email_receiver_id)
+	> create_recurring_email_receiver(recurring_email_receiver_dict)
+	> delete_recurring_email_receiver(recurring_email_receiver_id)
+
+**Incomings**
+
+	> get_incomings_per_page(per_page=1000, page=1, params=None)
+	> get_all_incomings(params=None)
+    	> get_incoming(incoming_id)
+    	> create_incoming(incoming_dict)
+    	> update_incoming(incoming_id, incoming_dict)
+    	> delete_incoming(incoming_id)
+    	
+**Incoming Comments**
+
+	> get_comments_of_incoming_per_page(incoming_id, per_page=1000, page=1, params=None)
+    	> get_all_comments_of_incoming(incoming_id)
+    	> get_incoming_comment(incoming_comment_id)
+    	> create_incoming_comment(incoming_comment_dict)
+    	> delete_incoming_comment(incoming_comment_id)
+   
+**Incoming Payments**
+
+	> get_payments_of_incoming_per_page(incoming_id, per_page=1000, page=1, params=None:
+    	> get_all_payments_of_incoming(incoming_id)
+    	> get_incoming_payment(incoming_payment_id)
+    	> create_incoming_payment(incoming_payment_dict)
+    	> delete_incoming_payment(incoming_payment_id)
+
+**Incoming Properties**
+	
+	> get_incoming_properties_per_page(per_page=1000, page=1, params=None)
+    	> get_all_incoming_properties(params=None)
+	> get_incoming_property(incoming_property_id)
+	> set_incoming_property(incoming_dict)
+
+**Incoming Tags**
+
+	> get_tags_of_incoming_per_page(incoming_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_incoming(incoming_id)
+	> get_incoming_tag(incoming_tag_id)
+    	> create_incoming_tag(incoming_tag_dict)
+    	> delete_incoming_tag(incoming_tag_id)
+   
+**Inbox Documents**
+	
+	> get_inbox_documents_per_page(per_page=1000, page=1, params=None)
+    	> get_all_inbox_documents()
+	> get_inbox_document(inbox_document_id)
+    	> create_inbox_document(inbox_document_dict)
+    	> delete_inbox_document(inbox_document_id)
+
+**Offers**
+	
+	> get_offers_per_page(per_page=1000, page=1, params=None)
+	> get_all_offers(params=None)
+    	> get_offer(offer_id)
+    	> create_offer(offer_dict)
+    	> update_offer(offer_id, offer_dict)
+    	> delete_offer(offer_id)
+    
+**Offer Items**
+
+	> get_items_of_offer_per_page(offer_id, per_page=1000, page=1, params=None)
+    	> get_all_items_of_offer(offer_id)
+   	> get_offer_item(offer_item_id)
+	> create_offer_item(offer_item_dict)
+	> update_offer_item(offer_item_id, offer_item_dict)
+    	> delete_offer_item(offer_item_id)
+
+**Offer Comments**
+
+	> get_comments_of_offer_per_page(offer_id, per_page=1000, page=1, params=None)
+    	> get_all_comments_of_offer(offer_id)
+    	> get_offer_comment(offer_comment_id)
+    	> create_offer_comment(offer_comment_dict)
+    	> update_offer_comment(offer_comment_id, offer_comment_dict)
+    	> delete_offer_comment(offer_comment_id)
+    	
+**Offer Tags**
+
+	> get_tags_of_offer_per_page(offer_id, per_page=1000, page=1, params=None)
+    	> get_all_tags_of_offer(offer_id)
+    	> get_offer_tag(offer_tag_id)
+    	> create_offer_tag(offer_tag_dict)
+    	> delete_offer_tag(offer_tag_id)
+
+**Credit Notes**
+
+	> get_credit_notes_per_page(per_page=1000, page=1, params=None)
+    	> get_all_credit_notes(params=None)
+    	> get_credit_note(credit_note_id)
+    	> create_credit_note(credit_note_dict)
+    	> update_credit_note(credit_note_id, credit_note_dict)
+    	> delete_credit_note(credit_note_id)
+    	
+**Credit Note Items**
+
+	> get_items_of_credit_note_per_page(credit_note_id, per_page=1000, page=1, params=None)
+    	> get_all_items_of_credit_note(credit_note_id)
+    	> get_credit_note_item(credit_note_item_id)
+    	> create_credit_note_item(credit_note_item_dict)
+    	> update_credit_note_item(credit_note_item_id, credit_note_item_dict)
+    	> delete_credit_note_item(credit_note_item_id)
+    	
+
+**Credit Note Comments**
+
+	> get_comments_of_credit_note_per_page(credit_note_id, per_page=1000, page=1, params=None)
+    	> get_all_comments_of_credit_note(credit_note_id)
+    	> get_credit_note_comment(credit_note_comment_id)
+    	> create_credit_note_comment(credit_note_comment_dict)
+    	> update_credit_note_comment(credit_note_comment_id, credit_note_comment_dict)
+    	> delete_credit_note_comment(credit_note_comment_id)
+
+**Credit Note Payment**
+		
+	> get_payments_of_credit_note_per_page(credit_note_id, per_page=1000, page=1, params=None)
+    	> get_all_payments_of_credit_note(credit_note_id)
+    	> get_credit_note_payment(credit_note_payment_id)
+    	> create_credit_note_payment(credit_note_payment_dict)
+    	> delete_credit_note_payment(credit_note_payment_id)
+
+**Credit Note Tags**
+	
+	> get_tags_of_credit_note_per_page(credit_note_id, per_page=1000, page=1, params=None)
+    	> get_all_tags_of_credit_note(credit_note_id)
+    	> get_credit_note_tag(credit_note_tag_id)
+    	> create_credit_note_tag(credit_note_tag_dict)
+    	> delete_credit_note_tag(credit_note_tag_id)
