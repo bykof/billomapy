@@ -877,6 +877,191 @@ class Billomapy(object):
 
     """
     --------
+    Billomat Incoming
+    --------
+    http://www.billomat.com/en/api/incomings
+    """
+
+    def get_incomings_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=INCOMINGS, per_page=per_page, page=page, params=params)
+
+    def get_all_incomings(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_incomings_per_page, data_key=INCOMING, params=params)
+
+    def get_incoming(self, incoming_id):
+        return self._create_get_request(resource=INCOMINGS, billomat_id=incoming_id)
+
+    def create_incoming(self, incoming_dict):
+        return self._create_post_request(resource=INCOMINGS, send_data=incoming_dict)
+
+    def update_incoming(self, incoming_id, incoming_dict):
+        return self._create_put_request(resource=INCOMINGS, billomat_id=incoming_id, send_data=incoming_dict)
+
+    def delete_incoming(self, incoming_id):
+        return self._create_delete_request(resource=INCOMINGS, billomat_id=incoming_id)
+
+    """
+    --------
+    Billomat Incoming Comment
+    --------
+    http://www.billomat.com/en/api/incomings/comments
+    """
+
+    def get_comments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'incoming_id': incoming_id}
+
+        return self._get_resource_per_page(
+            resource=INCOMING_COMMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_comments_of_incoming(self, incoming_id):
+        return self._iterate_through_pages(
+            get_function=self.get_comments_of_incoming_per_page,
+            data_key=INCOMING_COMMENT,
+            **{'incoming_id': incoming_id}
+        )
+
+    def get_incoming_comment(self, incoming_comment_id):
+        return self._create_get_request(INCOMING_COMMENTS, incoming_comment_id)
+
+    def create_incoming_comment(self, incoming_comment_dict):
+        return self._create_post_request(resource=INCOMING_COMMENTS, send_data=incoming_comment_dict)
+
+    def delete_incoming_comment(self, incoming_comment_id):
+        return self._create_delete_request(resource=INCOMING_COMMENTS, billomat_id=incoming_comment_id)
+
+    """
+    --------
+    Billomat Incoming Payment
+    --------
+    http://www.billomat.com/en/api/incomings/payments
+    """
+
+    def get_payments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'incoming_id': incoming_id}
+
+        return self._get_resource_per_page(
+            resource=INCOMING_PAYMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_payments_of_incoming(self, incoming_id):
+        return self._iterate_through_pages(
+            get_function=self.get_payments_of_incoming_per_page,
+            data_key=INCOMING_PAYMENT,
+            **{'incoming_id': incoming_id}
+        )
+
+    def get_incoming_payment(self, incoming_payment_id):
+        return self._create_get_request(INCOMING_PAYMENTS, incoming_payment_id)
+
+    def create_incoming_payment(self, incoming_payment_dict):
+        return self._create_post_request(resource=INCOMING_PAYMENTS, send_data=incoming_payment_dict)
+
+    def delete_incoming_payment(self, incoming_payment_id):
+        return self._create_delete_request(resource=INCOMING_PAYMENTS, billomat_id=incoming_payment_id)
+
+    """
+    --------
+    Billomat Incoming Properties
+    --------
+    http://www.billomat.com/en/api/incoming/properties
+    """
+
+    def get_incoming_properties_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=INCOMING_PROPERTIES, per_page=per_page, page=page, params=params)
+
+    def get_all_incoming_properties(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(
+            self.get_incoming_properties_per_page,
+            data_key=INCOMING_PROPERTY,
+            params=params
+        )
+
+    def get_incoming_property(self, incoming_property_id):
+        return self._create_get_request(resource=INCOMING_PROPERTIES, billomat_id=incoming_property_id)
+
+    def set_incoming_property(self, incoming_dict):
+        return self._create_post_request(resource=INCOMING_PROPERTIES, send_data=incoming_dict)
+
+    """
+    --------
+    Billomat Incoming Tags
+    --------
+    http://www.billomat.com/en/api/incomings/tags
+    """
+    def get_tags_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'incoming_id': incoming_id}
+
+        return self._get_resource_per_page(
+            resource=INCOMING_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_incoming(self, incoming_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_incoming_per_page,
+            data_key=INCOMING_TAG,
+            **{'incoming_id': incoming_id}
+        )
+
+    def get_incoming_tag(self, incoming_tag_id):
+        return self._create_get_request(resource=INCOMING_TAGS, billomat_id=incoming_tag_id)
+
+    def create_incoming_tag(self, incoming_tag_dict):
+        return self._create_post_request(resource=INCOMING_TAGS, send_data=incoming_tag_dict)
+
+    def delete_incoming_tag(self, incoming_tag_id):
+        return self._create_delete_request(resource=INCOMING_TAGS, billomat_id=incoming_tag_id)
+
+    """
+    --------
+    Billomat Inbox Documents
+    --------
+    http://www.billomat.com/en/api/incomings/inbox
+    """
+    def get_inbox_documents_per_page(self, per_page=1000, page=1, params=None):
+        if not params:
+            params = {}
+
+        return self._get_resource_per_page(
+            resource=INBOX_DOCUMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_inbox_documents(self):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_incoming_per_page,
+            data_key=INBOX_DOCUMENT,
+        )
+
+    def get_inbox_document(self, inbox_document_id):
+        return self._create_get_request(resource=INBOX_DOCUMENTS, billomat_id=inbox_document_id)
+
+    def create_inbox_document(self, inbox_document_dict):
+        return self._create_post_request(resource=INBOX_DOCUMENTS, send_data=inbox_document_dict)
+
+    def delete_inbox_document(self, inbox_document_id):
+        return self._create_delete_request(resource=INBOX_DOCUMENTS, billomat_id=inbox_document_id)
+
+    """
+    --------
     Billomat Offer
     --------
     http://www.billomat.com/en/api/estimates
