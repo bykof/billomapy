@@ -128,7 +128,7 @@ class Billomapy(object):
             response.raise_for_status()
 
     @staticmethod
-    def _iterate_through_pages(get_function, data_key, params=None):
+    def _iterate_through_pages(get_function, data_key, params=None, **kwargs):
         """
         Iterate through all pages and return the collected data
         """
@@ -141,8 +141,9 @@ class Billomapy(object):
         page = 1
 
         while request_data:
-            temp_response = get_function(page=page, params=params)
-            data[data_key] += temp_response[data_key]
+            temp_response = get_function(page=page, params=params, **kwargs)
+            if temp_response['@total'] != '0':
+                data[data_key] += temp_response[data_key]
 
             if page == 1:
                 for key, value in temp_response.items():
@@ -468,3 +469,66 @@ class Billomapy(object):
         :return: Response Object
         """
         return self._create_delete_request(resource='client-tags', billomat_id=client_tag_id)
+
+    """
+    --------
+    Billomat Client Contacts
+    --------
+
+    --------
+    Retrieving
+    --------
+    You can only get contacts of a client therefore the client_id has to be given in the request
+
+    --------
+    Creating
+    --------
+    element	        Description	                                Type	Default value	Mandatory
+    client_id	    ID of the client	                        INT		                yes
+    label	        Label	                                    ALNUM
+    name	        Company name	                            ALNUM
+    street	        Street	                                    ALNUM
+    zip	            Zip code	                                ALNUM
+    city	        City	                                    ALNUM
+    state	        State, county, district, region             ALNUM
+    country_code	Country	Country code as ISO 3166            Alpha-2
+    first_name	    First name	                                ALNUM
+    last_name	    Last name	                                ALNUM
+    salutation	    Salutation	                                ALNUM
+    phone	        Phone	                                    ALNUM
+    fax	            Fax	                                        ALNUM
+    mobile	        Mobile Number	                            ALNUM
+    email	        Email	                                    EMAIL
+    www	            Website	                                    URL
+                                                                (w/o http)
+    """
+
+    def get_contacts_of_client_per_page(self, client_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'client_id': client_id}
+
+        return self._get_resource_per_page(
+            resource='contacts',
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_contacts_of_client(self, client_id):
+        return self._iterate_through_pages(
+            get_function=self.get_contacts_of_client_per_page,
+            data_key='contact',
+            **{'client_id': client_id}
+        )
+
+    def get_contact_of_client(self, contact_id):
+        return self._create_get_request('contacts', contact_id)
+
+    def create_contact_of_client(self, contact_dict):
+        return self._create_post_request(resource='contacts', send_data=contact_dict)
+
+    def update_contact_of_client(self, contact_dict):
+        return self._create_put_request(resource='contacts', send_data=contact_dict)
+
+    def delete_contact_of_client(self, client_id):
+        return self._create_delete_request(resource='contacts', billomat_id=client_id)
