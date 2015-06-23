@@ -36,12 +36,10 @@ Initialize:
 
 Use it:
 -------
-	
-	from billomapy.resources import CLIENT
 	clients = billomapy.get_all_clients()['client']
 	
 	"""
-	Billomat response with a dictionay like this
+	Billomat response with a dictionary like this
 	{
 		'@page': current_page (in my api it is every time the last page),
 		'@total': total_items,
@@ -49,7 +47,22 @@ Use it:
 		'client': clients_list,
 	}
 	"""
-
+	
+	client = billomapy.get_client(billomat_id_of_client)['client']
+	
+	# Creates references on http://www.billomat.com/en/api/clients
+	new_client = billomapy.create_client(
+		{
+			'name': 'test'
+			'first_name': 'Peter',
+			'last_name': 'Griffin',
+		}
+	)
+	
+	# Update references on http://www.billomat.com/en/api/clients
+	updated_client = billomapy.update_client(new_client['id'], {'first_name': 'Meg'})
+	
+	deleted_response_object = billomapy.delete_client(updated_clied['id'])
 
 ----------
 
