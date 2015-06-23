@@ -743,6 +743,140 @@ class Billomapy(object):
 
     """
     --------
+    Billomat Recurring
+    --------
+    http://www.billomat.com/en/api/recurrings
+    """
+
+    def get_recurrings_per_page(self, per_page=1000, page=1, params=None):
+        return self._get_resource_per_page(resource=RECURRINGS, per_page=per_page, page=page, params=params)
+
+    def get_all_recurrings(self, params=None):
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_recurrings_per_page, data_key=RECURRING, params=params)
+
+    def get_recurring(self, recurring_id):
+        return self._create_get_request(resource=RECURRINGS, billomat_id=recurring_id)
+
+    def create_recurring(self, recurring_dict):
+        return self._create_post_request(resource=RECURRINGS, send_data=recurring_dict)
+
+    def update_recurring(self, recurring_id, recurring_dict):
+        return self._create_put_request(resource=RECURRINGS, billomat_id=recurring_id, send_data=recurring_dict)
+
+    def delete_recurring(self, recurring_id):
+        return self._create_delete_request(resource=RECURRINGS, billomat_id=recurring_id)
+
+    """
+    --------
+    Billomat Recurring Item
+    --------
+    http://www.billomat.com/en/api/recurrings/items
+    """
+
+    def get_items_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'recurring_id': recurring_id}
+
+        return self._get_resource_per_page(
+            resource=RECURRING_ITEMS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_items_of_recurring(self, recurring_id):
+        return self._iterate_through_pages(
+            get_function=self.get_items_of_recurring_per_page,
+            data_key=RECURRING_ITEM,
+            **{'recurring_id': recurring_id}
+        )
+
+    def get_recurring_item(self, recurring_item_id):
+        return self._create_get_request(RECURRING_ITEMS, recurring_item_id)
+
+    def create_recurring_item(self, recurring_item_dict):
+        return self._create_post_request(resource=RECURRING_ITEMS, send_data=recurring_item_dict)
+
+    def update_recurring_item(self, recurring_item_id, recurring_item_dict):
+        return self._create_put_request(
+            resource=RECURRING_ITEMS,
+            billomat_id=recurring_item_id,
+            send_data=recurring_item_dict
+        )
+
+    def delete_recurring_item(self, recurring_item_id):
+        return self._create_delete_request(resource=RECURRING_ITEMS, billomat_id=recurring_item_id)
+
+    """
+    --------
+    Billomat Recurring Tags
+    --------
+    http://www.billomat.com/en/api/recurrings/tags
+    """
+    def get_tags_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'recurring_id': recurring_id}
+
+        return self._get_resource_per_page(
+            resource=RECURRING_TAGS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_tags_of_recurring(self, recurring_id):
+        return self._iterate_through_pages(
+            get_function=self.get_tags_of_recurring_per_page,
+            data_key=RECURRING_TAG,
+            **{'recurring_id': recurring_id}
+        )
+
+    def get_recurring_tag(self, recurring_tag_id):
+        return self._create_get_request(resource=RECURRING_TAGS, billomat_id=recurring_tag_id)
+
+    def create_recurring_tag(self, recurring_tag_dict):
+        return self._create_post_request(resource=RECURRING_TAGS, send_data=recurring_tag_dict)
+
+    def delete_recurring_tag(self, recurring_tag_id):
+        return self._create_delete_request(resource=RECURRING_TAGS, billomat_id=recurring_tag_id)
+
+    """
+    --------
+    Billomat Recurring Email Receiver
+    --------
+    http://www.billomat.com/en/api/recurrings/receivers
+    """
+    def get_email_receivers_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+        if not params:
+            params = {'recurring_id': recurring_id}
+
+        return self._get_resource_per_page(
+            resource=RECURRING_EMAIL_RECEIVERS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_email_receivers_of_recurring(self, recurring_id):
+        return self._iterate_through_pages(
+            get_function=self.get_email_receivers_of_recurring_per_page,
+            data_key=RECURRING_EMAIL_RECEIVER,
+            **{'recurring_id': recurring_id}
+        )
+
+    def get_recurring_email_receiver(self, recurring_email_receiver_id):
+        return self._create_get_request(resource=RECURRING_EMAIL_RECEIVERS, billomat_id=recurring_email_receiver_id)
+
+    def create_recurring_email_receiver(self, recurring_email_receiver_dict):
+        return self._create_post_request(resource=RECURRING_EMAIL_RECEIVERS, send_data=recurring_email_receiver_dict)
+
+    def delete_recurring_email_receiver(self, recurring_email_receiver_id):
+        return self._create_delete_request(resource=RECURRING_EMAIL_RECEIVERS, billomat_id=recurring_email_receiver_id)
+
+    """
+    --------
     Billomat Offer
     --------
     http://www.billomat.com/en/api/estimates
