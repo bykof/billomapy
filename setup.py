@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='billomapy',
-    version='0.5',
+    version='0.6',
     install_requires=['requests==2.7.0'],
     packages=['billomapy'],
     url='https://github.com/bykof/billomapy',
