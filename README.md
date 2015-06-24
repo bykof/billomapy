@@ -15,6 +15,8 @@ All inputs and output from and to the api have to be like in the api docs from b
 So please have a look in the API docs if you have a question. Otherwise email me.
 
 
+
+
 Install:
 -------
 
@@ -263,14 +265,14 @@ Functions:
 	> get_all_payments_of_incoming(incoming_id)
 	> get_incoming_payment(incoming_payment_id)
 	> create_incoming_payment(incoming_payment_dict)
-    	> delete_incoming_payment(incoming_payment_id)
+	> delete_incoming_payment(incoming_payment_id)
 
 **Incoming Properties**
 	
 	> get_incoming_properties_per_page(per_page=1000, page=1, params=None)
 	> get_all_incoming_properties(params=None)
-    	> get_incoming_property(incoming_property_id)
-    	> set_incoming_property(incoming_dict)
+	> get_incoming_property(incoming_property_id)
+	> set_incoming_property(incoming_dict)
 
 **Incoming Tags**
 	
@@ -278,15 +280,15 @@ Functions:
 	> get_all_tags_of_incoming(incoming_id)
 	> get_incoming_tag(incoming_tag_id)
 	> create_incoming_tag(incoming_tag_dict)
-    	> delete_incoming_tag(incoming_tag_id)
+	> delete_incoming_tag(incoming_tag_id)
    
 **Inbox Documents**
 	
 	> get_inbox_documents_per_page(per_page=1000, page=1, params=None)
 	> get_all_inbox_documents()
-    	> get_inbox_document(inbox_document_id)
+	> get_inbox_document(inbox_document_id)
 	> create_inbox_document(inbox_document_dict)
-    	> delete_inbox_document(inbox_document_id)
+	> delete_inbox_document(inbox_document_id)
 
 **Offers**
 	
@@ -301,8 +303,8 @@ Functions:
 
 	> get_items_of_offer_per_page(offer_id, per_page=1000, page=1, params=None)
 	> get_all_items_of_offer(offer_id)
-    	> get_offer_item(offer_item_id)
-   	> create_offer_item(offer_item_dict)
+	> get_offer_item(offer_item_id)
+	> create_offer_item(offer_item_dict)
 	> update_offer_item(offer_item_id, offer_item_dict)
 	> delete_offer_item(offer_item_id)
 
@@ -310,7 +312,7 @@ Functions:
 	
 	> get_comments_of_offer_per_page(offer_id, per_page=1000, page=1, params=None)
 	> get_all_comments_of_offer(offer_id)
-    	> get_offer_comment(offer_comment_id)
+	> get_offer_comment(offer_comment_id)
     	> create_offer_comment(offer_comment_dict)
     	> update_offer_comment(offer_comment_id, offer_comment_dict)
     	> delete_offer_comment(offer_comment_id)
@@ -320,14 +322,14 @@ Functions:
 	> get_tags_of_offer_per_page(offer_id, per_page=1000, page=1, params=None)
 	> get_all_tags_of_offer(offer_id)
 	> get_offer_tag(offer_tag_id)
-    	> create_offer_tag(offer_tag_dict)
+	> create_offer_tag(offer_tag_dict)
     	> delete_offer_tag(offer_tag_id)
 
 **Credit Notes**
-
+	
 	> get_credit_notes_per_page(per_page=1000, page=1, params=None)
 	> get_all_credit_notes(params=None)
-    	> get_credit_note(credit_note_id)
+	> get_credit_note(credit_note_id)
     	> create_credit_note(credit_note_dict)
     	> update_credit_note(credit_note_id, credit_note_dict)
     	> delete_credit_note(credit_note_id)
@@ -336,7 +338,7 @@ Functions:
 	
 	> get_items_of_credit_note_per_page(credit_note_id, per_page=1000, page=1, params=None)
 	> get_all_items_of_credit_note(credit_note_id)
-    	> get_credit_note_item(credit_note_item_id)
+	> get_credit_note_item(credit_note_item_id)
     	> create_credit_note_item(credit_note_item_dict)
     	> update_credit_note_item(credit_note_item_id, credit_note_item_dict)
     	> delete_credit_note_item(credit_note_item_id)
@@ -346,7 +348,7 @@ Functions:
 
 	> get_comments_of_credit_note_per_page(credit_note_id, per_page=1000, page=1, params=None)
 	> get_all_comments_of_credit_note(credit_note_id)
-    	> get_credit_note_comment(credit_note_comment_id)
+	> get_credit_note_comment(credit_note_comment_id)
     	> create_credit_note_comment(credit_note_comment_dict)
     	> update_credit_note_comment(credit_note_comment_id, credit_note_comment_dict)
     	> delete_credit_note_comment(credit_note_comment_id)
@@ -355,9 +357,9 @@ Functions:
 	
 	> get_payments_of_credit_note_per_page(credit_note_id, per_page=1000, page=1, params=None)
 	> get_all_payments_of_credit_note(credit_note_id)
-    	> get_credit_note_payment(credit_note_payment_id)
-    	> create_credit_note_payment(credit_note_payment_dict)
-    	> delete_credit_note_payment(credit_note_payment_id)
+	> get_credit_note_payment(credit_note_payment_id)
+	> create_credit_note_payment(credit_note_payment_dict)
+	> delete_credit_note_payment(credit_note_payment_id)
 
 **Credit Note Tags**
 	
@@ -366,3 +368,125 @@ Functions:
 	> get_credit_note_tag(credit_note_tag_id)
 	> create_credit_note_tag(credit_note_tag_dict)
 	> delete_credit_note_tag(credit_note_tag_id)
+
+**Confirmations**
+	
+	> get_confirmations_per_page(per_page=1000, page=1, params=None)
+	> get_all_confirmations(params=None)
+	> get_confirmation(confirmation_id)
+    	> create_confirmation(confirmation_dict)
+    	> update_confirmation(confirmation_id, confirmation_dict)
+    	> delete_confirmation(confirmation_id)
+   
+**Confirmation Comments**
+
+	> get_comments_of_confirmation_per_page(confirmation_id, per_page=1000, page=1, params=None)
+	> get_all_comments_of_confirmation(confirmation_id)
+	> get_confirmation_comment(confirmation_comment_id)
+	> create_confirmation_comment(confirmation_comment_dict)
+	> update_confirmation_comment(confirmation_comment_id, confirmation_comment_dict)
+	> delete_confirmation_comment(confirmation_comment_id)
+
+**Confirmation Tags**
+	
+	> get_tags_of_confirmation_per_page(confirmation_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_confirmation(confirmation_id)
+	> get_confirmation_tag(confirmation_tag_id)
+	> create_confirmation_tag(confirmation_tag_dict)
+	> delete_confirmation_tag(confirmation_tag_id)
+
+**Reminders**
+
+	> get_reminders_per_page(per_page=1000, page=1, params=None)
+	> get_all_reminders(params=None)
+	> get_reminder(reminder_id)
+	> create_reminder(reminder_dict)
+	> update_reminder(reminder_id, reminder_dict)
+	> delete_reminder(reminder_id)
+
+**Reminder Items**
+
+	> get_items_of_reminder_per_page(reminder_id, per_page=1000, page=1, params=None)
+	> get_all_items_of_reminder(reminder_id)
+	> get_reminder_item(eminder_item_id)
+	> create_reminder_item(reminder_item_dict)
+	> update_reminder_item(reminder_item_id, reminder_item_dict)
+	> delete_reminder_item(reminder_item_id)
+
+**Reminder Tags**
+
+	> get_tags_of_reminder_per_page(reminder_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_reminder(reminder_id)
+	> get_reminder_tag(reminder_tag_id)
+	> create_reminder_tag(reminder_tag_dict)
+	> delete_reminder_tag(reminder_tag_id)
+
+**Delivery Notes**
+
+	> get_delivery_notes_per_page(per_page=1000, page=1, params=None)
+	> get_all_delivery_notes(params=None)
+	> get_delivery_note(delivery_note_id)
+	> create_delivery_note(delivery_note_dict)
+	> update_delivery_note(delivery_note_id, delivery_note_dict)
+	> delete_delivery_note(delivery_note_id)
+
+**Delivery Note Items**
+
+	> get_items_of_delivery_note_per_page(delivery_note_id, per_page=1000, page=1, params=None)
+	> get_all_items_of_delivery_note(delivery_note_id)
+	> get_delivery_note_item(delivery_note_item_id)
+	> create_delivery_note_item(delivery_note_item_dict)
+	> update_delivery_note_item(delivery_note_item_id, delivery_note_item_dict)
+	> delete_delivery_note_item(delivery_note_item_id)
+
+**Delivery Note Comments**
+	
+	> get_comments_of_delivery_note_per_page(delivery_note_id, per_page=1000, page=1, params=None)
+	> get_all_comments_of_delivery_note(delivery_note_id)
+	> get_delivery_note_comment(delivery_note_comment_id)
+	> create_delivery_note_comment(delivery_note_comment_dict)
+	> update_delivery_note_comment(delivery_note_comment_id, delivery_note_comment_dict):
+	> delete_delivery_note_comment(delivery_note_comment_id)
+
+**Delivery Note Tags**
+
+	> get_tags_of_delivery_note_per_page(delivery_note_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_delivery_note(delivery_note_id)
+	> get_delivery_note_tag(delivery_note_tag_id)
+	> create_delivery_note_tag(delivery_note_tag_dict)
+	> delete_delivery_note_tag(delivery_note_tag_id)
+
+**Billomat Letters**
+
+	> get_letters_per_page(per_page=1000, page=1, params=None)
+	> get_all_letters(params=None)
+	> get_letter(letter_id)
+	> create_letter(letter_dict)
+	> update_letter(letter_id, letter_dict)
+	> delete_letter(letter_id)
+	
+**Billomat Letter Comments**
+	
+	> get_comments_of_letter_per_page(letter_id, per_page=1000, page=1, params=None)
+	> get_all_comments_of_letter(letter_id)
+	> get_letter_comment(letter_comment_id)
+	> create_letter_comment(letter_comment_dict)
+	> update_letter_comment(letter_comment_id, letter_comment_dict)
+	> delete_letter_comment(letter_comment_id)
+
+**Billomat Letter Tags**
+	
+	> get_tags_of_letter_per_page(letter_id, per_page=1000, page=1, params=None)
+	> get_all_tags_of_letter(letter_id)
+	> get_letter_tag(letter_tag_id)
+	> create_letter_tag(letter_tag_dict)
+	> delete_letter_tag(letter_tag_id)
+
+**Billomat Template**
+
+	> get_templates_per_page(per_page=1000, page=1, params=None)
+	> get_all_templates(params=None)
+	> get_template(template_id)
+	> create_template(template_dict)
+	> update_template(template_id, template_dict)
+	> delete_template(template_id)
