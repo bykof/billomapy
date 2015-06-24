@@ -1722,8 +1722,8 @@ class Billomapy(object):
             **{'delivery_note_id': delivery_note_id}
         )
 
-    def get_delivery_note_comment(self, confirmation_id):
-        return self._create_get_request(DELIVERY_NOTE_COMMENTS, confirmation_id)
+    def get_delivery_note_comment(self, delivery_note_comment_id):
+        return self._create_get_request(DELIVERY_NOTE_COMMENTS, delivery_note_comment_id)
 
     def create_delivery_note_comment(self, delivery_note_comment_dict):
         return self._create_post_request(resource=DELIVERY_NOTE_COMMENTS, send_data=delivery_note_comment_dict)
@@ -1827,20 +1827,20 @@ class Billomapy(object):
             **{'letter_id': letter_id}
         )
 
-    def get_confirmation_letter(self, letter_comment_id):
+    def get_letter_comment(self, letter_comment_id):
         return self._create_get_request(LETTER_COMMENTS, letter_comment_id)
 
-    def create_confirmation_letter(self, letter_comment_dict):
+    def create_letter_comment(self, letter_comment_dict):
         return self._create_post_request(resource=LETTER_COMMENTS, send_data=letter_comment_dict)
 
-    def update_confirmation_letter(self, letter_comment_id, letter_comment_dict):
+    def update_letter_comment(self, letter_comment_id, letter_comment_dict):
         return self._create_put_request(
             resource=LETTER_COMMENTS,
             billomat_id=letter_comment_id,
             send_data=letter_comment_dict
         )
 
-    def delete_confirmation_letter(self, letter_comment_id):
+    def delete_letter_comment(self, letter_comment_id):
         return self._create_delete_request(resource=LETTER_COMMENTS, billomat_id=letter_comment_id)
 
     """
