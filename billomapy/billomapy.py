@@ -70,7 +70,7 @@ class Billomapy(object):
         )
 
         if response.status_code == requests.codes.ok:
-            return response.json()
+            return response.json()[resource]
         else:
             logger.error('Error: ', response.content)
             response.raise_for_status()
