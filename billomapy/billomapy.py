@@ -3,6 +3,7 @@ import json
 import logging
 
 import requests
+from tornado import ioloop, httpclient
 
 from .resources import *
 
@@ -30,24 +31,28 @@ class Billomapy(object):
         self.api_key = api_key
         self.app_id = app_id
         self.app_secret = app_secret
+
+        self.billomat_header = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-BillomatApiKey': self.api_key,
+            'X-AppId': self.app_id,
+            'X-AppSecret': self.app_secret,
+        }
+
         self.api_url = "https://{}.billomat.net/api/".format(billomat_id)
         self.session = self._create_session()
+        self.tornado_http_client = httpclient.AsyncHTTPClient()
+        self.tornado_loops = 0
+        self.tornado_current_resource = None
+        self.data_pot = []
 
     def _create_session(self):
         """
         Creates the billomat session and returns it
         """
         session = requests.Session()
-        session.headers.update(
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-BillomatApiKey': self.api_key,
-                'X-AppId': self.app_id,
-                'X-AppSecret': self.app_secret,
-            }
-        )
-        session.verify = True
+        session.headers.update(self.billomat_header)
         return session
 
     def _create_get_request(self, resource, billomat_id='', params=None):
@@ -129,6 +134,54 @@ class Billomapy(object):
         else:
             logger.error('Error: ', response.content)
             response.raise_for_status()
+
+    def _collect_pot_items(self, response):
+        if isinstance(response.body, dict):
+            response.body = [response.body]
+
+        if not response.body:
+            response.body = []
+
+        self.tornado_loops -= 1
+
+        if self.tornado_loops == 0:
+            ioloop.IOLoop.instance().stop()
+
+        try:
+            self.data_pot += json.loads(response.body)[self.tornado_current_resource]
+        except TypeError:
+            logger.error(
+                '{} was not JSON Serializable'.format(response)
+            )
+
+    def _create_flood_get_request(self, resource, params):
+        """
+        Creates a flood request of many links and sends them in one time
+        """
+        assert (isinstance(resource, basestring))
+        assert (isinstance(params, list))
+        self.data_pot = []
+        self.tornado_current_resource = resource
+        for url in [
+            self.api_url + resource + '?' + '&'.join(['{}={}'.format(key, value) for key, value in params_row.items()])
+            for params_row in params
+        ]:
+            self.tornado_loops += 1
+            self.tornado_http_client.fetch(
+                request=httpclient.HTTPRequest(
+                    url=url,
+                    method='GET',
+                    headers=self.billomat_header,
+                    request_timeout=len(params)*100,
+                    connect_timeout=len(params)*100,
+                ),
+                callback=self._collect_pot_items
+            )
+        ioloop.IOLoop.instance().start()
+        return self.data_pot
+
+
+
 
     @staticmethod
     def _iterate_through_pages(get_function, data_key, params=None, **kwargs):
@@ -622,6 +675,13 @@ class Billomapy(object):
             **{'invoice_id': invoice_id}
         )
 
+    def get_all_invoice_items(self, invoice_ids):
+        assert(isinstance(invoice_ids, list))
+        return self._create_flood_get_request(
+            resource=INVOICE_ITEMS,
+            params=[{'invoice_id': invoice_id, 'per_page': '1000'} for invoice_id in invoice_ids]
+        )
+
     def get_invoice_item(self, invoice_item_id):
         return self._create_get_request(INVOICE_ITEMS, invoice_item_id)
 
@@ -791,6 +851,13 @@ class Billomapy(object):
             get_function=self.get_items_of_recurring_per_page,
             data_key=RECURRING_ITEM,
             **{'recurring_id': recurring_id}
+        )
+
+    def get_all_recurring_items(self, recurring_ids):
+        assert(isinstance(recurring_ids, list))
+        return self._create_flood_get_request(
+            resource=RECURRING_ITEMS,
+            params=[{'recurring_id': recurring_id, 'per_page': '1000'} for recurring_id in recurring_ids]
         )
 
     def get_recurring_item(self, recurring_item_id):
@@ -1112,6 +1179,13 @@ class Billomapy(object):
             **{'offer_id': offer_id}
         )
 
+    def get_all_offer_items(self, offer_ids):
+        assert(isinstance(offer_ids, list))
+        return self._create_flood_get_request(
+            resource=OFFER_ITEMS,
+            params=[{'offer_id': offer_id, 'per_page': '1000'} for offer_id in offer_ids]
+        )
+
     def get_offer_item(self, offer_item_id):
         return self._create_get_request(OFFER_ITEMS, offer_item_id)
 
@@ -1248,6 +1322,13 @@ class Billomapy(object):
             get_function=self.get_items_of_credit_note_per_page,
             data_key=CREDIT_NOTE_ITEM,
             **{'credit_note_id': credit_note_id}
+        )
+
+    def get_all_credit_note_items(self, credit_note_ids):
+        assert(isinstance(credit_note_ids, list))
+        return self._create_flood_get_request(
+            resource=CREDIT_NOTE_ITEMS,
+            params=[{'credit_note_id': credit_note_id, 'per_page': '1000'} for credit_note_id in credit_note_ids]
         )
 
     def get_credit_note_item(self, credit_note_item_id):
@@ -1430,6 +1511,13 @@ class Billomapy(object):
             **{'confirmation_id': confirmation_id}
         )
 
+    def get_all_confirmation_items(self, confirmation_ids):
+        assert(isinstance(confirmation_ids, list))
+        return self._create_flood_get_request(
+            resource=CONFIRMATION_ITEMS,
+            params=[{'confirmation_id': confirmation_id, 'per_page': '1000'} for confirmation_id in confirmation_ids]
+        )
+
     def get_confirmation_item(self, confirmation_item_id):
         return self._create_get_request(CONFIRMATION_ITEMS, confirmation_item_id)
 
@@ -1576,6 +1664,13 @@ class Billomapy(object):
             **{'reminder_id': reminder_id}
         )
 
+    def get_all_reminder_items(self, reminder_ids):
+        assert(isinstance(reminder_ids, list))
+        return self._create_flood_get_request(
+            resource=REMINDER_ITEMS,
+            params=[{'reminder_id': reminder_id, 'per_page': '1000'} for reminder_id in reminder_ids]
+        )
+
     def get_reminder_item(self, reminder_item_id):
         return self._create_get_request(REMINDER_ITEMS, reminder_item_id)
 
@@ -1679,6 +1774,13 @@ class Billomapy(object):
             get_function=self.get_items_of_delivery_note_per_page,
             data_key=DELIVERY_NOTE_ITEM,
             **{'delivery_note_id': delivery_note_id}
+        )
+
+    def get_all_delivery_note_items(self, delivery_note_ids):
+        assert(isinstance(delivery_note_ids, list))
+        return self._create_flood_get_request(
+            resource=DELIVERY_NOTE_ITEMS,
+            params=[{'delivery_note_id': delivery_note_id, 'per_page': '1000'} for delivery_note_id in delivery_note_ids]
         )
 
     def get_delivery_note_item(self, delivery_note_item_id):
