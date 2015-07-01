@@ -45,6 +45,7 @@ class Billomapy(object):
         self.tornado_http_client = httpclient.AsyncHTTPClient()
         self.tornado_loops = 0
         self.tornado_current_resource = None
+        self.tornado_current_data_key = None
         self.data_pot = []
 
     def _create_session(self):
@@ -136,9 +137,6 @@ class Billomapy(object):
             response.raise_for_status()
 
     def _collect_pot_items(self, response):
-        if isinstance(response.body, dict):
-            response.body = [response.body]
-
         if not response.body:
             response.body = []
 
@@ -148,13 +146,18 @@ class Billomapy(object):
             ioloop.IOLoop.instance().stop()
 
         try:
-            self.data_pot += json.loads(response.body)[self.tornado_current_resource]
+            temp_data_pot = json.loads(response.body)[self.tornado_current_resource][self.tornado_current_data_key]
+
+            if isinstance(temp_data_pot, dict):
+                temp_data_pot = [temp_data_pot]
+
+            self.data_pot += temp_data_pot
         except TypeError:
             logger.error(
                 '{} was not JSON Serializable'.format(response)
             )
 
-    def _create_flood_get_request(self, resource, params):
+    def _create_flood_get_request(self, resource, data_key, params):
         """
         Creates a flood request of many links and sends them in one time
         """
@@ -162,6 +165,7 @@ class Billomapy(object):
         assert (isinstance(params, list))
         self.data_pot = []
         self.tornado_current_resource = resource
+        self.tornado_current_data_key = data_key
         for url in [
             self.api_url + resource + '?' + '&'.join(['{}={}'.format(key, value) for key, value in params_row.items()])
             for params_row in params
@@ -172,8 +176,8 @@ class Billomapy(object):
                     url=url,
                     method='GET',
                     headers=self.billomat_header,
-                    request_timeout=len(params)*100,
-                    connect_timeout=len(params)*100,
+                    request_timeout=500,
+                    connect_timeout=500,
                 ),
                 callback=self._collect_pot_items
             )
@@ -679,6 +683,7 @@ class Billomapy(object):
         assert(isinstance(invoice_ids, list))
         return self._create_flood_get_request(
             resource=INVOICE_ITEMS,
+            data_key=INVOICE_ITEM,
             params=[{'invoice_id': invoice_id, 'per_page': '1000'} for invoice_id in invoice_ids]
         )
 
@@ -857,6 +862,7 @@ class Billomapy(object):
         assert(isinstance(recurring_ids, list))
         return self._create_flood_get_request(
             resource=RECURRING_ITEMS,
+            data_key=RECURRING_ITEM,
             params=[{'recurring_id': recurring_id, 'per_page': '1000'} for recurring_id in recurring_ids]
         )
 
@@ -1183,6 +1189,7 @@ class Billomapy(object):
         assert(isinstance(offer_ids, list))
         return self._create_flood_get_request(
             resource=OFFER_ITEMS,
+            data_key=OFFER_ITEM,
             params=[{'offer_id': offer_id, 'per_page': '1000'} for offer_id in offer_ids]
         )
 
@@ -1328,6 +1335,7 @@ class Billomapy(object):
         assert(isinstance(credit_note_ids, list))
         return self._create_flood_get_request(
             resource=CREDIT_NOTE_ITEMS,
+            data_key=CREDIT_NOTE_ITEM,
             params=[{'credit_note_id': credit_note_id, 'per_page': '1000'} for credit_note_id in credit_note_ids]
         )
 
@@ -1515,6 +1523,7 @@ class Billomapy(object):
         assert(isinstance(confirmation_ids, list))
         return self._create_flood_get_request(
             resource=CONFIRMATION_ITEMS,
+            data_key=CONFIRMATION_ITEM,
             params=[{'confirmation_id': confirmation_id, 'per_page': '1000'} for confirmation_id in confirmation_ids]
         )
 
@@ -1668,6 +1677,7 @@ class Billomapy(object):
         assert(isinstance(reminder_ids, list))
         return self._create_flood_get_request(
             resource=REMINDER_ITEMS,
+            data_key=REMINDER_ITEM,
             params=[{'reminder_id': reminder_id, 'per_page': '1000'} for reminder_id in reminder_ids]
         )
 
@@ -1780,6 +1790,7 @@ class Billomapy(object):
         assert(isinstance(delivery_note_ids, list))
         return self._create_flood_get_request(
             resource=DELIVERY_NOTE_ITEMS,
+            data_key=DELIVERY_NOTE_ITEM,
             params=[{'delivery_note_id': delivery_note_id, 'per_page': '1000'} for delivery_note_id in delivery_note_ids]
         )
 
