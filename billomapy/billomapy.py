@@ -184,9 +184,6 @@ class Billomapy(object):
         ioloop.IOLoop.instance().start()
         return self.data_pot
 
-
-
-
     @staticmethod
     def _iterate_through_pages(get_function, data_key, params=None, **kwargs):
         """
