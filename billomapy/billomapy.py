@@ -1,6 +1,7 @@
 import json
 import math
 import logging
+import collections
 
 from tornado import ioloop, httpclient
 from tornado.httputil import url_concat
@@ -211,7 +212,7 @@ class Billomapy(object):
         return self.responses
 
     def _get_item_data(self, resource, foreign_ids, foreign_key, params=None):
-        assert (isinstance(foreign_ids, list))
+        assert (isinstance(foreign_ids, collections.Iterable))
         self.responses = []
         if not params:
             params = {'per_page': 100, 'page': 1}
