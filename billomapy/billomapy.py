@@ -277,6 +277,8 @@ class Billomapy(object):
         temp_data = []
         for response in responses:
             if head_key in response and data_key in response[head_key]:
+                if isinstance(response[head_key][data_key], dict):
+                    response[head_key][data_key] = [response[head_key][data_key]]
                 temp_data += response[head_key][data_key]
         return temp_data
 
