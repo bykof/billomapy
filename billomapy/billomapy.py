@@ -71,17 +71,11 @@ class Billomapy(object):
                             yield result
 
     def _save_response_to_responses(self, response):
-        temp_response_body = None
-        if response.error:
-            ioloop.IOLoop.instance().stop()
-            raise BillomapyResponseError(response.code, response.reason)
-
         try:
             temp_response_body = json.loads(response.body)
             self.responses.append(temp_response_body)
         except TypeError:
             if response.request.method != 'PUT' and response.request.method != 'DELETE':
-                ioloop.IOLoop.instance().stop()
                 raise BillomapyParseError(response.body)
             else:
                 temp_response_body = response
@@ -363,6 +357,9 @@ class Billomapy(object):
 
     def get_specific_client_property(self, billomat_id, params=None):
         return self._get_specific_data(billomat_id, CLIENT_PROPERTIES, params)
+
+    def get_specific_contact(self, billomat_id, params=None):
+        return self._get_specific_data(billomat_id, CONTACTS, params)
 
     def get_specific_supplier(self, billomat_id, params=None):
         return self._get_specific_data(billomat_id, SUPPLIERS, params)
