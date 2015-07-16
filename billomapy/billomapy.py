@@ -73,6 +73,7 @@ class Billomapy(object):
     def _save_response_to_responses(self, response):
         temp_response_body = None
         if response.error:
+            ioloop.IOLoop.instance().stop()
             raise BillomapyResponseError(response.code, response.reason)
 
         try:
@@ -80,6 +81,7 @@ class Billomapy(object):
             self.responses.append(temp_response_body)
         except TypeError:
             if response.request.method != 'PUT' and response.request.method != 'DELETE':
+                ioloop.IOLoop.instance().stop()
                 raise BillomapyParseError(response.body)
             else:
                 temp_response_body = response
@@ -117,8 +119,8 @@ class Billomapy(object):
         http_request = httpclient.HTTPRequest(
             url=url_concat(self.api_url + resource, params),
             method='GET',
-            connect_timeout=500,
-            request_timeout=500,
+            connect_timeout=1000,
+            request_timeout=1000,
             headers=self.billomat_header,
         )
 
