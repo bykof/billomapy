@@ -412,6 +412,9 @@ class Billomapy(object):
     def get_specific_delivery_note(self, billomat_id, params=None):
         return self._get_specific_data(billomat_id, DELIVERY_NOTES, params)
 
+    def get_specific_delivery_note_item(self, billomat_id, params=None):
+        return self._get_specific_data(billomat_id, DELIVERY_NOTE_ITEMS, params)
+
     def get_specific_letter(self, billomat_id, params=None):
         return self._get_specific_data(billomat_id, LETTERS, params)
 
