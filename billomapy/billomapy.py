@@ -74,7 +74,7 @@ class Billomapy(object):
         try:
             temp_response_body = json.loads(response.body)
             self.responses.append(temp_response_body)
-        except TypeError:
+        except ValueError, TypeError:
             if response.request.method != 'PUT' and response.request.method != 'DELETE':
                 raise BillomapyParseError(response.body)
             else:
@@ -88,7 +88,13 @@ class Billomapy(object):
             ioloop.IOLoop.instance().stop()
 
     def handle_request(self, response):
-        self._save_response_to_responses(response)
+        try:
+            self._save_response_to_responses(response)
+        # CATCH EM ALL!!!
+        except Exception as e:
+            ioloop.IOLoop.instance().stop()
+            raise e
+
         self._handle_request_counter()
 
     def handle_pagination_request(self, response):
