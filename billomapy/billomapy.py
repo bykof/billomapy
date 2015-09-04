@@ -506,6 +506,9 @@ class Billomapy(object):
     def edit_invoice(self, billomat_id, data, params=None):
         return self._edit_specific_data(billomat_id, INVOICES, data, params)
 
+    def complete_invoice(self, billomat_id, data, params=None):
+        return self._edit_specific_data(str(billomat_id) + '/complete', INVOICES, data, params)
+
     def edit_invoice_item(self, billomat_id, data, params=None):
         return self._edit_specific_data(billomat_id, INVOICE_ITEMS, data, params)
 
