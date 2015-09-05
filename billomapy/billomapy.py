@@ -275,15 +275,30 @@ class Billomapy(object):
         self.start_requests()
         return self.responses
 
-    def resolve_response_data(self, responses, head_key, data_key):
+    def resolve_response_data(self, responses, head_key=None, data_key=None):
         temp_data = []
         for response in responses:
-            if head_key in response and data_key in response[head_key]:
-                if isinstance(response[head_key][data_key], dict):
-                    response[head_key][data_key] = [response[head_key][data_key]]
-                temp_data += response[head_key][data_key]
+            if head_key and data_key:
+                temp_data += self._resolve_group_response_data(response, head_key, data_key)
+            elif not head_key and data_key:
+                temp_data += self._resolve_specific_response_data(response, data_key)
         return temp_data
 
+    def _resolve_group_response_data(self, response, head_key, data_key):
+        temp_data = []
+        if head_key in response and data_key in response[head_key]:
+            if isinstance(response[head_key][data_key], dict):
+                response[head_key][data_key] = [response[head_key][data_key]]
+            temp_data += response[head_key][data_key]
+        return temp_data
+
+    def _resolve_specific_response_data(self, response, data_key):
+        temp_data = []
+        if data_key in response:
+            if isinstance(response[data_key], dict):
+                response[data_key] = [response[data_key]]
+            temp_data += response[data_key]
+        return temp_data
 
 # GET ALL DATA
 
