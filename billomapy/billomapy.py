@@ -510,6 +510,14 @@ class Billomapy(object):
     def create_template(self, data, params=None):
         return self._create_specific_data(TEMPLATES, data, params)
 
+# SEND DATA
+
+    def send_invoice_mail(self, billomat_id, data, params=None):
+        mail_data = {'email': {}}
+        if data:
+            mail_data['email'].update(data)
+        return self._create_specific_data(INVOICES + '/' + str(billomat_id) + '/email', mail_data, params)
+
 # EDIT DATA
 
     def edit_client(self, billomat_id, data, params=None):
@@ -528,7 +536,10 @@ class Billomapy(object):
         return self._edit_specific_data(billomat_id, INVOICES, data, params)
 
     def complete_invoice(self, billomat_id, data, params=None):
-        return self._edit_specific_data(str(billomat_id) + '/complete', INVOICES, data, params)
+        complete_data = {'complete': {}}
+        if data:
+            complete_data['complete'].update(data)
+        return self._edit_specific_data(str(billomat_id) + '/complete', INVOICES, complete_data, params)
 
     def edit_invoice_item(self, billomat_id, data, params=None):
         return self._edit_specific_data(billomat_id, INVOICE_ITEMS, data, params)
