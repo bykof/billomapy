@@ -397,6 +397,9 @@ class Billomapy(object):
     def get_specific_invoice_item(self, billomat_id, params=None):
         return self._get_specific_data(billomat_id, INVOICE_ITEMS, params)
 
+    def get_invoice_items_for_invoice(self, invoice_id):
+        return self._get_specific_data('', INVOICE_ITEMS, {'invoice_id': invoice_id})
+
     def get_specific_recurring(self, billomat_id, params=None):
         return self._get_specific_data(billomat_id, RECURRINGS, params)
 
@@ -535,7 +538,7 @@ class Billomapy(object):
     def edit_invoice(self, billomat_id, data, params=None):
         return self._edit_specific_data(billomat_id, INVOICES, data, params)
 
-    def complete_invoice(self, billomat_id, data, params=None):
+    def complete_invoice(self, billomat_id, data={}, params=None):
         complete_data = {'complete': {}}
         if data:
             complete_data['complete'].update(data)
@@ -653,3 +656,8 @@ class Billomapy(object):
 
     def delete_template(self, billomat_id, params=None):
         return self._delete_specific_data(billomat_id, TEMPLATES, params)
+
+# CANCEL DATA
+
+    def cancel_invoice(self, billomat_id, data={}, params=None):
+        return self._edit_specific_data(str(billomat_id) + '/cancel', INVOICES, data, params)
