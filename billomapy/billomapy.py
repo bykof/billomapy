@@ -664,3 +664,11 @@ class Billomapy(object):
 
     def cancel_invoice(self, billomat_id, data={}, params=None):
         return self._edit_specific_data(str(billomat_id) + '/cancel', INVOICES, data, params)
+
+# CLOSE DOCUMENTS
+
+    def close_invoice(self, billomat_id, data={}, params=None):
+        return self._edit_specific_data(str(billomat_id) + '/complete', INVOICES, data, params)
+
+    def close_delivery_note(self, billomat_id, data={}, params=None):
+        return self._edit_specific_data(str(billomat_id) + '/complete', DELIVERY_NOTES, data, params)
