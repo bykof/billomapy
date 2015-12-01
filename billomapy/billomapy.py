@@ -471,6 +471,9 @@ class Billomapy(object):
     def create_invoice_item(self, data, params=None):
         return self._create_specific_data(INVOICE_ITEMS, data, params)
 
+    def create_invoice_comment(self, data, params=None):
+        return self._create_specific_data(INVOICE_COMMENTS, data, params)
+
     def create_recurring(self, data, params=None):
         return self._create_specific_data(RECURRINGS, data, params)
 
