@@ -102,6 +102,10 @@ class Billomapy(object):
         total = [total for total in self.gen_dict_extract('@total', temp_response_body)]
         per_page = [per_page for per_page in self.gen_dict_extract('@per_page', temp_response_body)]
 
+        if not total or not per_page:
+            self._handle_request_counter()
+            return
+
         for page in range(1, int(math.ceil(float(total[0]) / float(per_page[0])))):
             response.request.params['page'] = (
                 response.request.params['page'] + 1
