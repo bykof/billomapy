@@ -74,7 +74,7 @@ class Billomapy(object):
         try:
             temp_response_body = json.loads(response.body)
             self.responses.append(temp_response_body)
-        except ValueError, TypeError:
+        except (ValueError, TypeError) as e:
             if response.request.method != 'PUT' and response.request.method != 'DELETE' and response.body:
                 raise BillomapyParseError(response.body)
             else:
