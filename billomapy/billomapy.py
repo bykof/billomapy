@@ -202,7 +202,8 @@ class Billomapy(object):
         self.request_counter += 1
 
     def start_requests(self):
-        ioloop.IOLoop.instance().start()
+        if self.request_counter > 0:
+            ioloop.IOLoop.instance().start()
 
     def _get_all_data(self, resource, params=None):
         self.responses = []
