@@ -31,6 +31,10 @@ class BillomapyParseError(Exception):
 
 
 class BillomapyRateLimitReachedError(Exception):
+
+    def __init__(self, last_page=None):
+        self.last_page = last_page
+
     def __str__(self):
         return 'Rate Limit wurde erreicht'
 
@@ -95,7 +99,7 @@ class Billomapy(object):
     def handle_request(self, response):
         if response.code == 429:
             ioloop.IOLoop.instance().stop()
-            raise BillomapyRateLimitReachedError
+            raise BillomapyRateLimitReachedError()
         try:
             self._save_response_to_responses(response)
         # CATCH EM ALL!!!
@@ -106,6 +110,15 @@ class Billomapy(object):
         self._handle_request_counter()
 
     def handle_pagination_request(self, response):
+        if response.code == 429:
+            ioloop.IOLoop.instance().stop()
+            raise BillomapyRateLimitReachedError(
+                last_page=(
+                    response.request.params['page']
+                    if 'page' in response.request.params else 1
+                )
+            )
+
         temp_response_body = self._save_response_to_responses(response)
         total = [total for total in self.gen_dict_extract('@total', temp_response_body)]
         per_page = [per_page for per_page in self.gen_dict_extract('@per_page', temp_response_body)]
