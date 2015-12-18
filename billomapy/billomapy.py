@@ -30,6 +30,11 @@ class BillomapyParseError(Exception):
         return 'Folgender Inhalt konnte nicht in JSON geparsed werden: {}'.format(self.content)
 
 
+class BillomapyRateLimitReachedError(Exception):
+    def __str__(self):
+        return 'Rate Limit wurde erreicht'
+
+
 class Billomapy(object):
 
     def __init__(self, billomat_id, api_key, app_id, app_secret):
@@ -88,6 +93,9 @@ class Billomapy(object):
             ioloop.IOLoop.instance().stop()
 
     def handle_request(self, response):
+        if response.code == 429:
+            ioloop.IOLoop.instance().stop()
+            raise BillomapyRateLimitReachedError
         try:
             self._save_response_to_responses(response)
         # CATCH EM ALL!!!
