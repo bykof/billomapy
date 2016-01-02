@@ -74,7 +74,6 @@ class Billomapy(object):
             url=self.api_url + resource,
             data=json.dumps(send_data),
         )
-
         if response.status_code == requests.codes.created:
             return response.json()
         else:
@@ -124,6 +123,7 @@ class Billomapy(object):
     def _iterate_through_pages(get_function, resource, params=None, **kwargs):
         """
         Iterate through all pages and return the collected data
+        :rtype: list
         """
         if not params:
             params = {}
@@ -159,6 +159,24 @@ class Billomapy(object):
             params.update(common_params)
         return self._create_get_request(resource=resource, params=params)
 
+    @staticmethod
+    def resolve_response_data(head_key, data_key, data):
+        new_data = []
+        if isinstance(data, list):
+            for data_row in data:
+                if head_key in data_row and data_key in data_row[head_key]:
+                    new_data += data_row[head_key][data_key]
+                elif data_key in data_row:
+                    new_data.append(data_row[data_key])
+
+        else:
+            if head_key in data and data_key in data[head_key]:
+                new_data += data[head_key][data_key]
+            elif data_key in data:
+                    new_data.append(data[data_key])
+        return new_data
+
+
     """
     --------
     Billomat Clients
@@ -182,7 +200,11 @@ class Billomapy(object):
         :param params: Search parameters. Default: {
         :return: dict
         """
-        return self._iterate_through_pages(self.get_clients_per_page, CLIENTS, params=params)
+        return self._iterate_through_pages(
+            get_function=self.get_clients_per_page,
+            resource=CLIENTS,
+            params=params,
+        )
 
     def get_client(self, client_id):
         """
@@ -250,7 +272,11 @@ class Billomapy(object):
         :param params: Search params
         :return: dict
         """
-        return self._iterate_through_pages(self.get_client_properties_per_page, CLIENT_PROPERTY, params=params)
+        return self._iterate_through_pages(
+            get_function=self.get_client_properties_per_page,
+            resource=CLIENT_PROPERTIES,
+            params=params,
+        )
 
     def get_client_property(self, client_property_id):
         """
@@ -298,7 +324,11 @@ class Billomapy(object):
         :param params: search params
         :return:
         """
-        return self._iterate_through_pages(self.get_client_tags_per_page, CLIENT_TAG, params=params)
+        return self._iterate_through_pages(
+            get_function=self.get_client_tags_per_page,
+            resource=CLIENT_TAGS,
+            params=params,
+        )
 
     def get_client_tag(self, client_tag_id):
         """
@@ -345,7 +375,7 @@ class Billomapy(object):
     def get_all_contacts_of_client(self, client_id):
         return self._iterate_through_pages(
             get_function=self.get_contacts_of_client_per_page,
-            data_key=CONTACT,
+            resource=CONTACTS,
             **{'client_id': client_id}
         )
 
@@ -433,7 +463,7 @@ class Billomapy(object):
     def get_all_tags_of_supplier(self, supplier_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_supplier_per_page,
-            data_key=SUPPLIER_TAG,
+            resource=SUPPLIER_TAGS,
             **{'supplier_id': supplier_id}
         )
 
@@ -517,7 +547,7 @@ class Billomapy(object):
     def get_all_tags_of_article(self, article_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_article_per_page,
-            data_key=ARTICLE_TAG,
+            resource=ARTICLE_TAGS,
             **{'article_id': article_id}
         )
 
@@ -646,7 +676,7 @@ class Billomapy(object):
     def get_all_comments_of_invoice(self, invoice_id):
         return self._iterate_through_pages(
             get_function=self.get_comments_of_invoice_per_page,
-            data_key=INVOICE_COMMENT,
+            resource=INVOICE_COMMENTS,
             **{'invoice_id': invoice_id}
         )
 
@@ -719,7 +749,7 @@ class Billomapy(object):
     def get_all_tags_of_invoice(self, invoice_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_invoice_per_page,
-            data_key=INVOICE_TAG,
+            resource=INVOICE_TAGS,
             **{'invoice_id': invoice_id}
         )
 
@@ -780,7 +810,7 @@ class Billomapy(object):
     def get_all_items_of_recurring(self, recurring_id):
         return self._iterate_through_pages(
             get_function=self.get_items_of_recurring_per_page,
-            data_key=RECURRING_ITEM,
+            resource=RECURRING_ITEMS,
             **{'recurring_id': recurring_id}
         )
 
@@ -820,7 +850,7 @@ class Billomapy(object):
     def get_all_tags_of_recurring(self, recurring_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_recurring_per_page,
-            data_key=RECURRING_TAG,
+            resource=RECURRING_TAGS,
             **{'recurring_id': recurring_id}
         )
 
@@ -853,7 +883,7 @@ class Billomapy(object):
     def get_all_email_receivers_of_recurring(self, recurring_id):
         return self._iterate_through_pages(
             get_function=self.get_email_receivers_of_recurring_per_page,
-            data_key=RECURRING_EMAIL_RECEIVER,
+            resource=RECURRING_EMAIL_RECEIVERS,
             **{'recurring_id': recurring_id}
         )
 
@@ -914,7 +944,7 @@ class Billomapy(object):
     def get_all_comments_of_incoming(self, incoming_id):
         return self._iterate_through_pages(
             get_function=self.get_comments_of_incoming_per_page,
-            data_key=INCOMING_COMMENT,
+            resource=INCOMING_COMMENTS,
             **{'incoming_id': incoming_id}
         )
 
@@ -948,7 +978,7 @@ class Billomapy(object):
     def get_all_payments_of_incoming(self, incoming_id):
         return self._iterate_through_pages(
             get_function=self.get_payments_of_incoming_per_page,
-            data_key=INCOMING_PAYMENT,
+            resource=INCOMING_PAYMENTS,
             **{'incoming_id': incoming_id}
         )
 
@@ -1006,7 +1036,7 @@ class Billomapy(object):
     def get_all_tags_of_incoming(self, incoming_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_incoming_per_page,
-            data_key=INCOMING_TAG,
+            resource=INCOMING_TAGS,
             **{'incoming_id': incoming_id}
         )
 
@@ -1038,7 +1068,7 @@ class Billomapy(object):
 
     def get_all_inbox_documents(self):
         return self._iterate_through_pages(
-            get_function=self.get_tags_of_incoming_per_page,
+            get_function=self.get_inbox_documents_per_page,
             resource=INBOX_DOCUMENTS,
         )
 
@@ -1099,7 +1129,7 @@ class Billomapy(object):
     def get_all_items_of_offer(self, offer_id):
         return self._iterate_through_pages(
             get_function=self.get_items_of_offer_per_page,
-            data_key=OFFER_ITEM,
+            resource=OFFER_ITEMS,
             **{'offer_id': offer_id}
         )
 
@@ -1136,7 +1166,7 @@ class Billomapy(object):
     def get_all_comments_of_offer(self, offer_id):
         return self._iterate_through_pages(
             get_function=self.get_comments_of_offer_per_page,
-            data_key=OFFER_COMMENT,
+            resource=OFFER_COMMENTS,
             **{'offer_id': offer_id}
         )
 
@@ -1176,7 +1206,7 @@ class Billomapy(object):
     def get_all_tags_of_offer(self, offer_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_offer_per_page,
-            data_key=OFFER_TAG,
+            resource=OFFER_TAGS,
             **{'offer_id': offer_id}
         )
 
@@ -1237,7 +1267,7 @@ class Billomapy(object):
     def get_all_items_of_credit_note(self, credit_note_id):
         return self._iterate_through_pages(
             get_function=self.get_items_of_credit_note_per_page,
-            data_key=CREDIT_NOTE_ITEM,
+            resource=CREDIT_NOTE_ITEMS,
             **{'credit_note_id': credit_note_id}
         )
 
@@ -1277,8 +1307,8 @@ class Billomapy(object):
 
     def get_all_comments_of_credit_note(self, credit_note_id):
         return self._iterate_through_pages(
-            get_function=self.get_comments_of_offer_per_page,
-            data_key=CREDIT_NOTE_COMMENT,
+            get_function=self.get_comments_of_credit_note_per_page,
+            resource=CREDIT_NOTE_COMMENTS,
             **{'credit_note_id': credit_note_id}
         )
 
@@ -1319,7 +1349,7 @@ class Billomapy(object):
     def get_all_payments_of_credit_note(self, credit_note_id):
         return self._iterate_through_pages(
             get_function=self.get_payments_of_credit_note_per_page,
-            data_key=CREDIT_NOTE_PAYMENT,
+            resource=CREDIT_NOTE_PAYMENTS,
             **{'credit_note_id': credit_note_id}
         )
 
@@ -1352,7 +1382,7 @@ class Billomapy(object):
     def get_all_tags_of_credit_note(self, credit_note_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_credit_note_per_page,
-            data_key=CREDIT_NOTE_TAG,
+            resource=CREDIT_NOTE_TAGS,
             **{'credit_note_id': credit_note_id}
         )
 
@@ -1416,8 +1446,8 @@ class Billomapy(object):
 
     def get_all_items_of_confirmation(self, confirmation_id):
         return self._iterate_through_pages(
-            get_function=self.get_items_of_credit_note_per_page,
-            data_key=CONFIRMATION_ITEM,
+            get_function=self.get_items_of_confirmation_per_page,
+            resource=CONFIRMATION_ITEMS,
             **{'confirmation_id': confirmation_id}
         )
 
@@ -1458,7 +1488,7 @@ class Billomapy(object):
     def get_all_comments_of_confirmation(self, confirmation_id):
         return self._iterate_through_pages(
             get_function=self.get_comments_of_confirmation_per_page,
-            data_key=CONFIRMATION_COMMENT,
+            resource=CONFIRMATION_COMMENTS,
             **{'confirmation_id': confirmation_id}
         )
 
@@ -1498,7 +1528,7 @@ class Billomapy(object):
     def get_all_tags_of_confirmation(self, confirmation_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_confirmation_per_page,
-            data_key=CONFIRMATION_TAG,
+            resource=CONFIRMATION_TAGS,
             **{'confirmation_id': confirmation_id}
         )
 
@@ -1563,7 +1593,7 @@ class Billomapy(object):
     def get_all_items_of_reminder(self, reminder_id):
         return self._iterate_through_pages(
             get_function=self.get_items_of_reminder_per_page,
-            data_key=REMINDER_ITEM,
+            resource=REMINDER_ITEMS,
             **{'reminder_id': reminder_id}
         )
 
@@ -1603,7 +1633,7 @@ class Billomapy(object):
     def get_all_tags_of_reminder(self, reminder_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_reminder_per_page,
-            data_key=REMINDER_TAG,
+            resource=REMINDER_TAGS,
             **{'reminder_id': reminder_id}
         )
 
@@ -1668,7 +1698,7 @@ class Billomapy(object):
     def get_all_items_of_delivery_note(self, delivery_note_id):
         return self._iterate_through_pages(
             get_function=self.get_items_of_delivery_note_per_page,
-            data_key=DELIVERY_NOTE_ITEM,
+            resource=DELIVERY_NOTE_ITEMS,
             **{'delivery_note_id': delivery_note_id}
         )
 
@@ -1708,8 +1738,8 @@ class Billomapy(object):
 
     def get_all_comments_of_delivery_note(self, delivery_note_id):
         return self._iterate_through_pages(
-            get_function=self.get_comments_of_confirmation_per_page,
-            data_key=DELIVERY_NOTE_COMMENT,
+            get_function=self.get_comments_of_delivery_note_per_page,
+            resource=DELIVERY_NOTE_COMMENTS,
             **{'delivery_note_id': delivery_note_id}
         )
 
@@ -1749,7 +1779,7 @@ class Billomapy(object):
     def get_all_tags_of_delivery_note(self, delivery_note_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_delivery_note_per_page,
-            data_key=DELIVERY_NOTE_TAG,
+            resource=DELIVERY_NOTE_TAGS,
             **{'delivery_note_id': delivery_note_id}
         )
 
@@ -1814,7 +1844,7 @@ class Billomapy(object):
     def get_all_comments_of_letter(self, letter_id):
         return self._iterate_through_pages(
             get_function=self.get_comments_of_letter_per_page,
-            data_key=LETTER_COMMENT,
+            resource=LETTER_COMMENTS,
             **{'letter_id': letter_id}
         )
 
@@ -1854,7 +1884,7 @@ class Billomapy(object):
     def get_all_tags_of_letter(self, letter_id):
         return self._iterate_through_pages(
             get_function=self.get_tags_of_letter_per_page,
-            data_key=REMINDER_TAG,
+            resource=LETTER_TAGS,
             **{'letter_id': letter_id}
         )
 
@@ -1897,15 +1927,3 @@ class Billomapy(object):
 
     def delete_template(self, template_id):
         return self._create_delete_request(resource=TEMPLATES, billomat_id=template_id)
-
-
-if __name__ == '__main__':
-    billomapy = Billomapy(
-        'seibertmedia',
-        'fed4ededb5df49a8cc6fac6f519a7011',
-        '7089',
-        '42479f499e47848141595de2d048806f'
-    )
-
-    ba = billomapy.get_all_items_of_invoice('1572574')
-    print ba
