@@ -176,7 +176,6 @@ class Billomapy(object):
                     new_data.append(data[data_key])
         return new_data
 
-
     """
     --------
     Billomat Clients
