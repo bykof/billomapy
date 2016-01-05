@@ -13,10 +13,12 @@ mbykovski@seibert-media.net
 
 API Doc
 -------
+
+Read the Docs: http://billomapy.readthedocs.org/en/latest/?badge=latest
+
+
 All inputs and output from and to the api have to be like in the api docs from billomat (http://www.billomat.com/en/api)
 So please have a look in the API docs if you have a question. Otherwise email me.
-
-
 
 
 Install:
