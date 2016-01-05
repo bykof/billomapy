@@ -1423,6 +1423,14 @@ class Billomapy(object):
     http://www.billomat.com/en/api/estimates/tags
     """
     def get_tags_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of offer per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'offer_id': offer_id}
 
@@ -1457,6 +1465,14 @@ class Billomapy(object):
     """
 
     def get_credit_notes_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get credit notes per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=CREDIT_NOTES, per_page=per_page, page=page, params=params)
 
     def get_all_credit_notes(self, params=None):
@@ -1484,6 +1500,15 @@ class Billomapy(object):
     """
 
     def get_items_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        """
+        Get items of credit note per page
+
+        :param credit_note_id: the credit note id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'credit_note_id': credit_note_id}
 
@@ -1525,6 +1550,15 @@ class Billomapy(object):
     """
 
     def get_comments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        """
+        Get comments of credit note per page
+
+        :param credit_note_id: the credit note id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'credit_note_id': credit_note_id}
 
@@ -1566,6 +1600,15 @@ class Billomapy(object):
     """
 
     def get_payments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        """
+        Get payments of credit note per page
+
+        :param credit_note_id: the credit note id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'credit_note_id': credit_note_id}
 
@@ -1599,6 +1642,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/credit-notes/tags
     """
     def get_tags_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of credit note per page
+
+        :param credit_note_id: the credit note id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'credit_note_id': credit_note_id}
 
@@ -1633,6 +1685,14 @@ class Billomapy(object):
     """
 
     def get_confirmations_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get confirmations per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=CONFIRMATIONS, per_page=per_page, page=page, params=params)
 
     def get_all_confirmations(self, params=None):
@@ -1664,6 +1724,15 @@ class Billomapy(object):
     """
 
     def get_items_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+        """
+        Get items of confirmation per page
+
+        :param confirmation_id: the confirmation id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'confirmation_id': confirmation_id}
 
@@ -1705,6 +1774,15 @@ class Billomapy(object):
     """
 
     def get_comments_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+        """
+        Get comments of confirmation per page
+
+        :param confirmation_id: the confirmation id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'confirmation_id': confirmation_id}
 
@@ -1745,6 +1823,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/confirmations/tags
     """
     def get_tags_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of confirmation per page
+
+        :param confirmation_id: the confirmation id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'confirmation_id': confirmation_id}
 
@@ -1779,6 +1866,14 @@ class Billomapy(object):
     """
 
     def get_reminders_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get reminders per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=REMINDERS, per_page=per_page, page=page, params=params)
 
     def get_all_reminders(self, params=None):
@@ -1810,6 +1905,15 @@ class Billomapy(object):
     """
 
     def get_items_of_reminder_per_page(self, reminder_id, per_page=1000, page=1, params=None):
+        """
+        Get items of reminder per page
+
+        :param reminder_id: the reminder id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'reminder_id': reminder_id}
 
@@ -1850,6 +1954,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/reminders/tags
     """
     def get_tags_of_reminder_per_page(self, reminder_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of reminder per page
+
+        :param reminder_id: the reminder id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'reminder_id': reminder_id}
 
@@ -1884,6 +1997,14 @@ class Billomapy(object):
     """
 
     def get_delivery_notes_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get delivery notes per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=DELIVERY_NOTES, per_page=per_page, page=page, params=params)
 
     def get_all_delivery_notes(self, params=None):
@@ -1915,6 +2036,14 @@ class Billomapy(object):
     """
 
     def get_items_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+        """
+        Get items of delivery note per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'delivery_note_id': delivery_note_id}
 
@@ -1956,6 +2085,15 @@ class Billomapy(object):
     """
 
     def get_comments_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+        """
+        Get comments of delivery note per page
+
+        :param delivery_note_id: the delivery note
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'delivery_note_id': delivery_note_id}
 
@@ -1996,6 +2134,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/delivery-notes/tags
     """
     def get_tags_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of delivery note per page
+
+        :param delivery_note_id: the delivery note id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'delivery_note_id': delivery_note_id}
 
@@ -2030,6 +2177,14 @@ class Billomapy(object):
     """
 
     def get_letters_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get letters per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: list
+        """
         return self._get_resource_per_page(resource=LETTERS, per_page=per_page, page=page, params=params)
 
     def get_all_letters(self, params=None):
@@ -2061,6 +2216,15 @@ class Billomapy(object):
     """
 
     def get_comments_of_letter_per_page(self, letter_id, per_page=1000, page=1, params=None):
+        """
+        Get comments of letter per page
+
+        :param letter_id: the letter id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'letter_id': letter_id}
 
@@ -2101,6 +2265,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/letters/tags
     """
     def get_tags_of_letter_per_page(self, letter_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of letter per page
+
+        :param letter_id: the letter id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'letter_id': letter_id}
 
@@ -2135,6 +2308,14 @@ class Billomapy(object):
     """
 
     def get_templates_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get templates per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=TEMPLATES, per_page=per_page, page=page, params=params)
 
     def get_all_templates(self, params=None):
