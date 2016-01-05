@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class Billomapy(object):
     """
-    Billomapy is a full featured python api for Billomat (http://billoamt.com)
+    Billomapy is a full featured python api for Billomat (http://billomat.com)
 
     Some important things for developer:
     Billomat API Docs: http://www.billomat.com/api
