@@ -52,21 +52,63 @@ clients = billomapy.get_all_clients()
 """
 Billomat response with a dictionary like this
 [
-	{
-		'@page': current_page (in my api it is every time the last page),
+	'clients': {
+		'@page': 1,
 		'@total': total_items,
-		'@per_page': items_per_page,
-		'clients': ,
+		'@per_page': 1000,
+		'client': [
+			{
+				'name': 'Tim',
+				'last_name': 'Tester',
+			}
+			...
+		],
+	},
+	'clients': {
+		'@page': 2,
+		'@total': 2000,
+		'@per_page': 1000,
+		'client': [
+			{
+				'name': 'Peter',
+				'last_name': 'Griffin,
+			} 
+			...
+		],
 	}
 ]
 """
 
+# If you want to have just a list of all clients you can use
+
+# Import resources
+from billomapy.resources import CLIENT, CLIENTS
+
+clients = billomapy.resolve_response_data(
+	head_key=CLIENTS,
+	data_key=CLIENT,
+	data=clients,
+)
+
+"""
+Now the variable clients is a list of all client dicts
+ 
+[
+	{
+		'name': 'Tim',
+		'last_name': 'Tester',
+	},
+	{
+		'name': 'Peter',
+		'last_name': 'Griffin,
+	} 
+]
+"""
+
+
 client = billomapy.get_client(billomat_id_of_client)
 
-# Import resource
-from billomapy.resources import CLIENT
-
-# Creting references on http://www.billomat.com/en/api/clients
+# Creating references on http://www.billomat.com/en/api/clients
 new_client = billomapy.create_client(
 	{
 		'client': {

@@ -166,13 +166,13 @@ class Billomapy(object):
                 if head_key in data_row and data_key in data_row[head_key]:
                     new_data += data_row[head_key][data_key]
                 elif data_key in data_row:
-                    new_data.append(data_row[data_key])
+                    return data_row[data_key]
 
         else:
             if head_key in data and data_key in data[head_key]:
                 new_data += data[head_key][data_key]
             elif data_key in data:
-                    new_data.append(data[data_key])
+                    return data[data_key]
         return new_data
 
     """
