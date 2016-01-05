@@ -17,7 +17,7 @@ Just initialize the Billomapy class and have fun
 	Here you get all responses of billomat
 	because there can be metadata in it you want to use
 	"""
-	
+
     all_client_responses = billomapy.get_all_clients()
 
     """

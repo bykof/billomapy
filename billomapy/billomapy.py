@@ -119,20 +119,18 @@ class Billomapy(object):
             response.raise_for_status()
 
     @staticmethod
-    def _iterate_through_pages(get_function, resource, params=None, **kwargs):
+    def _iterate_through_pages(get_function, resource, **kwargs):
         """
         Iterate through all pages and return the collected data
         :rtype: list
         """
-        if not params:
-            params = {}
 
         request_data = True
         data = []
         page = 1
 
         while request_data:
-            temp_response = get_function(page=page, params=params, **kwargs)
+            temp_response = get_function(page=page, **kwargs)
             if temp_response[resource]['@total'] != '0':
                 data.append(temp_response)
 
@@ -160,6 +158,16 @@ class Billomapy(object):
 
     @staticmethod
     def resolve_response_data(head_key, data_key, data):
+        """
+        Resolves the responses you get from billomat
+        If you have done a get_one_element request then you will get a dictionary
+        If you have done a get_all_elements request then you will get a list with all elements in it
+
+        :param head_key: the head key e.g: CLIENTS
+        :param data_key: the data key e.g: CLIENT
+        :param data: the responses you got
+        :return: dict or list
+        """
         new_data = []
         if isinstance(data, list):
             for data_row in data:
@@ -189,26 +197,28 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=CLIENTS, per_page=per_page, page=page, params=params)
 
     def get_all_clients(self, params=None):
         """
         Get all clients
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
 
-        :param params: Search parameters. Default: {
-        :return: dict
+        :param params: search params
+        :return: list
         """
         return self._iterate_through_pages(
             get_function=self.get_clients_per_page,
             resource=CLIENTS,
-            params=params,
+            **{'params': params}
         )
 
     def get_client(self, client_id):
         """
-        Get a specific client by the billomat client id
+        Get a specific client
 
         :param client_id: The specific client id
         :return: dict
@@ -257,7 +267,7 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(
             resource=CLIENT_PROPERTIES,
@@ -268,15 +278,17 @@ class Billomapy(object):
 
     def get_all_client_properties(self, params=None):
         """
-        Get all client properties
+        Get all contacts of client
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
 
-        :param params: Search params
-        :return: dict
+        :param params: search params
+        :return: list
         """
         return self._iterate_through_pages(
             get_function=self.get_client_properties_per_page,
             resource=CLIENT_PROPERTIES,
-            params=params,
+            **{'params': params}
         )
 
     def get_client_property(self, client_property_id):
@@ -313,7 +325,7 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(
             resource=CLIENT_TAGS,
@@ -324,16 +336,17 @@ class Billomapy(object):
 
     def get_all_client_tags(self, params=None):
         """
-        Get all clients
-        If you search tags, you can only search by client_id
+        Get all client tags
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
 
         :param params: search params
-        :return:
+        :return: list
         """
         return self._iterate_through_pages(
             get_function=self.get_client_tags_per_page,
             resource=CLIENT_TAGS,
-            params=params,
+            **{'params': params}
         )
 
     def get_client_tag(self, client_tag_id):
@@ -370,27 +383,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/clients/contacts
     """
 
-    def get_contacts_of_client_per_page(self, client_id, per_page=1000, page=1, params=None):
+    def get_contacts_of_client_per_page(self, client_id, per_page=1000, page=1):
         """
         Get contacts of client per page
 
         :param client_id: the client id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'client_id': client_id}
-
         return self._get_resource_per_page(
             resource=CONTACTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'client_id': client_id},
         )
 
     def get_all_contacts_of_client(self, client_id):
+        """
+        Get all contacts of client
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param client_id: The id of the client
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_contacts_of_client_per_page,
             resource=CONTACTS,
@@ -423,14 +440,26 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=SUPPLIERS, per_page=per_page, page=page, params=params)
 
     def get_all_suppliers(self, params=None):
+        """
+        Get all suppliers
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_suppliers_per_page, resource=SUPPLIERS, params=params)
+        return self._iterate_through_pages(
+            get_function=self.get_suppliers_per_page,
+            resource=SUPPLIERS,
+            **{'params': params}
+        )
 
     def get_supplier(self, supplier_id):
         return self._create_get_request(resource=SUPPLIERS, billomat_id=supplier_id)
@@ -458,17 +487,25 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=SUPPLIER_PROPERTIES, per_page=per_page, page=page, params=params)
 
     def get_all_supplier_properties(self, params=None):
+        """
+        Get all supplier properties
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
         return self._iterate_through_pages(
-            self.get_supplier_properties_per_page,
+            get_function=self.get_supplier_properties_per_page,
             resource=SUPPLIER_PROPERTIES,
-            params=params
+            **{'params': params}
         )
 
     def get_supplier_property(self, supplier_property_id):
@@ -483,27 +520,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/suppliers/tags
     """
-    def get_tags_of_supplier_per_page(self, supplier_id, per_page=1000, page=1, params=None):
+    def get_tags_of_supplier_per_page(self, supplier_id, per_page=1000, page=1):
         """
         Get tags of suppliers per page
 
         :param supplier_id: the supplier id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'supplier_id': supplier_id}
-
         return self._get_resource_per_page(
             resource=SUPPLIER_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'supplier_id': supplier_id},
         )
 
     def get_all_tags_of_supplier(self, supplier_id):
+        """
+        Get all supplier properties
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param supplier_id: the supplier id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_supplier_per_page,
             resource=SUPPLIER_TAGS,
@@ -532,14 +573,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=ARTICLES, per_page=per_page, page=page, params=params)
 
     def get_all_articles(self, params=None):
+        """
+        Get all articles
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_articles_per_page, resource=ARTICLES, params=params)
+        return self._iterate_through_pages(self.get_articles_per_page, resource=ARTICLES, **{'params': params})
 
     def get_article(self, article_id):
         return self._create_get_request(resource=ARTICLES, billomat_id=article_id)
@@ -567,17 +616,25 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=ARTICLE_PROPERTIES, per_page=per_page, page=page, params=params)
 
     def get_all_article_properties(self, params=None):
+        """
+        Get all article properties
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
         return self._iterate_through_pages(
-            self.get_article_properties_per_page,
+            get_function=self.get_article_properties_per_page,
             resource=ARTICLE_PROPERTIES,
-            params=params
+            **{'params': params}
         )
 
     def get_article_property(self, article_property_id):
@@ -592,26 +649,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/articles/tags
     """
-    def get_tags_of_article_per_page(self, article_id, per_page=1000, page=1, params=None):
+    def get_tags_of_article_per_page(self, article_id, per_page=1000, page=1):
         """
         Get articles tags per page
 
+        :param article_id: the article id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'article_id': article_id}
-
         return self._get_resource_per_page(
             resource=ARTICLE_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'article_id': article_id},
         )
 
     def get_all_tags_of_article(self, article_id):
+        """
+        Get all tags of article
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param article_id: the article id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_article_per_page,
             resource=ARTICLE_TAGS,
@@ -641,14 +703,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=UNITS, per_page=per_page, page=page, params=params)
 
     def get_all_units(self, params=None):
+        """
+        Get all units
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_units_per_page, resource=UNITS, params=params)
+        return self._iterate_through_pages(self.get_units_per_page, resource=UNITS, **{'params': params})
 
     def get_unit(self, unit_id):
         return self._create_get_request(resource=UNITS, billomat_id=unit_id)
@@ -676,14 +746,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=INVOICES, per_page=per_page, page=page, params=params)
 
     def get_all_invoices(self, params=None):
+        """
+        Get all invoices
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_invoices_per_page, resource=INVOICES, params=params)
+        return self._iterate_through_pages(self.get_invoices_per_page, resource=INVOICES, **{'params': params})
 
     def get_invoice(self, invoice_id):
         return self._create_get_request(resource=INVOICES, billomat_id=invoice_id)
@@ -704,27 +782,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/invoices/items
     """
 
-    def get_items_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
+    def get_items_of_invoice_per_page(self, invoice_id, per_page=1000, page=1):
         """
         Get invoice items of invoice per page
 
         :param invoice_id: the invoice id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'invoice_id': invoice_id}
-
         return self._get_resource_per_page(
             resource=INVOICE_ITEMS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'invoice_id': invoice_id},
         )
 
     def get_all_items_of_invoice(self, invoice_id):
+        """
+        Get all items of invoice
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param invoice_id: the invoice id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_items_of_invoice_per_page,
             resource=INVOICE_ITEMS,
@@ -754,27 +836,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/invoices/comments
     """
 
-    def get_comments_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
+    def get_comments_of_invoice_per_page(self, invoice_id, per_page=1000, page=1):
         """
         Get comments of invoice per page
 
         :param invoice_id: the invoice id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'invoice_id': invoice_id}
-
         return self._get_resource_per_page(
             resource=INVOICE_COMMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'invoice_id': invoice_id},
         )
 
     def get_all_comments_of_invoice(self, invoice_id):
+        """
+        Get all invoice comments of invoice
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param invoice_id: the invoice id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_comments_of_invoice_per_page,
             resource=INVOICE_COMMENTS,
@@ -811,7 +897,7 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         if not params:
             params = {}
@@ -823,10 +909,21 @@ class Billomapy(object):
             params=params,
         )
 
-    def get_all_invoice_payments(self):
+    def get_all_invoice_payments(self, params=None):
+        """
+        Get all invoice payments
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
+        if not params:
+            params = {}
         return self._iterate_through_pages(
             get_function=self.get_invoice_payments_per_page,
             resource=INVOICE_PAYMENTS,
+            **{'params': params}
         )
 
     def get_invoice_payment(self, invoice_payment_id):
@@ -844,27 +941,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/invoices/tags
     """
-    def get_tags_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
+    def get_tags_of_invoice_per_page(self, invoice_id, per_page=1000, page=1):
         """
         Get tags of invoice per page
 
         :param invoice_id: the invoice id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'invoice_id': invoice_id}
-
         return self._get_resource_per_page(
             resource=INVOICE_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'invoice_id': invoice_id},
         )
 
     def get_all_tags_of_invoice(self, invoice_id):
+        """
+        Get all tags of invoice
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param invoice_id: the invoice id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_invoice_per_page,
             resource=INVOICE_TAGS,
@@ -894,14 +995,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=RECURRINGS, per_page=per_page, page=page, params=params)
 
     def get_all_recurrings(self, params=None):
+        """
+        Get all recurrings
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_recurrings_per_page, resource=RECURRINGS, params=params)
+        return self._iterate_through_pages(self.get_recurrings_per_page, resource=RECURRINGS, **{'params': params})
 
     def get_recurring(self, recurring_id):
         return self._create_get_request(resource=RECURRINGS, billomat_id=recurring_id)
@@ -922,27 +1031,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/recurrings/items
     """
 
-    def get_items_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+    def get_items_of_recurring_per_page(self, recurring_id, per_page=1000, page=1):
         """
         Get items of recurring per page
 
         :param recurring_id: the recurring id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'recurring_id': recurring_id}
-
         return self._get_resource_per_page(
             resource=RECURRING_ITEMS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'recurring_id': recurring_id},
         )
 
     def get_all_items_of_recurring(self, recurring_id):
+        """
+        Get all items of recurring
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param recurring_id: the recurring id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_items_of_recurring_per_page,
             resource=RECURRING_ITEMS,
@@ -971,27 +1084,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/recurrings/tags
     """
-    def get_tags_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+    def get_tags_of_recurring_per_page(self, recurring_id, per_page=1000, page=1):
         """
         Get tags of recurring per page
 
         :param recurring_id: the recurring id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'recurring_id': recurring_id}
-
         return self._get_resource_per_page(
             resource=RECURRING_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'recurring_id': recurring_id},
         )
 
     def get_all_tags_of_recurring(self, recurring_id):
+        """
+        Get all tags of recurring
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param recurring_id: the recurring id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_recurring_per_page,
             resource=RECURRING_TAGS,
@@ -1013,27 +1130,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/recurrings/receivers
     """
-    def get_email_receivers_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+    def get_email_receivers_of_recurring_per_page(self, recurring_id, per_page=1000, page=1):
         """
         Get email receivers of recurring per page
 
         :param recurring_id: the recurring id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'recurring_id': recurring_id}
-
         return self._get_resource_per_page(
             resource=RECURRING_EMAIL_RECEIVERS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'recurring_id': recurring_id},
         )
 
     def get_all_email_receivers_of_recurring(self, recurring_id):
+        """
+        Get all email receivers of recurring
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param recurring_id: the recurring id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_email_receivers_of_recurring_per_page,
             resource=RECURRING_EMAIL_RECEIVERS,
@@ -1063,14 +1184,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=INCOMINGS, per_page=per_page, page=page, params=params)
 
     def get_all_incomings(self, params=None):
+        """
+        Get all incomings
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_incomings_per_page, resource=INCOMINGS, params=params)
+        return self._iterate_through_pages(self.get_incomings_per_page, resource=INCOMINGS, **{'params': params})
 
     def get_incoming(self, incoming_id):
         return self._create_get_request(resource=INCOMINGS, billomat_id=incoming_id)
@@ -1091,27 +1220,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/incomings/comments
     """
 
-    def get_comments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+    def get_comments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1):
         """
-        Get comments of incomin per page
+        Get comments of incoming per page
 
         :param incoming_id: the incoming id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'incoming_id': incoming_id}
-
         return self._get_resource_per_page(
             resource=INCOMING_COMMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'incoming_id': incoming_id},
         )
 
     def get_all_comments_of_incoming(self, incoming_id):
+        """
+        Get all comments of incoming
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param incoming_id: the incoming id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_comments_of_incoming_per_page,
             resource=INCOMING_COMMENTS,
@@ -1134,27 +1267,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/incomings/payments
     """
 
-    def get_payments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+    def get_payments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1):
         """
         Get payments of incoming per page
 
         :param incoming_id: the incoming id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'incoming_id': incoming_id}
-
         return self._get_resource_per_page(
             resource=INCOMING_PAYMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'incoming_id': incoming_id},
         )
 
     def get_all_payments_of_incoming(self, incoming_id):
+        """
+        Get all payments of incoming
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param incoming_id: the incoming id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_payments_of_incoming_per_page,
             resource=INCOMING_PAYMENTS,
@@ -1184,17 +1321,25 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=INCOMING_PROPERTIES, per_page=per_page, page=page, params=params)
 
     def get_all_incoming_properties(self, params=None):
+        """
+        Get all incoming properties
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
         return self._iterate_through_pages(
             self.get_incoming_properties_per_page,
             resource=INCOMING_PROPERTIES,
-            params=params
+            **{'params': params}
         )
 
     def get_incoming_property(self, incoming_property_id):
@@ -1209,27 +1354,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/incomings/tags
     """
-    def get_tags_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+    def get_tags_of_incoming_per_page(self, incoming_id, per_page=1000, page=1):
         """
         Get tags of incoming per page
 
         :param incoming_id: the incoming id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'incoming_id': incoming_id}
-
         return self._get_resource_per_page(
             resource=INCOMING_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'incoming_id': incoming_id},
         )
 
     def get_all_tags_of_incoming(self, incoming_id):
+        """
+        Get all tags of incoming
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param incoming_id: the incoming id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_incoming_per_page,
             resource=INCOMING_TAGS,
@@ -1251,26 +1400,28 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/incomings/inbox
     """
-    def get_inbox_documents_per_page(self, per_page=1000, page=1, params=None):
+    def get_inbox_documents_per_page(self, per_page=1000, page=1):
         """
         Get inbox documents per page
 
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {}
-
         return self._get_resource_per_page(
             resource=INBOX_DOCUMENTS,
             per_page=per_page,
             page=page,
-            params=params,
         )
 
     def get_all_inbox_documents(self):
+        """
+        Get all inbox documents
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_inbox_documents_per_page,
             resource=INBOX_DOCUMENTS,
@@ -1299,14 +1450,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=OFFERS, per_page=per_page, page=page, params=params)
 
     def get_all_offers(self, params=None):
+        """
+        Get all offers
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_offers_per_page, resource=OFFERS, params=params)
+        return self._iterate_through_pages(self.get_offers_per_page, resource=OFFERS, **{'params': params})
 
     def get_offer(self, offer_id):
         return self._create_get_request(resource=OFFERS, billomat_id=offer_id)
@@ -1327,27 +1486,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/estimates/items
     """
 
-    def get_items_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+    def get_items_of_offer_per_page(self, offer_id, per_page=1000, page=1):
         """
         Get items of offer per page
 
         :param offer_id: the offer id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'offer_id': offer_id}
-
         return self._get_resource_per_page(
             resource=OFFER_ITEMS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'offer_id': offer_id},
         )
 
     def get_all_items_of_offer(self, offer_id):
+        """
+        Get all items of offer
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param offer_id: the offer id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_items_of_offer_per_page,
             resource=OFFER_ITEMS,
@@ -1373,27 +1536,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/estimates/comments
     """
 
-    def get_comments_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+    def get_comments_of_offer_per_page(self, offer_id, per_page=1000, page=1):
         """
         Get comments of offer per page
 
         :param offer_id: the offer id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'offer_id': offer_id}
-
         return self._get_resource_per_page(
             resource=OFFER_COMMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'offer_id': offer_id},
         )
 
     def get_all_comments_of_offer(self, offer_id):
+        """
+        Get all comments of offer
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param offer_id: the offer id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_comments_of_offer_per_page,
             resource=OFFER_COMMENTS,
@@ -1422,26 +1589,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/estimates/tags
     """
-    def get_tags_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+    def get_tags_of_offer_per_page(self, offer_id, per_page=1000, page=1):
         """
         Get tags of offer per page
 
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :param offer_id: the offer id
+        :return: list
         """
-        if not params:
-            params = {'offer_id': offer_id}
-
         return self._get_resource_per_page(
             resource=OFFER_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'offer_id': offer_id},
         )
 
     def get_all_tags_of_offer(self, offer_id):
+        """
+        Get all tags of offer
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param offer_id: the offer id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_offer_per_page,
             resource=OFFER_TAGS,
@@ -1471,14 +1643,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=CREDIT_NOTES, per_page=per_page, page=page, params=params)
 
     def get_all_credit_notes(self, params=None):
+        """
+        Get all credit notes
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_credit_notes_per_page, resource=CREDIT_NOTES, params=params)
+        return self._iterate_through_pages(self.get_credit_notes_per_page, resource=CREDIT_NOTES, **{'params': params})
 
     def get_credit_note(self, credit_note_id):
         return self._create_get_request(resource=CREDIT_NOTES, billomat_id=credit_note_id)
@@ -1499,27 +1679,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/credit-notes/items
     """
 
-    def get_items_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+    def get_items_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1):
         """
         Get items of credit note per page
 
         :param credit_note_id: the credit note id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'credit_note_id': credit_note_id}
-
         return self._get_resource_per_page(
             resource=CREDIT_NOTE_ITEMS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'credit_note_id': credit_note_id},
         )
 
     def get_all_items_of_credit_note(self, credit_note_id):
+        """
+        Get all items of credit note
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param credit_note_id: the credit note id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_items_of_credit_note_per_page,
             resource=CREDIT_NOTE_ITEMS,
@@ -1549,27 +1733,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/credit-notes/comments
     """
 
-    def get_comments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+    def get_comments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1):
         """
         Get comments of credit note per page
 
         :param credit_note_id: the credit note id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'credit_note_id': credit_note_id}
-
         return self._get_resource_per_page(
             resource=CREDIT_NOTE_COMMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'credit_note_id': credit_note_id},
         )
 
     def get_all_comments_of_credit_note(self, credit_note_id):
+        """
+        Get all comments of credit note
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param credit_note_id: the credit note id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_comments_of_credit_note_per_page,
             resource=CREDIT_NOTE_COMMENTS,
@@ -1599,27 +1787,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/credit-notes/payments
     """
 
-    def get_payments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+    def get_payments_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1):
         """
         Get payments of credit note per page
 
         :param credit_note_id: the credit note id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'credit_note_id': credit_note_id}
-
         return self._get_resource_per_page(
             resource=CREDIT_NOTE_PAYMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'credit_note_id': credit_note_id},
         )
 
     def get_all_payments_of_credit_note(self, credit_note_id):
+        """
+        Get all payments of credit note
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param credit_note_id: the credit note id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_payments_of_credit_note_per_page,
             resource=CREDIT_NOTE_PAYMENTS,
@@ -1641,24 +1833,20 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/credit-notes/tags
     """
-    def get_tags_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1, params=None):
+    def get_tags_of_credit_note_per_page(self, credit_note_id, per_page=1000, page=1):
         """
         Get tags of credit note per page
 
         :param credit_note_id: the credit note id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'credit_note_id': credit_note_id}
-
         return self._get_resource_per_page(
             resource=CREDIT_NOTE_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'credit_note_id': credit_note_id},
         )
 
     def get_all_tags_of_credit_note(self, credit_note_id):
@@ -1691,14 +1879,26 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=CONFIRMATIONS, per_page=per_page, page=page, params=params)
 
     def get_all_confirmations(self, params=None):
+        """
+        Get all confirmations
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_confirmations_per_page, resource=CONFIRMATIONS, params=params)
+        return self._iterate_through_pages(
+            self.get_confirmations_per_page,
+            resource=CONFIRMATIONS,
+            **{'params': params}
+        )
 
     def get_confirmation(self, confirmation_id):
         return self._create_get_request(resource=CONFIRMATIONS, billomat_id=confirmation_id)
@@ -1723,27 +1923,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/confirmations/items
     """
 
-    def get_items_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+    def get_items_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1):
         """
         Get items of confirmation per page
 
         :param confirmation_id: the confirmation id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'confirmation_id': confirmation_id}
-
         return self._get_resource_per_page(
             resource=CONFIRMATION_ITEMS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'confirmation_id': confirmation_id},
         )
 
     def get_all_items_of_confirmation(self, confirmation_id):
+        """
+        Get all items of confirmation
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param confirmation_id: the confirmation id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_items_of_confirmation_per_page,
             resource=CONFIRMATION_ITEMS,
@@ -1773,27 +1977,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/confirmation/comments
     """
 
-    def get_comments_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+    def get_comments_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1):
         """
         Get comments of confirmation per page
 
         :param confirmation_id: the confirmation id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'confirmation_id': confirmation_id}
-
         return self._get_resource_per_page(
             resource=CONFIRMATION_COMMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'confirmation_id': confirmation_id},
         )
 
     def get_all_comments_of_confirmation(self, confirmation_id):
+        """
+        Get all comments of confirmation
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param confirmation_id: the confirmation id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_comments_of_confirmation_per_page,
             resource=CONFIRMATION_COMMENTS,
@@ -1822,27 +2030,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/confirmations/tags
     """
-    def get_tags_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1, params=None):
+    def get_tags_of_confirmation_per_page(self, confirmation_id, per_page=1000, page=1):
         """
         Get tags of confirmation per page
 
         :param confirmation_id: the confirmation id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'confirmation_id': confirmation_id}
-
         return self._get_resource_per_page(
             resource=CONFIRMATION_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'confirmation_id': confirmation_id},
         )
 
     def get_all_tags_of_confirmation(self, confirmation_id):
+        """
+        Get all tags of confirmation
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param confirmation_id: the confirmation id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_confirmation_per_page,
             resource=CONFIRMATION_TAGS,
@@ -1872,14 +2084,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=REMINDERS, per_page=per_page, page=page, params=params)
 
     def get_all_reminders(self, params=None):
+        """
+        Get all reminders
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_reminders_per_page, resource=REMINDERS, params=params)
+        return self._iterate_through_pages(self.get_reminders_per_page, resource=REMINDERS, **{'params': params})
 
     def get_reminder(self, reminder_id):
         return self._create_get_request(resource=REMINDERS, billomat_id=reminder_id)
@@ -1904,27 +2124,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/reminders/items
     """
 
-    def get_items_of_reminder_per_page(self, reminder_id, per_page=1000, page=1, params=None):
+    def get_items_of_reminder_per_page(self, reminder_id, per_page=1000, page=1):
         """
         Get items of reminder per page
 
         :param reminder_id: the reminder id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'reminder_id': reminder_id}
-
         return self._get_resource_per_page(
             resource=REMINDER_ITEMS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'reminder_id': reminder_id},
         )
 
     def get_all_items_of_reminder(self, reminder_id):
+        """
+        Get all items of reminder
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param reminder_id: the reminder id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_items_of_reminder_per_page,
             resource=REMINDER_ITEMS,
@@ -1953,27 +2177,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/reminders/tags
     """
-    def get_tags_of_reminder_per_page(self, reminder_id, per_page=1000, page=1, params=None):
+    def get_tags_of_reminder_per_page(self, reminder_id, per_page=1000, page=1):
         """
         Get tags of reminder per page
 
         :param reminder_id: the reminder id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'reminder_id': reminder_id}
-
         return self._get_resource_per_page(
             resource=REMINDER_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'reminder_id': reminder_id},
         )
 
     def get_all_tags_of_reminder(self, reminder_id):
+        """
+        Get all tags of reminder
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param reminder_id: the reminder id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_reminder_per_page,
             resource=REMINDER_TAGS,
@@ -2003,14 +2231,26 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=DELIVERY_NOTES, per_page=per_page, page=page, params=params)
 
     def get_all_delivery_notes(self, params=None):
+        """
+        Get all delivery notes
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_delivery_notes_per_page, resource=DELIVERY_NOTES, params=params)
+        return self._iterate_through_pages(
+            self.get_delivery_notes_per_page,
+            resource=DELIVERY_NOTES,
+            **{'params': params}
+        )
 
     def get_delivery_note(self, delivery_note_id):
         return self._create_get_request(resource=DELIVERY_NOTES, billomat_id=delivery_note_id)
@@ -2035,26 +2275,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/delivery-notes/items
     """
 
-    def get_items_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+    def get_items_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1):
         """
         Get items of delivery note per page
 
+        :param delivery_note_id: the delivery note id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'delivery_note_id': delivery_note_id}
-
         return self._get_resource_per_page(
             resource=DELIVERY_NOTE_ITEMS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'delivery_note_id': delivery_note_id},
         )
 
     def get_all_items_of_delivery_note(self, delivery_note_id):
+        """
+        Get all items of delivery note
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param delivery_note_id: the delivery note id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_items_of_delivery_note_per_page,
             resource=DELIVERY_NOTE_ITEMS,
@@ -2084,27 +2329,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/delivery-notes/comments
     """
 
-    def get_comments_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+    def get_comments_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1):
         """
         Get comments of delivery note per page
 
         :param delivery_note_id: the delivery note
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'delivery_note_id': delivery_note_id}
-
         return self._get_resource_per_page(
             resource=DELIVERY_NOTE_COMMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'delivery_note_id': delivery_note_id},
         )
 
     def get_all_comments_of_delivery_note(self, delivery_note_id):
+        """
+        Get all comments of delivery note
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param delivery_note_id: the delivery note id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_comments_of_delivery_note_per_page,
             resource=DELIVERY_NOTE_COMMENTS,
@@ -2133,27 +2382,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/delivery-notes/tags
     """
-    def get_tags_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1, params=None):
+    def get_tags_of_delivery_note_per_page(self, delivery_note_id, per_page=1000, page=1):
         """
         Get tags of delivery note per page
 
         :param delivery_note_id: the delivery note id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'delivery_note_id': delivery_note_id}
-
         return self._get_resource_per_page(
             resource=DELIVERY_NOTE_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'delivery_note_id': delivery_note_id},
         )
 
     def get_all_tags_of_delivery_note(self, delivery_note_id):
+        """
+        Get all tags of delivery note
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param delivery_note_id: the delivery note id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_delivery_note_per_page,
             resource=DELIVERY_NOTE_TAGS,
@@ -2188,9 +2441,17 @@ class Billomapy(object):
         return self._get_resource_per_page(resource=LETTERS, per_page=per_page, page=page, params=params)
 
     def get_all_letters(self, params=None):
+        """
+        Get all letters
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_letters_per_page, resource=LETTERS, params=params)
+        return self._iterate_through_pages(self.get_letters_per_page, resource=LETTERS, **{'params': params})
 
     def get_letter(self, letter_id):
         return self._create_get_request(resource=LETTERS, billomat_id=letter_id)
@@ -2215,27 +2476,31 @@ class Billomapy(object):
     http://www.billomat.com/en/api/letters/comments
     """
 
-    def get_comments_of_letter_per_page(self, letter_id, per_page=1000, page=1, params=None):
+    def get_comments_of_letter_per_page(self, letter_id, per_page=1000, page=1):
         """
         Get comments of letter per page
 
         :param letter_id: the letter id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'letter_id': letter_id}
-
         return self._get_resource_per_page(
             resource=LETTER_COMMENTS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'letter_id': letter_id},
         )
 
     def get_all_comments_of_letter(self, letter_id):
+        """
+        Get all comments of letter
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param letter_id: the letter id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_comments_of_letter_per_page,
             resource=LETTER_COMMENTS,
@@ -2264,27 +2529,31 @@ class Billomapy(object):
     --------
     http://www.billomat.com/en/api/letters/tags
     """
-    def get_tags_of_letter_per_page(self, letter_id, per_page=1000, page=1, params=None):
+    def get_tags_of_letter_per_page(self, letter_id, per_page=1000, page=1):
         """
         Get tags of letter per page
 
         :param letter_id: the letter id
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
-        :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
-        if not params:
-            params = {'letter_id': letter_id}
-
         return self._get_resource_per_page(
             resource=LETTER_TAGS,
             per_page=per_page,
             page=page,
-            params=params,
+            params={'letter_id': letter_id},
         )
 
     def get_all_tags_of_letter(self, letter_id):
+        """
+        Get all tags of letter
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param letter_id: the letter id
+        :return: list
+        """
         return self._iterate_through_pages(
             get_function=self.get_tags_of_letter_per_page,
             resource=LETTER_TAGS,
@@ -2314,14 +2583,22 @@ class Billomapy(object):
         :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
-        :return: dict
+        :return: list
         """
         return self._get_resource_per_page(resource=TEMPLATES, per_page=per_page, page=page, params=params)
 
     def get_all_templates(self, params=None):
+        """
+        Get all templates
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
         if not params:
             params = {}
-        return self._iterate_through_pages(self.get_templates_per_page, resource=TEMPLATES, params=params)
+        return self._iterate_through_pages(self.get_templates_per_page, resource=TEMPLATES, **{'params': params})
 
     def get_template(self, template_id):
         return self._create_get_request(resource=TEMPLATES, billomat_id=template_id)
