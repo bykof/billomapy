@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class Billomapy(object):
     """
-    Billomapy helps you to get data from billomat
+    Billomapy is a full featured python api for Billomat (http://billoamt.com)
 
     Some important things for developer:
     Billomat API Docs: http://www.billomat.com/api
@@ -229,18 +229,18 @@ class Billomapy(object):
         """
         Creates a client
 
-        :param client_dict: a dictionary with e.g.
-        :return: response dict of billomat
+        :param client_dict: dict
+        :return: dict
         """
         return self._create_post_request(CLIENTS, client_dict)
 
     def update_client(self, client_id, client_dict):
         """
-        Updates a client with the given keys and values in the dict
+        Updates a client
 
-        :param client_id: the client which you want to update
-        :param client_dict: the key, value pairs (see doc)
-        :return: response dict of billomat
+        :param client_id: the client id
+        :param client_dict: dict
+        :return: dict
         """
         return self._create_put_request(CLIENTS, client_id, client_dict)
 
@@ -248,8 +248,8 @@ class Billomapy(object):
         """
         Deletes a client
 
-        :param client_id: the client billomat id
-        :return: the response object
+        :param client_id: the client id
+        :return: Response
         """
         return self._create_delete_request(CLIENTS, client_id)
 
@@ -293,19 +293,19 @@ class Billomapy(object):
 
     def get_client_property(self, client_property_id):
         """
-        Get a client property by the billomat id of a client property
+        Get a specific client property
 
-        :param client_property_id: the billomat id
-        :return: the found client property dict
+        :param client_property_id: The specific client property id
+        :return: dict
         """
         return self._create_get_request(resource=CLIENT_PROPERTIES, billomat_id=client_property_id)
 
     def create_client_property(self, client_property_dict):
         """
-        Sets a client property
+        Created a client property
 
-        :param client_property_dict: the client property
-        :return:
+        :param client_property_dict: dict
+        :return: dict
         """
         return self._create_post_request(resource=CLIENT_PROPERTIES, send_data=client_property_dict)
 
@@ -351,10 +351,10 @@ class Billomapy(object):
 
     def get_client_tag(self, client_tag_id):
         """
-        Get a specific client tag by the billomat id
+        Get a specific client tag
 
-        :param client_tag_id: billomat id of the client tag
-        :return: the specific client tag
+        :param client_tag_id: The specific client tag id
+        :return: dict
         """
         return self._create_get_request(resource=CLIENT_TAGS, billomat_id=client_tag_id)
 
@@ -363,16 +363,16 @@ class Billomapy(object):
         Creates a client tag
 
         :param client_tag_dict: dict
-        :return: response
+        :return: dict
         """
         return self._create_post_request(resource=CLIENT_TAGS, send_data=client_tag_dict)
 
     def delete_client_tag(self, client_tag_id):
         """
-        Delete a specific client tag by the client tag id
+        Deletes a client tag
 
-        :param client_tag_id: the billomat id
-        :return: Response Object
+        :param client_tag_id: dict
+        :return: Response
         """
         return self._create_delete_request(resource=CLIENT_TAGS, billomat_id=client_tag_id)
 
@@ -415,16 +415,41 @@ class Billomapy(object):
         )
 
     def get_contact_of_client(self, contact_id):
+        """
+        Get a specific contact
+
+        :param contact_id: The specific contact id
+        :return: dict
+        """
         return self._create_get_request(CONTACTS, contact_id)
 
     def create_contact_of_client(self, contact_dict):
+        """
+        Creates a contact
+
+        :param contact_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CONTACTS, send_data=contact_dict)
 
     def update_contact_of_client(self, contact_id, contact_dict):
+        """
+        Updates a contact
+
+        :param contact_id: the id of the contact
+        :param contact_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=CONTACTS, billomat_id=contact_id, send_data=contact_dict)
 
-    def delete_contact_of_client(self, client_id):
-        return self._create_delete_request(resource=CONTACTS, billomat_id=client_id)
+    def delete_contact_of_client(self, contact_id):
+        """
+        Deletes a contact
+
+        :param contact_id: dict
+        :return: dict
+        """
+        return self._create_delete_request(resource=CONTACTS, billomat_id=contact_id)
 
     """
     --------
@@ -462,15 +487,40 @@ class Billomapy(object):
         )
 
     def get_supplier(self, supplier_id):
+        """
+        Get a specific supplier
+
+        :param supplier_id: The specific supplier id
+        :return: dict
+        """
         return self._create_get_request(resource=SUPPLIERS, billomat_id=supplier_id)
 
     def create_supplier(self, supplier_dict):
+        """
+        Creates a supplier
+
+        :param supplier_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=SUPPLIERS, send_data=supplier_dict)
 
     def update_supplier(self, supplier_id, supplier_dict):
+        """
+        Updates a supplier
+
+        :param supplier_id: the supplier id
+        :param supplier_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=SUPPLIERS, billomat_id=supplier_id, send_data=supplier_dict)
 
     def delete_supplier(self, supplier_id):
+        """
+        Creates a contact
+
+        :param supplier_id: the supplier id
+        :return: Response
+        """
         return self._create_delete_request(resource=SUPPLIERS, billomat_id=supplier_id)
 
     """
@@ -509,9 +559,21 @@ class Billomapy(object):
         )
 
     def get_supplier_property(self, supplier_property_id):
+        """
+        Get a specific supplier property
+
+        :param supplier_property_id: The specific supplier property id
+        :return: dict
+        """
         return self._create_get_request(resource=SUPPLIER_PROPERTIES, billomat_id=supplier_property_id)
 
-    def set_supplier_property(self, supplier_dict):
+    def create_supplier_property(self, supplier_dict):
+        """
+        Creates a supplier property
+
+        :param supplier_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=SUPPLIER_PROPERTIES, send_data=supplier_dict)
 
     """
@@ -552,12 +614,30 @@ class Billomapy(object):
         )
 
     def get_supplier_tag(self, supplier_tag_id):
+        """
+        Get a specific supplier tag
+
+        :param supplier_tag_id: The specific supplier tag id
+        :return: dict
+        """
         return self._create_get_request(resource=SUPPLIER_TAGS, billomat_id=supplier_tag_id)
 
     def create_supplier_tag(self, supplier_tag_dict):
+        """
+        Creates a supplier tag
+
+        :param supplier_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=SUPPLIER_TAGS, send_data=supplier_tag_dict)
 
     def delete_supplier_tag(self, supplier_tag_id):
+        """
+        Deletes a supplier tag
+
+        :param supplier_tag_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=SUPPLIER_TAGS, billomat_id=supplier_tag_id)
 
     """
@@ -591,15 +671,40 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_articles_per_page, resource=ARTICLES, **{'params': params})
 
     def get_article(self, article_id):
+        """
+        Get a specific article
+
+        :param article_id: The specific article id
+        :return: dict
+        """
         return self._create_get_request(resource=ARTICLES, billomat_id=article_id)
 
     def create_article(self, article_dict):
+        """
+        Creates an article
+
+        :param article_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=ARTICLES, send_data=article_dict)
 
     def update_article(self, article_id, article_dict):
+        """
+        Updates an article
+
+        :param article_id: the article id
+        :param article_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=ARTICLES, billomat_id=article_id, send_data=article_dict)
 
     def delete_article(self, article_id):
+        """
+        Deletes an article
+
+        :param article_id: the article id
+        :return: Response
+        """
         return self._create_delete_request(resource=ARTICLES, billomat_id=article_id)
 
     """
@@ -638,10 +743,22 @@ class Billomapy(object):
         )
 
     def get_article_property(self, article_property_id):
+        """
+        Get a specific article property
+
+        :param article_property_id: The specific article property id
+        :return: dict
+        """
         return self._create_get_request(resource=ARTICLE_PROPERTIES, billomat_id=article_property_id)
 
-    def set_article_property(self, article_dict):
-        return self._create_post_request(resource=ARTICLE_PROPERTIES, send_data=article_dict)
+    def create_article_property(self, article_property_dict):
+        """
+        Creates an article property
+
+        :param article_property_dict: dict
+        :return: dict
+        """
+        return self._create_post_request(resource=ARTICLE_PROPERTIES, send_data=article_property_dict)
 
     """
     --------
@@ -681,12 +798,30 @@ class Billomapy(object):
         )
 
     def get_article_tag(self, article_tag_id):
+        """
+        Get a specific article tag
+
+        :param article_tag_id: The specific article tag id
+        :return: dict
+        """
         return self._create_get_request(resource=ARTICLE_TAGS, billomat_id=article_tag_id)
 
     def create_article_tag(self, article_tag_dict):
+        """
+        Creates an article tag
+
+        :param article_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=ARTICLE_TAGS, send_data=article_tag_dict)
 
     def delete_article_tag(self, article_tag_id):
+        """
+        Deletes an article tag
+
+        :param article_tag_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=ARTICLE_TAGS, billomat_id=article_tag_id)
 
     """
@@ -721,15 +856,40 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_units_per_page, resource=UNITS, **{'params': params})
 
     def get_unit(self, unit_id):
+        """
+        Get a specific unit
+
+        :param unit_id: The specific unit id
+        :return: dict
+        """
         return self._create_get_request(resource=UNITS, billomat_id=unit_id)
 
     def create_unit(self, unit_dict):
+        """
+        Creates an unit
+
+        :param unit_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=UNITS, send_data=unit_dict)
 
     def update_unit(self, unit_id, unit_dict):
+        """
+        Updates an unit
+
+        :param unit_id: the unit id
+        :param unit_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=UNITS, billomat_id=unit_id, send_data=unit_dict)
 
     def delete_unit(self, unit_id):
+        """
+        Deletes an unit
+
+        :param unit_id: the unit id
+        :return: Response
+        """
         return self._create_delete_request(resource=UNITS, billomat_id=unit_id)
 
     """
@@ -764,15 +924,40 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_invoices_per_page, resource=INVOICES, **{'params': params})
 
     def get_invoice(self, invoice_id):
+        """
+        Get a specific invoice
+
+        :param invoice_id: The specific invoice id
+        :return: dict
+        """
         return self._create_get_request(resource=INVOICES, billomat_id=invoice_id)
 
     def create_invoice(self, invoice_dict):
+        """
+        Creates an invoice
+
+        :param invoice_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INVOICES, send_data=invoice_dict)
 
     def update_invoice(self, invoice_id, invoice_dict):
+        """
+        Updates an invoice
+
+        :param invoice_id: the invoice id
+        :param invoice_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=INVOICES, billomat_id=invoice_id, send_data=invoice_dict)
 
     def delete_invoice(self, invoice_id):
+        """
+        Deletes an invoice
+
+        :param invoice_id: the invoice id
+        :return: Response
+        """
         return self._create_delete_request(resource=INVOICES, billomat_id=invoice_id)
 
     """
@@ -814,12 +999,31 @@ class Billomapy(object):
         )
 
     def get_invoice_item(self, invoice_item_id):
+        """
+        Get a specific invoice item
+
+        :param invoice_item_id: The specific invoice_item id
+        :return: dict
+        """
         return self._create_get_request(INVOICE_ITEMS, invoice_item_id)
 
     def create_invoice_item(self, invoice_item_dict):
+        """
+        Creates an invoice item
+
+        :param invoice_item_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INVOICE_ITEMS, send_data=invoice_item_dict)
 
     def update_invoice_item(self, invoice_item_id, invoice_item_dict):
+        """
+        Updates an invoice item
+
+        :param invoice_item_id: the invoice item id
+        :param invoice_item_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=INVOICE_ITEMS,
             billomat_id=invoice_item_id,
@@ -827,6 +1031,12 @@ class Billomapy(object):
         )
 
     def delete_invoice_item(self, invoice_item_id):
+        """
+        Deletes an invoice item
+
+        :param invoice_item_id: the invoice item id
+        :return: Response
+        """
         return self._create_delete_request(resource=INVOICE_ITEMS, billomat_id=invoice_item_id)
 
     """
@@ -868,12 +1078,31 @@ class Billomapy(object):
         )
 
     def get_invoice_comment(self, invoice_comment_id):
+        """
+        Get a specific invoice comment
+
+        :param invoice_comment_id: The specific invoice comment id
+        :return: dict
+        """
         return self._create_get_request(INVOICE_COMMENTS, invoice_comment_id)
 
     def create_invoice_comment(self, invoice_comment_dict):
+        """
+        Creates an invoice comment
+
+        :param invoice_comment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INVOICE_COMMENTS, send_data=invoice_comment_dict)
 
     def update_invoice_comment(self, invoice_comment_id, invoice_comment_dict):
+        """
+        Updates an invoice comment
+
+        :param invoice_comment_id: the invoice comment id
+        :param invoice_comment_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=INVOICE_COMMENTS,
             billomat_id=invoice_comment_id,
@@ -881,6 +1110,12 @@ class Billomapy(object):
         )
 
     def delete_invoice_comment(self, invoice_comment_id):
+        """
+        Deletes an invoice comment
+
+        :param invoice_comment_id: the invoice comment id
+        :return: Response
+        """
         return self._create_delete_request(resource=INVOICE_COMMENTS, billomat_id=invoice_comment_id)
 
     """
@@ -927,12 +1162,30 @@ class Billomapy(object):
         )
 
     def get_invoice_payment(self, invoice_payment_id):
+        """
+        Get a specific invoice payments
+
+        :param invoice_payment_id: The specific invoice payment id
+        :return: dict
+        """
         return self._create_get_request(INVOICE_PAYMENTS, invoice_payment_id)
 
     def create_invoice_payment(self, invoice_payment_dict):
+        """
+        Creates an invoice payment
+
+        :param invoice_payment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INVOICE_PAYMENTS, send_data=invoice_payment_dict)
 
     def delete_invoice_payment(self, invoice_payment_id):
+        """
+        Deletes an invoice payment
+
+        :param invoice_payment_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=INVOICE_PAYMENTS, billomat_id=invoice_payment_id)
 
     """
@@ -973,12 +1226,30 @@ class Billomapy(object):
         )
 
     def get_invoice_tag(self, invoice_tag_id):
+        """
+        Get a specific invoice tag
+
+        :param invoice_tag_id: The specific invoice tag id
+        :return: dict
+        """
         return self._create_get_request(resource=INVOICE_TAGS, billomat_id=invoice_tag_id)
 
     def create_invoice_tag(self, invoice_tag_dict):
+        """
+        Creates an invoice tag
+
+        :param invoice_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INVOICE_TAGS, send_data=invoice_tag_dict)
 
     def delete_invoice_tag(self, invoice_tag_id):
+        """
+        Deletes an invoice tag
+
+        :param invoice_tag_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=INVOICE_TAGS, billomat_id=invoice_tag_id)
 
     """
@@ -1013,15 +1284,40 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_recurrings_per_page, resource=RECURRINGS, **{'params': params})
 
     def get_recurring(self, recurring_id):
+        """
+        Get a specific recurring
+
+        :param recurring_id: The specific recurring id
+        :return: dict
+        """
         return self._create_get_request(resource=RECURRINGS, billomat_id=recurring_id)
 
     def create_recurring(self, recurring_dict):
+        """
+        Creates a recurring
+
+        :param recurring_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=RECURRINGS, send_data=recurring_dict)
 
     def update_recurring(self, recurring_id, recurring_dict):
+        """
+        Updates a recurring
+
+        :param recurring_id: the recurring id
+        :param recurring_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=RECURRINGS, billomat_id=recurring_id, send_data=recurring_dict)
 
     def delete_recurring(self, recurring_id):
+        """
+        Deletes a recurring
+
+        :param recurring_id: the recurring id
+        :return: dict
+        """
         return self._create_delete_request(resource=RECURRINGS, billomat_id=recurring_id)
 
     """
@@ -1063,12 +1359,31 @@ class Billomapy(object):
         )
 
     def get_recurring_item(self, recurring_item_id):
+        """
+        Get a specific recurring item
+
+        :param recurring_item_id: The specific recurring item id
+        :return: dict
+        """
         return self._create_get_request(RECURRING_ITEMS, recurring_item_id)
 
     def create_recurring_item(self, recurring_item_dict):
+        """
+        Creates a recurring item
+
+        :param recurring_item_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=RECURRING_ITEMS, send_data=recurring_item_dict)
 
     def update_recurring_item(self, recurring_item_id, recurring_item_dict):
+        """
+        Updates a recurring item
+
+        :param recurring_item_id: the recurring item id
+        :param recurring_item_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=RECURRING_ITEMS,
             billomat_id=recurring_item_id,
@@ -1076,6 +1391,12 @@ class Billomapy(object):
         )
 
     def delete_recurring_item(self, recurring_item_id):
+        """
+        Deletes a recurring item
+
+        :param recurring_item_id: the recurring item id
+        :return: dict
+        """
         return self._create_delete_request(resource=RECURRING_ITEMS, billomat_id=recurring_item_id)
 
     """
@@ -1116,12 +1437,30 @@ class Billomapy(object):
         )
 
     def get_recurring_tag(self, recurring_tag_id):
+        """
+        Get a specific recurring tag
+
+        :param recurring_tag_id: The specific recurring tag id
+        :return: dict
+        """
         return self._create_get_request(resource=RECURRING_TAGS, billomat_id=recurring_tag_id)
 
     def create_recurring_tag(self, recurring_tag_dict):
+        """
+        Creates a recurring tag
+
+        :param recurring_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=RECURRING_TAGS, send_data=recurring_tag_dict)
 
     def delete_recurring_tag(self, recurring_tag_id):
+        """
+        Deletes a recurring
+
+        :param recurring_tag_id: the recurring tag id
+        :return: dict
+        """
         return self._create_delete_request(resource=RECURRING_TAGS, billomat_id=recurring_tag_id)
 
     """
@@ -1162,12 +1501,30 @@ class Billomapy(object):
         )
 
     def get_recurring_email_receiver(self, recurring_email_receiver_id):
+        """
+        Get a specific recurring email receiver
+
+        :param recurring_email_receiver_id: The specific recurring email receiver id
+        :return: dict
+        """
         return self._create_get_request(resource=RECURRING_EMAIL_RECEIVERS, billomat_id=recurring_email_receiver_id)
 
     def create_recurring_email_receiver(self, recurring_email_receiver_dict):
+        """
+        Creates a recurring emai receiver
+
+        :param recurring_email_receiver_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=RECURRING_EMAIL_RECEIVERS, send_data=recurring_email_receiver_dict)
 
     def delete_recurring_email_receiver(self, recurring_email_receiver_id):
+        """
+        Creates a recurring email receiver
+
+        :param recurring_email_receiver_id: the recurring email receiver id
+        :return: dict
+        """
         return self._create_delete_request(resource=RECURRING_EMAIL_RECEIVERS, billomat_id=recurring_email_receiver_id)
 
     """
@@ -1202,15 +1559,40 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_incomings_per_page, resource=INCOMINGS, **{'params': params})
 
     def get_incoming(self, incoming_id):
+        """
+        Get a specific incoming
+
+        :param incoming_id: The specific incoming id
+        :return: dict
+        """
         return self._create_get_request(resource=INCOMINGS, billomat_id=incoming_id)
 
     def create_incoming(self, incoming_dict):
+        """
+        Creates an incoming
+
+        :param incoming_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INCOMINGS, send_data=incoming_dict)
 
     def update_incoming(self, incoming_id, incoming_dict):
+        """
+        Updates an incoming
+
+        :param incoming_id: the incoming id
+        :param incoming_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=INCOMINGS, billomat_id=incoming_id, send_data=incoming_dict)
 
     def delete_incoming(self, incoming_id):
+        """
+        Deletes an incoming
+
+        :param incoming_id: the incoming id
+        :return: dict
+        """
         return self._create_delete_request(resource=INCOMINGS, billomat_id=incoming_id)
 
     """
@@ -1252,12 +1634,30 @@ class Billomapy(object):
         )
 
     def get_incoming_comment(self, incoming_comment_id):
+        """
+        Get a incoming comment
+
+        :param incoming_comment_id: The specific incoming comment id
+        :return: dict
+        """
         return self._create_get_request(INCOMING_COMMENTS, incoming_comment_id)
 
     def create_incoming_comment(self, incoming_comment_dict):
+        """
+        Creates an incoming comment
+
+        :param incoming_comment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INCOMING_COMMENTS, send_data=incoming_comment_dict)
 
     def delete_incoming_comment(self, incoming_comment_id):
+        """
+        Deletes an incoming comment
+
+        :param incoming_comment_id: the incoming comment id
+        :return: Response
+        """
         return self._create_delete_request(resource=INCOMING_COMMENTS, billomat_id=incoming_comment_id)
 
     """
@@ -1299,12 +1699,30 @@ class Billomapy(object):
         )
 
     def get_incoming_payment(self, incoming_payment_id):
+        """
+        Get a specific incoming payment
+
+        :param incoming_payment_id: The specific incoming payment id
+        :return: dict
+        """
         return self._create_get_request(INCOMING_PAYMENTS, incoming_payment_id)
 
     def create_incoming_payment(self, incoming_payment_dict):
+        """
+        Creates an incoming payment
+
+        :param incoming_payment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INCOMING_PAYMENTS, send_data=incoming_payment_dict)
 
     def delete_incoming_payment(self, incoming_payment_id):
+        """
+        Deletes an incoming payment
+
+        :param incoming_payment_id: the incoment payment id
+        :return: Response
+        """
         return self._create_delete_request(resource=INCOMING_PAYMENTS, billomat_id=incoming_payment_id)
 
     """
@@ -1343,10 +1761,22 @@ class Billomapy(object):
         )
 
     def get_incoming_property(self, incoming_property_id):
+        """
+        Get a specific incoming property
+
+        :param incoming_property_id: The specific incoming property id
+        :return: dict
+        """
         return self._create_get_request(resource=INCOMING_PROPERTIES, billomat_id=incoming_property_id)
 
-    def set_incoming_property(self, incoming_dict):
-        return self._create_post_request(resource=INCOMING_PROPERTIES, send_data=incoming_dict)
+    def create_incoming_property(self, incoming_property_dict):
+        """
+        Creates an incoming property
+
+        :param incoming_property_dict: dict
+        :return: dict
+        """
+        return self._create_post_request(resource=INCOMING_PROPERTIES, send_data=incoming_property_dict)
 
     """
     --------
@@ -1386,12 +1816,30 @@ class Billomapy(object):
         )
 
     def get_incoming_tag(self, incoming_tag_id):
+        """
+        Get a specific incoming tag
+
+        :param incoming_tag_id: The specific incoming tag id
+        :return: dict
+        """
         return self._create_get_request(resource=INCOMING_TAGS, billomat_id=incoming_tag_id)
 
     def create_incoming_tag(self, incoming_tag_dict):
+        """
+        Creates an incoming tag
+
+        :param incoming_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INCOMING_TAGS, send_data=incoming_tag_dict)
 
     def delete_incoming_tag(self, incoming_tag_id):
+        """
+        Deletes an incoming tag
+
+        :param incoming_tag_id: the incoming tag id
+        :return: dict
+        """
         return self._create_delete_request(resource=INCOMING_TAGS, billomat_id=incoming_tag_id)
 
     """
@@ -1428,12 +1876,30 @@ class Billomapy(object):
         )
 
     def get_inbox_document(self, inbox_document_id):
+        """
+        Get a specific inbox document
+
+        :param inbox_document_id: The specific inbox document id
+        :return: dict
+        """
         return self._create_get_request(resource=INBOX_DOCUMENTS, billomat_id=inbox_document_id)
 
     def create_inbox_document(self, inbox_document_dict):
+        """
+        Creates an inbox document
+
+        :param inbox_document_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=INBOX_DOCUMENTS, send_data=inbox_document_dict)
 
     def delete_inbox_document(self, inbox_document_id):
+        """
+        Deletes an inbox document
+
+        :param inbox_document_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=INBOX_DOCUMENTS, billomat_id=inbox_document_id)
 
     """
@@ -1468,15 +1934,40 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_offers_per_page, resource=OFFERS, **{'params': params})
 
     def get_offer(self, offer_id):
+        """
+        Get a specific offer
+
+        :param offer_id: The specific offer id
+        :return: dict
+        """
         return self._create_get_request(resource=OFFERS, billomat_id=offer_id)
 
     def create_offer(self, offer_dict):
+        """
+        Creates an offer
+
+        :param offer_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=OFFERS, send_data=offer_dict)
 
     def update_offer(self, offer_id, offer_dict):
+        """
+        Updates an offer
+
+        :param offer_id: the offer id
+        :param offer_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=OFFERS, billomat_id=offer_id, send_data=offer_dict)
 
     def delete_offer(self, offer_id):
+        """
+        Deletes an offer
+
+        :param offer_id: the offer id
+        :return: dict
+        """
         return self._create_delete_request(resource=OFFERS, billomat_id=offer_id)
 
     """
@@ -1518,15 +2009,40 @@ class Billomapy(object):
         )
 
     def get_offer_item(self, offer_item_id):
+        """
+        Get a specific offer item
+
+        :param offer_item_id: The specific offer item id
+        :return: dict
+        """
         return self._create_get_request(OFFER_ITEMS, offer_item_id)
 
     def create_offer_item(self, offer_item_dict):
+        """
+        Creates an offer item
+
+        :param offer_item_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=OFFER_ITEMS, send_data=offer_item_dict)
 
     def update_offer_item(self, offer_item_id, offer_item_dict):
+        """
+        Updates an offer item
+
+        :param offer_item_id: offer item id
+        :param offer_item_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=OFFER_ITEMS, billomat_id=offer_item_id, send_data=offer_item_dict)
 
     def delete_offer_item(self, offer_item_id):
+        """
+        Deletes an offer item
+
+        :param offer_item_id: the offer item id
+        :return: Response
+        """
         return self._create_delete_request(resource=OFFER_ITEMS, billomat_id=offer_item_id)
 
     """
@@ -1568,12 +2084,31 @@ class Billomapy(object):
         )
 
     def get_offer_comment(self, offer_comment_id):
+        """
+        Get a specific offer comment
+
+        :param offer_comment_id: The specific offer comment id
+        :return: dict
+        """
         return self._create_get_request(OFFER_COMMENTS, offer_comment_id)
 
     def create_offer_comment(self, offer_comment_dict):
+        """
+        Creates an offer comment
+
+        :param offer_comment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=OFFER_COMMENTS, send_data=offer_comment_dict)
 
     def update_offer_comment(self, offer_comment_id, offer_comment_dict):
+        """
+        Updates an offer comment
+
+        :param offer_comment_id: the offer comment id
+        :param offer_comment_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=OFFER_COMMENTS,
             billomat_id=offer_comment_id,
@@ -1581,6 +2116,12 @@ class Billomapy(object):
         )
 
     def delete_offer_comment(self, offer_comment_id):
+        """
+        Deletes an offer comment
+
+        :param offer_comment_id: the offer comment id
+        :return: Response
+        """
         return self._create_delete_request(resource=OFFER_COMMENTS, billomat_id=offer_comment_id)
 
     """
@@ -1621,12 +2162,30 @@ class Billomapy(object):
         )
 
     def get_offer_tag(self, offer_tag_id):
+        """
+        Get a specific offer tag
+
+        :param offer_tag_id: The specific offer tag id
+        :return: dict
+        """
         return self._create_get_request(resource=OFFER_TAGS, billomat_id=offer_tag_id)
 
     def create_offer_tag(self, offer_tag_dict):
+        """
+        Creates an offer tag
+
+        :param offer_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=OFFER_TAGS, send_data=offer_tag_dict)
 
     def delete_offer_tag(self, offer_tag_id):
+        """
+        Deletes an offer
+
+        :param offer_tag_id: the offer tag id
+        :return: Response
+        """
         return self._create_delete_request(resource=OFFER_TAGS, billomat_id=offer_tag_id)
 
     """
@@ -1661,15 +2220,40 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_credit_notes_per_page, resource=CREDIT_NOTES, **{'params': params})
 
     def get_credit_note(self, credit_note_id):
+        """
+        Get a specific credit note
+
+        :param credit_note_id: The specific credit note id
+        :return: dict
+        """
         return self._create_get_request(resource=CREDIT_NOTES, billomat_id=credit_note_id)
 
     def create_credit_note(self, credit_note_dict):
+        """
+        Creates a credit note
+
+        :param credit_note_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CREDIT_NOTES, send_data=credit_note_dict)
 
     def update_credit_note(self, credit_note_id, credit_note_dict):
+        """
+        Updates a credit note
+
+        :param credit_note_id: the credit note id
+        :param credit_note_dict: dict
+        :return: dict
+        """
         return self._create_put_request(resource=CREDIT_NOTES, billomat_id=credit_note_id, send_data=credit_note_dict)
 
     def delete_credit_note(self, credit_note_id):
+        """
+        Deletes a credit note
+
+        :param credit_note_id: the credit note id
+        :return: Response
+        """
         return self._create_delete_request(resource=CREDIT_NOTES, billomat_id=credit_note_id)
 
     """
@@ -1711,12 +2295,31 @@ class Billomapy(object):
         )
 
     def get_credit_note_item(self, credit_note_item_id):
+        """
+        Get a specific credit note item
+
+        :param credit_note_item_id: The specific credit note item id
+        :return: dict
+        """
         return self._create_get_request(CREDIT_NOTE_ITEMS, credit_note_item_id)
 
     def create_credit_note_item(self, credit_note_item_dict):
+        """
+        Creates a credit note item
+
+        :param credit_note_item_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CREDIT_NOTE_ITEMS, send_data=credit_note_item_dict)
 
     def update_credit_note_item(self, credit_note_item_id, credit_note_item_dict):
+        """
+        Updates a credit note item
+
+        :param credit_note_item_id: the credit note item id
+        :param credit_note_item_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=CREDIT_NOTE_ITEMS,
             billomat_id=credit_note_item_id,
@@ -1765,12 +2368,31 @@ class Billomapy(object):
         )
 
     def get_credit_note_comment(self, credit_note_comment_id):
+        """
+        Get a specific credit note comment
+
+        :param credit_note_comment_id: The specific credit note comment id
+        :return: dict
+        """
         return self._create_get_request(CREDIT_NOTE_COMMENTS, credit_note_comment_id)
 
     def create_credit_note_comment(self, credit_note_comment_dict):
+        """
+        Creates a credit note comment
+
+        :param credit_note_comment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CREDIT_NOTE_COMMENTS, send_data=credit_note_comment_dict)
 
     def update_credit_note_comment(self, credit_note_comment_id, credit_note_comment_dict):
+        """
+        Updates a credit note comment
+
+        :param credit_note_comment_id: the credit note comment id
+        :param credit_note_comment_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=CREDIT_NOTE_COMMENTS,
             billomat_id=credit_note_comment_id,
@@ -1778,6 +2400,12 @@ class Billomapy(object):
         )
 
     def delete_credit_note_comment(self, credit_note_comment_id):
+        """
+        Deletes a credit note comment
+
+        :param credit_note_comment_id: the credit note comment id
+        :return: Response
+        """
         return self._create_delete_request(resource=CREDIT_NOTE_COMMENTS, billomat_id=credit_note_comment_id)
 
     """
@@ -1819,12 +2447,30 @@ class Billomapy(object):
         )
 
     def get_credit_note_payment(self, credit_note_payment_id):
+        """
+        Get a specific credit note payment
+
+        :param credit_note_payment_id: The specific credit note payment id
+        :return: dict
+        """
         return self._create_get_request(CREDIT_NOTE_PAYMENTS, credit_note_payment_id)
 
     def create_credit_note_payment(self, credit_note_payment_dict):
+        """
+        Creates a credit note payment
+
+        :param credit_note_payment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CREDIT_NOTE_PAYMENTS, send_data=credit_note_payment_dict)
 
     def delete_credit_note_payment(self, credit_note_payment_id):
+        """
+        Deletes a credit note payment
+
+        :param credit_note_payment_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=CREDIT_NOTE_PAYMENTS, billomat_id=credit_note_payment_id)
 
     """
@@ -1857,12 +2503,30 @@ class Billomapy(object):
         )
 
     def get_credit_note_tag(self, credit_note_tag_id):
+        """
+        Get a specific credit note tag
+
+        :param credit_note_tag_id: The specific credit note tag id
+        :return: dict
+        """
         return self._create_get_request(resource=CREDIT_NOTE_TAGS, billomat_id=credit_note_tag_id)
 
     def create_credit_note_tag(self, credit_note_tag_dict):
+        """
+        Creates a credit note tag
+
+        :param credit_note_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CREDIT_NOTE_TAGS, send_data=credit_note_tag_dict)
 
     def delete_credit_note_tag(self, credit_note_tag_id):
+        """
+        Deletes a credit note tag
+
+        :param credit_note_tag_id: the credit note tag id
+        :return: Response
+        """
         return self._create_delete_request(resource=CREDIT_NOTE_TAGS, billomat_id=credit_note_tag_id)
 
     """
@@ -1901,12 +2565,31 @@ class Billomapy(object):
         )
 
     def get_confirmation(self, confirmation_id):
+        """
+        Get a specific confirmation
+
+        :param confirmation_id: The specific confirmation id
+        :return: dict
+        """
         return self._create_get_request(resource=CONFIRMATIONS, billomat_id=confirmation_id)
 
     def create_confirmation(self, confirmation_dict):
+        """
+        Creates a confirmation
+
+        :param confirmation_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CONFIRMATIONS, send_data=confirmation_dict)
 
     def update_confirmation(self, confirmation_id, confirmation_dict):
+        """
+        Updates a confirmation
+
+        :param confirmation_id: the confirmation id
+        :param confirmation_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=CONFIRMATIONS,
             billomat_id=confirmation_id,
@@ -1914,6 +2597,12 @@ class Billomapy(object):
         )
 
     def delete_confirmation(self, confirmation_id):
+        """
+        Deletes a confirmation
+
+        :param confirmation_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=CONFIRMATIONS, billomat_id=confirmation_id)
 
     """
@@ -1955,12 +2644,31 @@ class Billomapy(object):
         )
 
     def get_confirmation_item(self, confirmation_item_id):
+        """
+        Get a specific confirmation item
+
+        :param confirmation_item_id: The specific confirmation item id
+        :return: dict
+        """
         return self._create_get_request(CONFIRMATION_ITEMS, confirmation_item_id)
 
     def create_confirmation_item(self, confirmation_item_dict):
+        """
+        Creates a confirmation item
+
+        :param confirmation_item_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CONFIRMATION_ITEMS, send_data=confirmation_item_dict)
 
     def update_confirmation_item(self, confirmation_item_id, confirmation_item_dict):
+        """
+        Updates a confirmation item
+
+        :param confirmation_item_id: the confirmation item id
+        :param confirmation_item_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=CONFIRMATION_ITEMS,
             billomat_id=confirmation_item_id,
@@ -1968,6 +2676,12 @@ class Billomapy(object):
         )
 
     def delete_confirmation_item(self, confirmation_item_id):
+        """
+        Deletes a confirmation item
+
+        :param confirmation_item_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=CONFIRMATION_ITEMS, billomat_id=confirmation_item_id)
 
     """
@@ -2009,12 +2723,31 @@ class Billomapy(object):
         )
 
     def get_confirmation_comment(self, confirmation_comment_id):
+        """
+        Get a specific confirmation comment
+
+        :param confirmation_comment_id: The specific confirmation comment id
+        :return: dict
+        """
         return self._create_get_request(CONFIRMATION_COMMENTS, confirmation_comment_id)
 
     def create_confirmation_comment(self, confirmation_comment_dict):
+        """
+        Creates a confirmation comment
+
+        :param confirmation_comment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CONFIRMATION_COMMENTS, send_data=confirmation_comment_dict)
 
     def update_confirmation_comment(self, confirmation_comment_id, confirmation_comment_dict):
+        """
+        Updates a confirmation comment
+
+        :param confirmation_comment_id: the confirmation comment id
+        :param confirmation_comment_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=CONFIRMATION_COMMENTS,
             billomat_id=confirmation_comment_id,
@@ -2022,6 +2755,12 @@ class Billomapy(object):
         )
 
     def delete_confirmation_comment(self, confirmation_comment_id):
+        """
+        Deletes a confirmation comment
+
+        :param confirmation_comment_id: dict
+        :return: dict
+        """
         return self._create_delete_request(resource=CONFIRMATION_COMMENTS, billomat_id=confirmation_comment_id)
 
     """
@@ -2062,12 +2801,30 @@ class Billomapy(object):
         )
 
     def get_confirmation_tag(self, confirmation_tag_id):
+        """
+        Get a specific confirmation tag
+
+        :param confirmation_tag_id: The specific confirmation tag id
+        :return: dict
+        """
         return self._create_get_request(resource=CONFIRMATION_TAGS, billomat_id=confirmation_tag_id)
 
     def create_confirmation_tag(self, confirmation_tag_dict):
+        """
+        Creates a confirmation tag
+
+        :param confirmation_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=CONFIRMATION_TAGS, send_data=confirmation_tag_dict)
 
     def delete_confirmation_tag(self, confirmation_tag_id):
+        """
+        Deletes a confirmation tag
+
+        :param confirmation_tag_id: the confirmation tag id
+        :return: Response
+        """
         return self._create_delete_request(resource=CONFIRMATION_TAGS, billomat_id=confirmation_tag_id)
 
     """
@@ -2102,12 +2859,31 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_reminders_per_page, resource=REMINDERS, **{'params': params})
 
     def get_reminder(self, reminder_id):
+        """
+        Get a specific reminder
+
+        :param reminder_id: The specific reminder id
+        :return: dict
+        """
         return self._create_get_request(resource=REMINDERS, billomat_id=reminder_id)
 
     def create_reminder(self, reminder_dict):
+        """
+        Creates a reminder
+
+        :param reminder_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=REMINDERS, send_data=reminder_dict)
 
     def update_reminder(self, reminder_id, reminder_dict):
+        """
+        Updates a reminder
+
+        :param reminder_id: the reminder id
+        :param reminder_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=REMINDERS,
             billomat_id=reminder_id,
@@ -2115,6 +2891,12 @@ class Billomapy(object):
         )
 
     def delete_reminder(self, reminder_id):
+        """
+        Deletes a reminder
+
+        :param reminder_id: the reminder id
+        :return: dict
+        """
         return self._create_delete_request(resource=REMINDERS, billomat_id=reminder_id)
 
     """
@@ -2156,12 +2938,31 @@ class Billomapy(object):
         )
 
     def get_reminder_item(self, reminder_item_id):
+        """
+        Get a specific reminder item
+
+        :param reminder_item_id: The specific reminder item id
+        :return: dict
+        """
         return self._create_get_request(REMINDER_ITEMS, reminder_item_id)
 
     def create_reminder_item(self, reminder_item_dict):
+        """
+        Creates a reminder item
+
+        :param reminder_item_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=REMINDER_ITEMS, send_data=reminder_item_dict)
 
     def update_reminder_item(self, reminder_item_id, reminder_item_dict):
+        """
+        Updates a reminder item
+
+        :param reminder_item_id: the reminder item id
+        :param reminder_item_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=REMINDER_ITEMS,
             billomat_id=reminder_item_id,
@@ -2169,6 +2970,12 @@ class Billomapy(object):
         )
 
     def delete_reminder_item(self, reminder_item_id):
+        """
+        Deletes a reminder item
+
+        :param reminder_item_id: the reminder item id
+        :return: Response
+        """
         return self._create_delete_request(resource=REMINDER_ITEMS, billomat_id=reminder_item_id)
 
     """
@@ -2209,12 +3016,30 @@ class Billomapy(object):
         )
 
     def get_reminder_tag(self, reminder_tag_id):
+        """
+        Get a specific reminder tag
+
+        :param reminder_tag_id: The specific reminder tag id
+        :return: dict
+        """
         return self._create_get_request(resource=REMINDER_TAGS, billomat_id=reminder_tag_id)
 
     def create_reminder_tag(self, reminder_tag_dict):
+        """
+        Creates a reminder tag
+
+        :param reminder_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=REMINDER_TAGS, send_data=reminder_tag_dict)
 
     def delete_reminder_tag(self, reminder_tag_id):
+        """
+        Deletes a reminder tag
+
+        :param reminder_tag_id: reminder tag id
+        :return: Response
+        """
         return self._create_delete_request(resource=REMINDER_TAGS, billomat_id=reminder_tag_id)
 
     """
@@ -2253,12 +3078,31 @@ class Billomapy(object):
         )
 
     def get_delivery_note(self, delivery_note_id):
+        """
+        Get a specific delivery note
+
+        :param delivery_note_id: The specific delivery note id
+        :return: dict
+        """
         return self._create_get_request(resource=DELIVERY_NOTES, billomat_id=delivery_note_id)
 
     def create_delivery_note(self, delivery_note_dict):
+        """
+        Creates a delivery note
+
+        :param delivery_note_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=DELIVERY_NOTES, send_data=delivery_note_dict)
 
     def update_delivery_note(self, delivery_note_id, delivery_note_dict):
+        """
+        Updates a delivery note
+
+        :param delivery_note_id: the delivery note id
+        :param delivery_note_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=DELIVERY_NOTES,
             billomat_id=delivery_note_id,
@@ -2266,6 +3110,12 @@ class Billomapy(object):
         )
 
     def delete_delivery_note(self, delivery_note_id):
+        """
+        Deletes a delivery note
+
+        :param delivery_note_id: the delivery note id
+        :return: Response
+        """
         return self._create_delete_request(resource=DELIVERY_NOTES, billomat_id=delivery_note_id)
 
     """
@@ -2307,12 +3157,31 @@ class Billomapy(object):
         )
 
     def get_delivery_note_item(self, delivery_note_item_id):
+        """
+        Get a specific delivery note item
+
+        :param delivery_note_item_id: The specific delivery note item id
+        :return: dict
+        """
         return self._create_get_request(REMINDER_ITEMS, delivery_note_item_id)
 
     def create_delivery_note_item(self, delivery_note_item_dict):
+        """
+        Creates a delivery note item
+
+        :param delivery_note_item_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=DELIVERY_NOTE_ITEMS, send_data=delivery_note_item_dict)
 
     def update_delivery_note_item(self, delivery_note_item_id, delivery_note_item_dict):
+        """
+        Updates a delivery note item
+
+        :param delivery_note_item_id: delivery note item id
+        :param delivery_note_item_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=DELIVERY_NOTE_ITEMS,
             billomat_id=delivery_note_item_id,
@@ -2320,6 +3189,12 @@ class Billomapy(object):
         )
 
     def delete_delivery_note_item(self, delivery_note_item_id):
+        """
+        Deletes a delivery note item
+
+        :param delivery_note_item_id: the delivery note item id
+        :return: Response
+        """
         return self._create_delete_request(resource=DELIVERY_NOTE_ITEMS, billomat_id=delivery_note_item_id)
 
     """
@@ -2361,12 +3236,31 @@ class Billomapy(object):
         )
 
     def get_delivery_note_comment(self, delivery_note_comment_id):
+        """
+        Get a specific delivery note comment
+
+        :param delivery_note_comment_id: The specific delivery note comment id
+        :return: dict
+        """
         return self._create_get_request(DELIVERY_NOTE_COMMENTS, delivery_note_comment_id)
 
     def create_delivery_note_comment(self, delivery_note_comment_dict):
+        """
+        Creates a delivery note comment
+
+        :param delivery_note_comment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=DELIVERY_NOTE_COMMENTS, send_data=delivery_note_comment_dict)
 
     def update_delivery_note_comment(self, delivery_note_comment_id, delivery_note_comment_dict):
+        """
+        Updates a delivery note comment
+
+        :param delivery_note_comment_id: the delivery note comment id
+        :param delivery_note_comment_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=DELIVERY_NOTE_COMMENTS,
             billomat_id=delivery_note_comment_id,
@@ -2374,6 +3268,12 @@ class Billomapy(object):
         )
 
     def delete_delivery_note_comment(self, delivery_note_comment_id):
+        """
+        Deletes a delivery note comment
+
+        :param delivery_note_comment_id: dict
+        :return: Response
+        """
         return self._create_delete_request(resource=DELIVERY_NOTE_COMMENTS, billomat_id=delivery_note_comment_id)
 
     """
@@ -2414,12 +3314,30 @@ class Billomapy(object):
         )
 
     def get_delivery_note_tag(self, delivery_note_tag_id):
+        """
+        Get a specific delivery note tag
+
+        :param delivery_note_tag_id: The specific delivery note tag id
+        :return: dict
+        """
         return self._create_get_request(resource=DELIVERY_NOTE_TAGS, billomat_id=delivery_note_tag_id)
 
     def create_delivery_note_tag(self, delivery_note_tag_dict):
+        """
+        Creates a delivery note tag
+
+        :param delivery_note_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=DELIVERY_NOTE_TAGS, send_data=delivery_note_tag_dict)
 
     def delete_delivery_note_tag(self, delivery_note_tag_id):
+        """
+        Deletes a delivery note tag
+
+        :param delivery_note_tag_id: the delivery note tag
+        :return: Response
+        """
         return self._create_delete_request(resource=DELIVERY_NOTE_TAGS, billomat_id=delivery_note_tag_id)
 
     """
@@ -2454,12 +3372,31 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_letters_per_page, resource=LETTERS, **{'params': params})
 
     def get_letter(self, letter_id):
+        """
+        Get a specific letter
+
+        :param letter_id: The specific letter id
+        :return: dict
+        """
         return self._create_get_request(resource=LETTERS, billomat_id=letter_id)
 
     def create_letter(self, letter_dict):
+        """
+        Creates a letter
+
+        :param letter_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=LETTERS, send_data=letter_dict)
 
     def update_letter(self, letter_id, letter_dict):
+        """
+        Updates a letter
+
+        :param letter_id: the letter id
+        :param letter_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=LETTERS,
             billomat_id=letter_id,
@@ -2467,6 +3404,12 @@ class Billomapy(object):
         )
 
     def delete_letter(self, letter_id):
+        """
+        Deletes a letter
+
+        :param letter_id: the letter id
+        :return: Response
+        """
         return self._create_delete_request(resource=LETTERS, billomat_id=letter_id)
 
     """
@@ -2508,12 +3451,31 @@ class Billomapy(object):
         )
 
     def get_letter_comment(self, letter_comment_id):
+        """
+        Get a specific letter comment
+
+        :param letter_comment_id: The specific letter comment id
+        :return: dict
+        """
         return self._create_get_request(LETTER_COMMENTS, letter_comment_id)
 
     def create_letter_comment(self, letter_comment_dict):
+        """
+        Creates a letter comment
+
+        :param letter_comment_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=LETTER_COMMENTS, send_data=letter_comment_dict)
 
     def update_letter_comment(self, letter_comment_id, letter_comment_dict):
+        """
+        Updates a letter comment
+
+        :param letter_comment_id: the letter command id
+        :param letter_comment_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=LETTER_COMMENTS,
             billomat_id=letter_comment_id,
@@ -2521,6 +3483,12 @@ class Billomapy(object):
         )
 
     def delete_letter_comment(self, letter_comment_id):
+        """
+        Deletes a letter comment
+
+        :param letter_comment_id: the letter comment id
+        :return: Response
+        """
         return self._create_delete_request(resource=LETTER_COMMENTS, billomat_id=letter_comment_id)
 
     """
@@ -2561,12 +3529,30 @@ class Billomapy(object):
         )
 
     def get_letter_tag(self, letter_tag_id):
+        """
+        Get a specific letter tag
+
+        :param letter_tag_id: The specific letter tag id
+        :return: dict
+        """
         return self._create_get_request(resource=LETTER_TAGS, billomat_id=letter_tag_id)
 
     def create_letter_tag(self, letter_tag_dict):
+        """
+        Creates a letter tag
+
+        :param letter_tag_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=LETTER_TAGS, send_data=letter_tag_dict)
 
     def delete_letter_tag(self, letter_tag_id):
+        """
+        Deletes a letter tag
+
+        :param letter_tag_id: the letter tag id
+        :return: Response
+        """
         return self._create_delete_request(resource=LETTER_TAGS, billomat_id=letter_tag_id)
 
     """
@@ -2601,12 +3587,31 @@ class Billomapy(object):
         return self._iterate_through_pages(self.get_templates_per_page, resource=TEMPLATES, **{'params': params})
 
     def get_template(self, template_id):
+        """
+        Get a specific template
+
+        :param template_id: The specific template id
+        :return: dict
+        """
         return self._create_get_request(resource=TEMPLATES, billomat_id=template_id)
 
     def create_template(self, template_dict):
+        """
+        Creates a template
+
+        :param template_dict: dict
+        :return: dict
+        """
         return self._create_post_request(resource=TEMPLATES, send_data=template_dict)
 
     def update_template(self, template_id, template_dict):
+        """
+        Updates a template
+
+        :param template_id: the template id
+        :param template_dict: dict
+        :return: dict
+        """
         return self._create_put_request(
             resource=TEMPLATES,
             billomat_id=template_id,
@@ -2614,4 +3619,10 @@ class Billomapy(object):
         )
 
     def delete_template(self, template_id):
+        """
+        Deletes a template
+
+        :param template_id: the template id
+        :return: Response
+        """
         return self._create_delete_request(resource=TEMPLATES, billomat_id=template_id)
