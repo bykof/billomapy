@@ -15,15 +15,14 @@ class Billomapy(object):
 
     Some important things for developer:
     Billomat API Docs: http://www.billomat.com/api
+
+    :param billomat_id: Mostly the name of your company for example https://YOUR_COMPANY.billomat.net/api/
+    :param api_key: The api key that you requested from billomat
+    :param app_id: The app_id that you requested by billomat
+    :param app_secret: The app_secret that you requested by billomat
     """
 
     def __init__(self, billomat_id, api_key, app_id, app_secret):
-        """
-        :param billomat_id: Mostly the name of your company for example https://YOUR_COMPANY.billomat.net/api/
-        :param api_key: The api key that you requested from billomat
-        :param app_id: The app_id that you requested by billomat
-        :param app_secret: The app_secret that you requested by billomat
-        """
         self.billomat_id = billomat_id
         self.api_key = api_key
         self.app_id = app_id
@@ -186,7 +185,8 @@ class Billomapy(object):
     def get_clients_per_page(self, per_page=1000, page=1, params=None):
         """
         Get clients per page
-        :param per_page: How many clients per page. Default: 1000
+
+        :param per_page: How many objects per page. Default: 1000
         :param page: Which page. Default: 1
         :param params: Search parameters. Default: {}
         :return: dict
@@ -196,6 +196,7 @@ class Billomapy(object):
     def get_all_clients(self, params=None):
         """
         Get all clients
+
         :param params: Search parameters. Default: {
         :return: dict
         """
@@ -208,6 +209,7 @@ class Billomapy(object):
     def get_client(self, client_id):
         """
         Get a specific client by the billomat client id
+
         :param client_id: The specific client id
         :return: dict
         """
@@ -216,12 +218,8 @@ class Billomapy(object):
     def create_client(self, client_dict):
         """
         Creates a client
+
         :param client_dict: a dictionary with e.g.
-        {
-            'client': {
-                'name': 'Company Name',
-            }
-        }
         :return: response dict of billomat
         """
         return self._create_post_request(CLIENTS, client_dict)
@@ -229,6 +227,7 @@ class Billomapy(object):
     def update_client(self, client_id, client_dict):
         """
         Updates a client with the given keys and values in the dict
+
         :param client_id: the client which you want to update
         :param client_dict: the key, value pairs (see doc)
         :return: response dict of billomat
@@ -238,6 +237,7 @@ class Billomapy(object):
     def delete_client(self, client_id):
         """
         Deletes a client
+
         :param client_id: the client billomat id
         :return: the response object
         """
@@ -252,10 +252,11 @@ class Billomapy(object):
 
     def get_client_properties_per_page(self, per_page=1000, page=1, params=None):
         """
-        Get client properties by a given page and per page number
-        :param per_page: how many elements per page
-        :param page: which page
-        :param params: search params
+        Get client properties per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
         :return: dict
         """
         return self._get_resource_per_page(
@@ -268,6 +269,7 @@ class Billomapy(object):
     def get_all_client_properties(self, params=None):
         """
         Get all client properties
+
         :param params: Search params
         :return: dict
         """
@@ -280,6 +282,7 @@ class Billomapy(object):
     def get_client_property(self, client_property_id):
         """
         Get a client property by the billomat id of a client property
+
         :param client_property_id: the billomat id
         :return: the found client property dict
         """
@@ -288,6 +291,7 @@ class Billomapy(object):
     def create_client_property(self, client_property_dict):
         """
         Sets a client property
+
         :param client_property_dict: the client property
         :return:
         """
@@ -302,12 +306,14 @@ class Billomapy(object):
 
     def get_client_tags_per_page(self, per_page=1000, page=1, params=None):
         """
-        Get clients by a page paginated by a given number
+        Get client tags per page
+
         If you search tags, you can only search by client_id
-        :param per_page: how many items per page
-        :param page: which page
-        :param params: search params.
-        :return: the client tags
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
         """
         return self._get_resource_per_page(
             resource=CLIENT_TAGS,
@@ -320,6 +326,7 @@ class Billomapy(object):
         """
         Get all clients
         If you search tags, you can only search by client_id
+
         :param params: search params
         :return:
         """
@@ -332,6 +339,7 @@ class Billomapy(object):
     def get_client_tag(self, client_tag_id):
         """
         Get a specific client tag by the billomat id
+
         :param client_tag_id: billomat id of the client tag
         :return: the specific client tag
         """
@@ -339,15 +347,17 @@ class Billomapy(object):
 
     def create_client_tag(self, client_tag_dict):
         """
-        Creates a client atg
-        :param client_tag_dict:
-        :return:
+        Creates a client tag
+
+        :param client_tag_dict: dict
+        :return: response
         """
         return self._create_post_request(resource=CLIENT_TAGS, send_data=client_tag_dict)
 
     def delete_client_tag(self, client_tag_id):
         """
         Delete a specific client tag by the client tag id
+
         :param client_tag_id: the billomat id
         :return: Response Object
         """
@@ -361,6 +371,15 @@ class Billomapy(object):
     """
 
     def get_contacts_of_client_per_page(self, client_id, per_page=1000, page=1, params=None):
+        """
+        Get contacts of client per page
+
+        :param client_id: the client id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'client_id': client_id}
 
@@ -398,6 +417,14 @@ class Billomapy(object):
     """
 
     def get_suppliers_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get suppliers per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=SUPPLIERS, per_page=per_page, page=page, params=params)
 
     def get_all_suppliers(self, params=None):
@@ -425,6 +452,14 @@ class Billomapy(object):
     """
 
     def get_supplier_properties_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get supplier properties per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=SUPPLIER_PROPERTIES, per_page=per_page, page=page, params=params)
 
     def get_all_supplier_properties(self, params=None):
@@ -449,6 +484,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/suppliers/tags
     """
     def get_tags_of_supplier_per_page(self, supplier_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of suppliers per page
+
+        :param supplier_id: the supplier id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'supplier_id': supplier_id}
 
@@ -482,6 +526,14 @@ class Billomapy(object):
     http://www.billomat.com/en/api/articles
     """
     def get_articles_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get articles per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=ARTICLES, per_page=per_page, page=page, params=params)
 
     def get_all_articles(self, params=None):
@@ -509,6 +561,14 @@ class Billomapy(object):
     """
 
     def get_article_properties_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get article properties per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=ARTICLE_PROPERTIES, per_page=per_page, page=page, params=params)
 
     def get_all_article_properties(self, params=None):
@@ -533,6 +593,14 @@ class Billomapy(object):
     http://www.billomat.com/en/api/articles/tags
     """
     def get_tags_of_article_per_page(self, article_id, per_page=1000, page=1, params=None):
+        """
+        Get articles tags per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'article_id': article_id}
 
@@ -567,6 +635,14 @@ class Billomapy(object):
     """
 
     def get_units_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get units per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=UNITS, per_page=per_page, page=page, params=params)
 
     def get_all_units(self, params=None):
@@ -594,6 +670,14 @@ class Billomapy(object):
     """
 
     def get_invoices_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get invoices per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=INVOICES, per_page=per_page, page=page, params=params)
 
     def get_all_invoices(self, params=None):
@@ -621,6 +705,15 @@ class Billomapy(object):
     """
 
     def get_items_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
+        """
+        Get invoice items of invoice per page
+
+        :param invoice_id: the invoice id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'invoice_id': invoice_id}
 
@@ -662,6 +755,15 @@ class Billomapy(object):
     """
 
     def get_comments_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
+        """
+        Get comments of invoice per page
+
+        :param invoice_id: the invoice id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'invoice_id': invoice_id}
 
@@ -703,6 +805,14 @@ class Billomapy(object):
     """
 
     def get_invoice_payments_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get invoice payments per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {}
 
@@ -735,6 +845,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/invoices/tags
     """
     def get_tags_of_invoice_per_page(self, invoice_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of invoice per page
+
+        :param invoice_id: the invoice id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'invoice_id': invoice_id}
 
@@ -769,6 +888,14 @@ class Billomapy(object):
     """
 
     def get_recurrings_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get recurrings per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=RECURRINGS, per_page=per_page, page=page, params=params)
 
     def get_all_recurrings(self, params=None):
@@ -796,6 +923,15 @@ class Billomapy(object):
     """
 
     def get_items_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+        """
+        Get items of recurring per page
+
+        :param recurring_id: the recurring id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'recurring_id': recurring_id}
 
@@ -836,6 +972,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/recurrings/tags
     """
     def get_tags_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of recurring per page
+
+        :param recurring_id: the recurring id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'recurring_id': recurring_id}
 
@@ -869,6 +1014,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/recurrings/receivers
     """
     def get_email_receivers_of_recurring_per_page(self, recurring_id, per_page=1000, page=1, params=None):
+        """
+        Get email receivers of recurring per page
+
+        :param recurring_id: the recurring id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'recurring_id': recurring_id}
 
@@ -903,6 +1057,14 @@ class Billomapy(object):
     """
 
     def get_incomings_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get incomings per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=INCOMINGS, per_page=per_page, page=page, params=params)
 
     def get_all_incomings(self, params=None):
@@ -930,6 +1092,15 @@ class Billomapy(object):
     """
 
     def get_comments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+        """
+        Get comments of incomin per page
+
+        :param incoming_id: the incoming id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'incoming_id': incoming_id}
 
@@ -964,6 +1135,15 @@ class Billomapy(object):
     """
 
     def get_payments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+        """
+        Get payments of incoming per page
+
+        :param incoming_id: the incoming id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'incoming_id': incoming_id}
 
@@ -998,6 +1178,14 @@ class Billomapy(object):
     """
 
     def get_incoming_properties_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get incoming properties per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=INCOMING_PROPERTIES, per_page=per_page, page=page, params=params)
 
     def get_all_incoming_properties(self, params=None):
@@ -1022,6 +1210,15 @@ class Billomapy(object):
     http://www.billomat.com/en/api/incomings/tags
     """
     def get_tags_of_incoming_per_page(self, incoming_id, per_page=1000, page=1, params=None):
+        """
+        Get tags of incoming per page
+
+        :param incoming_id: the incoming id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'incoming_id': incoming_id}
 
@@ -1055,6 +1252,14 @@ class Billomapy(object):
     http://www.billomat.com/en/api/incomings/inbox
     """
     def get_inbox_documents_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get inbox documents per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {}
 
@@ -1088,6 +1293,14 @@ class Billomapy(object):
     """
 
     def get_offers_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get offers per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         return self._get_resource_per_page(resource=OFFERS, per_page=per_page, page=page, params=params)
 
     def get_all_offers(self, params=None):
@@ -1115,6 +1328,15 @@ class Billomapy(object):
     """
 
     def get_items_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+        """
+        Get items of offer per page
+
+        :param offer_id: the offer id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'offer_id': offer_id}
 
@@ -1152,6 +1374,15 @@ class Billomapy(object):
     """
 
     def get_comments_of_offer_per_page(self, offer_id, per_page=1000, page=1, params=None):
+        """
+        Get comments of offer per page
+
+        :param offer_id: the offer id
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: dict
+        """
         if not params:
             params = {'offer_id': offer_id}
 
