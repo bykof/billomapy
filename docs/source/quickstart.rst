@@ -103,7 +103,14 @@ Just initialize the Billomapy class and have fun
     )
 
     # Updating a client
-    updated_client = billomapy.update_client(new_client.get('id'), {'client': {'first_name': 'Meg'}})
+    updated_client = billomapy.update_client(
+        new_client.get('id'),
+        {
+            'client': {
+                'first_name': 'Meg'
+			}
+		}
+	)
 
     # Deleting a client
     deleted_response_object = billomapy.delete_client(new_client.get('id'))
