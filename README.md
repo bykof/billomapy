@@ -1,5 +1,4 @@
-[![Documentation Status](https://readthedocs.org/projects/billomapy/badge/?version=latest)](http://billomapy.readthedocs.org/en/latest/?badge=latest)
-
+[![Documentation Status](https://readthedocs.org/projects/billomapy/badge/?version=latest)](http://billomapy.readthedocs.org/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/billomapy.svg)](https://badge.fury.io/py/billomapy)
 billomapy
 ===================
 
