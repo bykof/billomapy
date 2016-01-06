@@ -175,3 +175,18 @@ LETTER_TAG = LETTER + TAG
 
 TEMPLATES = 'templates'
 TEMPLATE = 'template'
+
+"""
+COMMANDS for the API
+"""
+
+COMPLETE = 'complete'
+PDF = 'pdf'
+UPLOAD_SIGNATURE = 'upload-signature'
+EMAIL = 'email'
+CANCEL = 'cancel'
+UNCANCEL = 'uncancel'
+WIN = 'win'
+LOSE = 'lose'
+CLEAR = 'clear'
+UNCLEAR = 'unclear'

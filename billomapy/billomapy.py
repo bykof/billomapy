@@ -40,12 +40,17 @@ class Billomapy(object):
             }
         )
 
-    def _create_get_request(self, resource, billomat_id='', params=None):
+    def _create_get_request(self, resource, billomat_id='', command=None, params=None):
         """
         Creates a get request and return the response data
         """
         if not params:
             params = {}
+
+        if not command:
+            command = ''
+        else:
+            command = '/' + command
 
         assert (isinstance(resource, basestring))
         if billomat_id:
@@ -54,7 +59,7 @@ class Billomapy(object):
             if isinstance(billomat_id, int):
                 billomat_id = str(billomat_id)
         response = self.session.get(
-            url=self.api_url + resource + ('/' + billomat_id if billomat_id else ''),
+            url=self.api_url + resource + ('/' + billomat_id if billomat_id else '') + command,
             params=params,
         )
 
@@ -64,13 +69,23 @@ class Billomapy(object):
             logger.error('Error: ', response.content)
             response.raise_for_status()
 
-    def _create_post_request(self, resource, send_data):
+    def _create_post_request(self, resource, send_data, billomat_id='', command=None):
         """
         Creates a post request and return the response data
         """
         assert (isinstance(resource, basestring))
+
+        if billomat_id:
+            if isinstance(billomat_id, int):
+                billomat_id = str(billomat_id)
+
+        if not command:
+            command = ''
+        else:
+            command = '/' + command
+
         response = self.session.post(
-            url=self.api_url + resource,
+            url=self.api_url + resource + ('/' + billomat_id if billomat_id else '') + command,
             data=json.dumps(send_data),
         )
         if response.status_code == requests.codes.created:
@@ -79,7 +94,7 @@ class Billomapy(object):
             logger.error('Error: ', response.content)
             response.raise_for_status()
 
-    def _create_put_request(self, resource, billomat_id, send_data):
+    def _create_put_request(self, resource, billomat_id, command=None, send_data=None):
         """
         Creates a post request and return the response data
         """
@@ -88,13 +103,18 @@ class Billomapy(object):
         if isinstance(billomat_id, int):
             billomat_id = str(billomat_id)
 
-        response = self.session.post(
-            url=self.api_url + resource + '/' + billomat_id,
+        if not command:
+            command = ''
+        else:
+            command = '/' + command
+
+        response = self.session.put(
+            url=self.api_url + resource + '/' + billomat_id + command,
             data=json.dumps(send_data),
         )
 
         if response.status_code == requests.codes.ok:
-            return response.json()
+            return response
         else:
             logger.error('Error: ', response.content)
             response.raise_for_status()
@@ -959,6 +979,88 @@ class Billomapy(object):
         :return: Response
         """
         return self._create_delete_request(resource=INVOICES, billomat_id=invoice_id)
+
+    def complete_invoice(self, invoice_id, complete_dict):
+        """
+        Completes an invoice
+
+        :param complete_dict: the complete dict with the template id
+        :param invoice_id: the invoice id
+        :return: Response
+        """
+        return self._create_put_request(
+            resource=INVOICES,
+            billomat_id=invoice_id,
+            command=COMPLETE,
+            send_data=complete_dict
+        )
+
+    def invoice_pdf(self, invoice_id):
+        """
+        Opens a pdf of an invoice
+
+        :param invoice_id: the invoice id
+        :return: dict
+        """
+        return self._create_get_request(resource=INVOICES, billomat_id=invoice_id, command=PDF)
+
+    def upload_invoice_signature(self, invoice_id, signature_dict):
+        """
+        Uploads a signature for the invoice
+
+        :param signature_dict: the signature
+        :type signature_dict: dict
+        :param invoice_id: the invoice id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=INVOICES,
+            billomat_id=invoice_id,
+            send_data=signature_dict,
+            command=UPLOAD_SIGNATURE
+        )
+
+    def send_invoice_email(self, invoice_id, email_dict):
+        """
+        Sends an invoice by email
+        If you want to send your email to more than one persons do:
+        'recipients': {'to': ['bykof@me.com', 'mbykovski@seibert-media.net']}}
+
+        :param invoice_id: the invoice id
+        :param email_dict: the email dict
+        :return dict
+        """
+        return self._create_post_request(
+            resource=INVOICES,
+            billomat_id=invoice_id,
+            send_data=email_dict,
+            command=EMAIL,
+        )
+
+    def cancel_invoice(self, invoice_id):
+        """
+        Cancelles an invoice
+
+        :param invoice_id: the invoice id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=INVOICES,
+            billomat_id=invoice_id,
+            command=CANCEL,
+        )
+
+    def uncancel_invoice(self, invoice_id):
+        """
+        Uncancelles an invoice
+
+        :param invoice_id: the invoice id
+        """
+        return self._create_put_request(
+            resource=INVOICES,
+            billomat_id=invoice_id,
+            command=UNCANCEL,
+        )
 
     """
     --------
@@ -1970,6 +2072,125 @@ class Billomapy(object):
         """
         return self._create_delete_request(resource=OFFERS, billomat_id=offer_id)
 
+    def complete_offer(self, offer_id, complete_dict):
+        """
+        Completes an offer
+
+        :param complete_dict: the complete dict with the template id
+        :param offer_id: the offer id
+        :return: Response
+        """
+        return self._create_put_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            command=COMPLETE,
+            send_data=complete_dict
+        )
+
+    def offer_pdf(self, offer_id):
+        """
+        Opens a pdf of an offer
+
+        :param offer_id: the offer id
+        :return: dict
+        """
+        return self._create_get_request(resource=OFFERS, billomat_id=offer_id, command=PDF)
+
+    def send_offer_email(self, offer_id, email_dict):
+        """
+        Sends an offer by email
+        If you want to send your email to more than one persons do:
+        'recipients': {'to': ['bykof@me.com', 'mbykovski@seibert-media.net']}}
+
+        :param offer_id: the invoice id
+        :param email_dict: the email dict
+        :return dict
+        """
+        return self._create_post_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            send_data=email_dict,
+            command=EMAIL,
+        )
+
+    def cancel_offer(self, offer_id):
+        """
+        Cancelles an offer
+
+        :param offer_id: the offer id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            command=CANCEL,
+        )
+
+    def uncancel_offer(self, offer_id):
+        """
+        Uncancelles an invoice
+
+        :param offer_id: the offer id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            command=UNCANCEL,
+        )
+
+    def mark_offer_as_win(self, offer_id):
+        """
+        Mark offer as win
+
+        :param offer_id: the offer id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            command=WIN,
+        )
+
+    def mark_offer_as_lose(self, offer_id):
+        """
+        Mark offer as lose
+
+        :param offer_id: the offer id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            command=LOSE,
+        )
+
+    def mark_offer_as_clear(self, offer_id):
+        """
+        Mark offer as clear
+
+        :param offer_id: the offer id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            command=CLEAR,
+        )
+
+    def mark_offer_as_unclear(self, offer_id):
+        """
+        Mark offer as unclear
+
+        :param offer_id: the offer id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=OFFERS,
+            billomat_id=offer_id,
+            command=UNCLEAR,
+        )
+
     """
     --------
     Billomat Offer Item
@@ -2255,6 +2476,63 @@ class Billomapy(object):
         :return: Response
         """
         return self._create_delete_request(resource=CREDIT_NOTES, billomat_id=credit_note_id)
+
+    def complete_credit_note(self, credit_note_it, complete_dict):
+        """
+        Completes an credit note
+
+        :param complete_dict: the complete dict with the template id
+        :param credit_note_it: the credit note id
+        :return: Response
+        """
+        return self._create_put_request(
+            resource=CREDIT_NOTES,
+            billomat_id=credit_note_it,
+            command=COMPLETE,
+            send_data=complete_dict
+        )
+
+    def credit_note_pdf(self, credit_note_it):
+        """
+        Opens a pdf of a credit note
+
+        :param credit_note_it: the credit note id
+        :return: dict
+        """
+        return self._create_get_request(resource=CREDIT_NOTES, billomat_id=credit_note_it, command=PDF)
+
+    def upload_credit_note_signature(self, credit_note_it, signature_dict):
+        """
+        Uploads a signature for the credit note
+
+        :param signature_dict: the signature
+        :type signature_dict: dict
+        :param credit_note_it: the credit note id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=CREDIT_NOTES,
+            billomat_id=credit_note_it,
+            send_data=signature_dict,
+            command=UPLOAD_SIGNATURE
+        )
+
+    def send_credit_note_email(self, credit_note_it, email_dict):
+        """
+        Sends an credit note by email
+        If you want to send your email to more than one persons do:
+        'recipients': {'to': ['bykof@me.com', 'mbykovski@seibert-media.net']}}
+
+        :param credit_note_it: the credit note id
+        :param email_dict: the email dict
+        :return dict
+        """
+        return self._create_post_request(
+            resource=CREDIT_NOTES,
+            billomat_id=credit_note_it,
+            send_data=email_dict,
+            command=EMAIL,
+        )
 
     """
     --------
@@ -2604,6 +2882,98 @@ class Billomapy(object):
         :return: Response
         """
         return self._create_delete_request(resource=CONFIRMATIONS, billomat_id=confirmation_id)
+
+    def complete_confirmation(self, confirmation_id, complete_dict):
+        """
+        Completes an confirmation
+
+        :param complete_dict: the complete dict with the template id
+        :param confirmation_id: the confirmation id
+        :return: Response
+        """
+        return self._create_put_request(
+            resource=CONFIRMATIONS,
+            billomat_id=confirmation_id,
+            command=COMPLETE,
+            send_data=complete_dict
+        )
+
+    def confirmation_pdf(self, confirmation_id):
+        """
+        Opens a pdf of a confirmation
+
+        :param confirmation_id: the confirmation id
+        :return: dict
+        """
+        return self._create_get_request(resource=CONFIRMATIONS, billomat_id=confirmation_id, command=PDF)
+
+    def send_confirmation_email(self, confirmation_id, email_dict):
+        """
+        Sends an confirmation by email
+        If you want to send your email to more than one persons do:
+        'recipients': {'to': ['bykof@me.com', 'mbykovski@seibert-media.net']}}
+
+        :param confirmation_id: the confirmation id
+        :param email_dict: the email dict
+        :return dict
+        """
+        return self._create_post_request(
+            resource=CONFIRMATIONS,
+            billomat_id=confirmation_id,
+            send_data=email_dict,
+            command=EMAIL,
+        )
+
+    def cancel_confirmation(self, confirmation_id):
+        """
+        Cancelles an confirmation
+
+        :param confirmation_id: the confirmation id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=CONFIRMATIONS,
+            billomat_id=confirmation_id,
+            command=CANCEL,
+        )
+
+    def uncancel_confirmation(self, confirmation_id):
+        """
+        Uncancelles an confirmation
+
+        :param confirmation_id: the confirmation id
+        """
+        return self._create_put_request(
+            resource=CONFIRMATIONS,
+            billomat_id=confirmation_id,
+            command=UNCANCEL,
+        )
+
+    def mark_confirmation_as_clear(self, confirmation_id):
+        """
+        Mark confirmation as clear
+
+        :param confirmation_id: the confirmation id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=CONFIRMATIONS,
+            billomat_id=confirmation_id,
+            command=CLEAR,
+        )
+
+    def mark_confirmation_as_unclear(self, confirmation_id):
+        """
+        Mark confirmation as unclear
+
+        :param confirmation_id: the confirmation id
+        :return Response
+        """
+        return self._create_put_request(
+            resource=CONFIRMATIONS,
+            billomat_id=confirmation_id,
+            command=UNCLEAR,
+        )
 
     """
     --------
@@ -3117,6 +3487,47 @@ class Billomapy(object):
         :return: Response
         """
         return self._create_delete_request(resource=DELIVERY_NOTES, billomat_id=delivery_note_id)
+
+    def complete_delivery_note(self, delivery_note_id, complete_dict):
+        """
+        Completes an delivery note
+
+        :param complete_dict: the complete dict with the template id
+        :param delivery_note_id: the delivery note id
+        :return: Response
+        """
+        return self._create_put_request(
+            resource=DELIVERY_NOTES,
+            billomat_id=delivery_note_id,
+            command=COMPLETE,
+            send_data=complete_dict
+        )
+
+    def delivery_note_pdf(self, delivery_note_id):
+        """
+        Opens a pdf of a delivery note
+
+        :param delivery_note_id: the delivery note id
+        :return: dict
+        """
+        return self._create_get_request(resource=DELIVERY_NOTES, billomat_id=delivery_note_id, command=PDF)
+
+    def send_delivery_note_email(self, delivery_note_id, email_dict):
+        """
+        Sends an delivery note by email
+        If you want to send your email to more than one persons do:
+        'recipients': {'to': ['bykof@me.com', 'mbykovski@seibert-media.net']}}
+
+        :param delivery_note_id: the delivery note id
+        :param email_dict: the email dict
+        :return dict
+        """
+        return self._create_post_request(
+            resource=DELIVERY_NOTES,
+            billomat_id=delivery_note_id,
+            send_data=email_dict,
+            command=EMAIL,
+        )
 
     """
     --------
