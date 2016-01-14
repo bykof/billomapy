@@ -60,10 +60,7 @@ class Billomapy(object):
             params=params,
         )
 
-        if response.status_code == requests.codes.ok:
-            return response.json()
-        else:
-            self._handle_failed_response(response)
+        return self._handle_response(response)
 
     def _create_post_request(self, resource, send_data, billomat_id='', command=None):
         """
@@ -84,10 +81,8 @@ class Billomapy(object):
             url=self.api_url + resource + ('/' + billomat_id if billomat_id else '') + command,
             data=json.dumps(send_data),
         )
-        if response.status_code == requests.codes.created or response.status_code == requests.codes.ok:
-            return response.json()
-        else:
-            self._handle_failed_response(response)
+
+        return self._handle_response(response)
 
     def _create_put_request(self, resource, billomat_id, command=None, send_data=None):
         """
@@ -108,13 +103,7 @@ class Billomapy(object):
             data=json.dumps(send_data),
         )
 
-        if response.status_code == requests.codes.ok:
-            try:
-                return response.json()
-            except ValueError:
-                return response
-        else:
-            self._handle_failed_response(response)
+        return self._handle_response(response)
 
     def _create_delete_request(self, resource, billomat_id):
         """
@@ -129,13 +118,23 @@ class Billomapy(object):
             url=self.api_url + resource + '/' + billomat_id,
         )
 
-        if response.status_code == requests.codes.ok:
+        return self._handle_response(response)
+
+    def _handle_response(self, response):
+        """
+        Handle all responses
+        :param response:
+        :type response:
+        :return:
+        :rtype:
+        """
+        if response.status_code == requests.codes.ok or response.status_code == requests.codes.created:
             try:
                 return response.json()
             except ValueError:
                 return response
         else:
-            self._handle_failed_response(response)
+            return self._handle_failed_response(response)
 
     def _handle_failed_response(self, response):
         """
@@ -148,7 +147,7 @@ class Billomapy(object):
         :rtype: None
         """
         if response.status_code == requests.codes.too_many_requests:
-            self.rate_limit_exceeded(response)
+            return self.rate_limit_exceeded(response)
         else:
             response.raise_for_status()
 
