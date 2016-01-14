@@ -1,12 +1,9 @@
 import math
 import json
-import logging
 
 import requests
 
 from resources import *
-
-logger = logging.getLogger(__name__)
 
 
 class Billomapy(object):
@@ -66,8 +63,7 @@ class Billomapy(object):
         if response.status_code == requests.codes.ok:
             return response.json()
         else:
-            logger.error('Error: ', response.content)
-            response.raise_for_status()
+            self._handle_failed_response(response)
 
     def _create_post_request(self, resource, send_data, billomat_id='', command=None):
         """
@@ -88,15 +84,14 @@ class Billomapy(object):
             url=self.api_url + resource + ('/' + billomat_id if billomat_id else '') + command,
             data=json.dumps(send_data),
         )
-        if response.status_code == requests.codes.created:
+        if response.status_code == requests.codes.created or response.status_code == requests.codes.ok:
             return response.json()
         else:
-            logger.error('Error: ', response.content)
-            response.raise_for_status()
+            self._handle_failed_response(response)
 
     def _create_put_request(self, resource, billomat_id, command=None, send_data=None):
         """
-        Creates a post request and return the response data
+        Creates a put request and return the response data
         """
         assert (isinstance(resource, basestring))
 
@@ -119,8 +114,7 @@ class Billomapy(object):
             except ValueError:
                 return response
         else:
-            logger.error('Error: ', response.content)
-            response.raise_for_status()
+            self._handle_failed_response(response)
 
     def _create_delete_request(self, resource, billomat_id):
         """
@@ -141,7 +135,21 @@ class Billomapy(object):
             except ValueError:
                 return response
         else:
-            logger.error('Error: ', response.content)
+            self._handle_failed_response(response)
+
+    def _handle_failed_response(self, response):
+        """
+        Handle the failed response and check for rate limit exceeded
+        If rate limit exceeded it runs the rate_limit_exceeded function which you should overwrite
+
+        :param response: requests.Response
+        :type response: requests.Reponse
+        :return: None
+        :rtype: None
+        """
+        if response.status_code == requests.codes.too_many_requests:
+            self.rate_limit_exceeded(response)
+        else:
             response.raise_for_status()
 
     @staticmethod
@@ -198,7 +206,7 @@ class Billomapy(object):
         if isinstance(data, list):
             for data_row in data:
                 if head_key in data_row and data_key in data_row[head_key]:
-                    if isinstance(data_row[head_key][data_key],list):
+                    if isinstance(data_row[head_key][data_key], list):
                         new_data += data_row[head_key][data_key]
                     else:
                         new_data.append(data_row[head_key][data_key])
@@ -211,6 +219,18 @@ class Billomapy(object):
             elif data_key in data:
                     return data[data_key]
         return new_data
+
+    def rate_limit_exceeded(self, response):
+        """
+        Overwrite this function to handle the rate limit exceeded error
+        Example: do a delay for next request
+
+        :param response: request.Response
+        :rtype response: request.Response
+        :return: None
+        """
+        response.raise_for_status()
+        pass
 
     """
     --------
