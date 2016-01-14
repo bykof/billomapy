@@ -114,7 +114,10 @@ class Billomapy(object):
         )
 
         if response.status_code == requests.codes.ok:
-            return response
+            try:
+                return response.json()
+            except ValueError:
+                return response
         else:
             logger.error('Error: ', response.content)
             response.raise_for_status()
@@ -133,7 +136,10 @@ class Billomapy(object):
         )
 
         if response.status_code == requests.codes.ok:
-            return response
+            try:
+                return response.json()
+            except ValueError:
+                return response
         else:
             logger.error('Error: ', response.content)
             response.raise_for_status()
@@ -192,7 +198,10 @@ class Billomapy(object):
         if isinstance(data, list):
             for data_row in data:
                 if head_key in data_row and data_key in data_row[head_key]:
-                    new_data += data_row[head_key][data_key]
+                    if isinstance(data_row[head_key][data_key],list):
+                        new_data += data_row[head_key][data_key]
+                    else:
+                        new_data.append(data_row[head_key][data_key])
                 elif data_key in data_row:
                     return data_row[data_key]
 
