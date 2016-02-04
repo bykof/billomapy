@@ -13,7 +13,10 @@ Just initialize the Billomapy class and have fun
     from billomapy import Billomapy
 
     billomapy = Billomapy(
-        'BILLOMAT_ID', 'API_KEY', 'APP_ID', 'APP_SECRET'
+        'BILLOMAT_ID',
+        'API_KEY',
+        'APP_ID',
+        'APP_SECRET'
     )
 
 
@@ -45,7 +48,10 @@ Here is an example which will sleep until rate limit will reset and then send th
                 response.raise_for_status()
 
     billomapy = CustomBillomapy(
-        'BILLOMAT_ID', 'API_KEY', 'APP_ID', 'APP_SECRET'
+        'BILLOMAT_ID',
+        'API_KEY',
+        'APP_ID',
+        'APP_SECRET'
     )
 
 
@@ -58,15 +64,16 @@ If you want to retrieve data the pattern is: get_all_* where * speaks for the en
     :linenos:
 
     """
-	Here you get all responses of billomat
-	because there can be metadata in it you want to use.
-	So i just parse the response of billomat in python code. If you want to work easier with this data read further
-	"""
+    Here you get all responses of billomat
+    because there can be metadata in it you want to use.
+    So i just parse the response of billomat in python code. If you want to work easier with this data read further
+    """
 
     all_client_responses = billomapy.get_all_clients()
 
     """
     all_client_responses will look like this:
+
         [
             'clients': {
                 '@page': 1,
@@ -108,6 +115,7 @@ If you want to retrieve data the pattern is: get_all_* where * speaks for the en
     """
     Now the variable clients is a list of all client dicts
     clients:
+
         [
             {
                 'name': 'Tim',
@@ -141,6 +149,7 @@ If you want to retrieve single data the pattern is: get_* where * speaks for the
     """
     This will return just a dictionary with the client information
     client:
+
         {
             'name': 'Tim',
             'last_name': 'Tester',
@@ -161,7 +170,7 @@ If you want to create data the pattern is: create_* where * speaks for the endpo
     new_client = billomapy.create_client(
         {
             'client': {
-                'name': 'test'
+                'name': 'test',
                 'first_name': 'Peter',
                 'last_name': 'Griffin',
             }
@@ -183,9 +192,9 @@ If you want to update data the pattern is: update_* where * speaks for the endpo
         {
             'client': {
                 'first_name': 'Meg'
-			}
-		}
-	)
+            }
+        }
+    )
 
 
 Delete data
