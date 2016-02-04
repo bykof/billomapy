@@ -290,7 +290,11 @@ class Billomapy(object):
         :param client_dict: dict
         :return: dict
         """
-        return self._create_put_request(CLIENTS, client_id, client_dict)
+        return self._create_put_request(
+            resource=CLIENTS,
+            billomat_id=client_id,
+            send_data=client_dict
+        )
 
     def delete_client(self, client_id):
         """
