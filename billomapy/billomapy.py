@@ -69,7 +69,7 @@ class Billomapy(object):
         assert (isinstance(resource, basestring))
 
         if billomat_id:
-            if isinstance(billomat_id, int):
+            if isinstance(billomat_id, (int, long)):
                 billomat_id = str(billomat_id)
 
         if not command:
@@ -90,7 +90,7 @@ class Billomapy(object):
         """
         assert (isinstance(resource, basestring))
 
-        if isinstance(billomat_id, int):
+        if isinstance(billomat_id, (int, long)):
             billomat_id = str(billomat_id)
 
         if not command:
@@ -111,7 +111,7 @@ class Billomapy(object):
         """
         assert (isinstance(resource, basestring))
 
-        if isinstance(billomat_id, int):
+        if isinstance(billomat_id, (int, long)):
             billomat_id = str(billomat_id)
 
         response = self.session.delete(
