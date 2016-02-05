@@ -18,7 +18,7 @@ class BillomapyResponseError(Exception):
         self.message = message
 
     def __str__(self):
-        return 'Request hatte einen Fehler: Code: {}, Message: {}'.format(self.code, self.message)
+        return 'Error occurred while processing request: code: {}, message: {}'.format(self.code, self.message)
 
 
 class BillomapyParseError(Exception):
@@ -27,7 +27,7 @@ class BillomapyParseError(Exception):
         self.content = content
 
     def __str__(self):
-        return 'Folgender Inhalt konnte nicht in JSON geparsed werden: {}'.format(self.content)
+        return 'JSON could not be decoded: {}'.format(self.content)
 
 
 class BillomapyRateLimitReachedError(Exception):
@@ -36,7 +36,7 @@ class BillomapyRateLimitReachedError(Exception):
         self.last_page = last_page
 
     def __str__(self):
-        return 'Rate Limit wurde erreicht'
+        return 'Rate limit exceeded'
 
 
 class Billomapy(object):
