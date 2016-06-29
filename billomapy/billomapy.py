@@ -3301,6 +3301,47 @@ class Billomapy(object):
         """
         return self._create_delete_request(resource=REMINDERS, billomat_id=reminder_id)
 
+    def complete_reminder(self, reminder_id, complete_dict):
+        """
+        Completes a reminder
+
+        :param complete_dict: the complete dict with the template id
+        :param reminder_id: the reminder id
+        :return: Response
+        """
+        return self._create_put_request(
+            resource=REMINDERS,
+            billomat_id=reminder_id,
+            command=COMPLETE,
+            send_data=complete_dict
+        )
+
+    def reminder_pdf(self, reminder_id):
+        """
+        Opens a pdf of a reminder
+
+        :param reminder_id: the reminder id
+        :return: dict
+        """
+        return self._create_get_request(resource=REMINDERS, billomat_id=reminder_id, command=PDF)
+
+    def send_reminder_email(self, reminder_id, email_dict):
+        """
+        Sends an reminder by email
+        If you want to send your email to more than one persons do:
+        'recipients': {'to': ['bykof@me.com', 'mbykovski@seibert-media.net']}}
+
+        :param reminder_id: the reminder id
+        :param email_dict: the email dict
+        :return dict
+        """
+        return self._create_post_request(
+            resource=REMINDERS,
+            billomat_id=reminder_id,
+            send_data=email_dict,
+            command=EMAIL,
+        )
+
     """
     --------
     Billomat Reminder Item
