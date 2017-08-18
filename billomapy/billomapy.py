@@ -4110,3 +4110,27 @@ class Billomapy(object):
         :return: Response
         """
         return self._create_delete_request(resource=TEMPLATES, billomat_id=template_id)
+
+    """
+    --------
+    Billomat Users
+    --------
+    https://www.billomat.com/en/api/users/
+    """
+
+    def get_user(self, user_id):
+        """
+        Get a specific user
+
+        :param user_id: The specific user id
+        :return: dict
+        """
+        return self._create_get_request(USER, user_id)
+
+    def get_users(self):
+        """
+        Get all the users
+
+        :return: dict
+        """
+        return self._create_get_request(USERS)
