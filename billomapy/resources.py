@@ -176,6 +176,9 @@ LETTER_TAG = LETTER + TAG
 TEMPLATES = 'templates'
 TEMPLATE = 'template'
 
+USER = 'users'
+USERS = 'users'
+
 """
 COMMANDS for the API
 """
