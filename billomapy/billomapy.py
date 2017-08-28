@@ -3,7 +3,7 @@ import json
 
 import requests
 
-from resources import *
+from .resources import *
 
 
 class Billomapy(object):
@@ -49,9 +49,9 @@ class Billomapy(object):
         else:
             command = '/' + command
 
-        assert (isinstance(resource, basestring))
+        assert (isinstance(resource, str))
         if billomat_id:
-            assert (isinstance(billomat_id, int) or isinstance(billomat_id, basestring))
+            assert (isinstance(billomat_id, int) or isinstance(billomat_id, str))
 
             if isinstance(billomat_id, int):
                 billomat_id = str(billomat_id)
@@ -66,7 +66,7 @@ class Billomapy(object):
         """
         Creates a post request and return the response data
         """
-        assert (isinstance(resource, basestring))
+        assert (isinstance(resource, str))
 
         if billomat_id:
             if isinstance(billomat_id, int):
@@ -88,7 +88,7 @@ class Billomapy(object):
         """
         Creates a put request and return the response data
         """
-        assert (isinstance(resource, basestring))
+        assert (isinstance(resource, str))
 
         if isinstance(billomat_id, int):
             billomat_id = str(billomat_id)
@@ -109,7 +109,7 @@ class Billomapy(object):
         """
         Creates a post request and return the response data
         """
-        assert (isinstance(resource, basestring))
+        assert (isinstance(resource, str))
 
         if isinstance(billomat_id, int):
             billomat_id = str(billomat_id)
@@ -180,7 +180,7 @@ class Billomapy(object):
         """
         Gets specific data per resource page and per page
         """
-        assert (isinstance(resource, basestring))
+        assert (isinstance(resource, str))
 
         common_params = {'per_page': per_page, 'page': page}
         if not params:
