@@ -4041,9 +4041,83 @@ class Billomapy(object):
 
     """
     --------
+    Billomat E-Mail Template
+    --------
+    https://www.billomat.com/en/api/settings/email-templates
+    
+    """
+
+    def get_email_templates_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get e-mail templates per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: list
+        """
+        return self._get_resource_per_page(resource=EMAIL_TEMPLATES, per_page=per_page, page=page, params=params)
+
+    def get_email_templates(self, params=None):
+        """
+        Get all e-mail templates
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list 
+        """
+        if not params:
+            params = {}
+        return self._iterate_through_pages(self.get_email_templates_per_page, resource=EMAIL_TEMPLATES,
+                                           **{'params': params})
+
+    def get_email_template(self, template_id):
+        """
+        Get a specific e-mail template
+
+        :param template_id: The specific template id
+        :return: dict
+        """
+        return self._create_get_request(resource=EMAIL_TEMPLATES, billomat_id=template_id)
+
+    def create_email_template(self, template_dict):
+        """
+        Creates a e-mail template
+
+        :param template_dict: dict
+        :return: dict
+        """
+        return self._create_post_request(resource=EMAIL_TEMPLATES, send_data=template_dict)
+
+    def update_email_template(self, template_id, template_dict):
+        """
+        Updates a emailtemplate
+
+        :param template_id: the template id
+        :param template_dict: dict
+        :return: dict
+        """
+        return self._create_put_request(
+            resource=EMAIL_TEMPLATES,
+            billomat_id=template_id,
+            send_data=template_dict
+        )
+
+    def delete_email_template(self, template_id):
+        """
+        Deletes a template
+
+        :param template_id: the template id
+        :return: Response
+        """
+        return self._create_delete_request(resource=EMAIL_TEMPLATES, billomat_id=template_id)
+
+    """
+    --------
     Billomat Template
     --------
-    http://www.billomat.com/en/api/templates
+    https://www.billomat.com/en/api/settings/templates
     """
 
     def get_templates_per_page(self, per_page=1000, page=1, params=None):
