@@ -176,6 +176,9 @@ LETTER_TAG = LETTER + TAG
 TEMPLATES = 'templates'
 TEMPLATE = 'template'
 
+EMAIL_TEMPLATES = 'email_templates'
+EMAIL_TEMPLATE = 'email_template'
+
 USER = 'users'
 USERS = 'users'
 
