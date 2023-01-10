@@ -1801,6 +1801,42 @@ class Billomapy(object):
     http://www.billomat.com/en/api/incomings/payments
     """
 
+    def get_incoming_payments_per_page(self, per_page=1000, page=1, params=None):
+        """
+        Get incoming payments per page
+
+        :param per_page: How many objects per page. Default: 1000
+        :param page: Which page. Default: 1
+        :param params: Search parameters. Default: {}
+        :return: list
+        """
+        if not params:
+            params = {}
+
+        return self._get_resource_per_page(
+            resource=INCOMING_PAYMENTS,
+            per_page=per_page,
+            page=page,
+            params=params,
+        )
+
+    def get_all_incoming_payments(self, params=None):
+        """
+        Get all incoming payments
+        This will iterate over all pages until it gets all elements.
+        So if the rate limit exceeded it will throw an Exception and you will get nothing
+
+        :param params: search params
+        :return: list
+        """
+        if not params:
+            params = {}
+        return self._iterate_through_pages(
+            get_function=self.get_incoming_payments_per_page,
+            resource=INCOMING_PAYMENTS,
+            **{'params': params}
+        )
+        
     def get_payments_of_incoming_per_page(self, incoming_id, per_page=1000, page=1):
         """
         Get payments of incoming per page
