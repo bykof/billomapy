@@ -7,7 +7,7 @@ A full featured Python library for http://www.billomat.com/
 
 If you have problems or don't understand something you can email me:
 
-mbykovski@seibert-media.net
+bykof@me.com
 
 
 API Doc
